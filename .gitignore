@@ -1,0 +1,53 @@
+# ==========================================
+# Root Monorepo .gitignore
+# ==========================================
+
+# Secrets - NEVER commit these
+.env
+.env.local
+.env.production
+.env.staging
+
+# ==========================================
+# Backend (Spring Boot / Maven)
+# ==========================================
+backend/target/
+backend/*.jar
+backend/*.war
+backend/*.class
+backend/.idea/
+backend/*.iml
+backend/hs_err_pid*
+
+# Maven wrapper jar
+.mvn/wrapper/maven-wrapper.jar
+
+# ==========================================
+# Frontend (Node / Vite / React)
+# ==========================================
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/coverage/
+
+# ==========================================
+# IDE & OS Files
+# ==========================================
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ==========================================
+# Docker
+# ==========================================
+*.log
+docker-compose.override.yml
+
+# ==========================================
+# Root build artifacts
+# ==========================================
+target/
