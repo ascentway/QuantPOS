@@ -61,11 +61,25 @@ public class TokenService {
     }
 
     public String rotateRefreshToken(String oldToken, UUID userId) {
+        // Store shadow key BEFORE deletion so replay detection can find userId
+        // TTL = 24h (longer than access token, shorter than refresh TTL)
+        redisService.save("rotated_refresh:" + oldToken, userId.toString(), 86400L);
         // Remove old token and its session tracking entry
         deleteRefreshToken(oldToken, userId);
         String newToken = UUID.randomUUID().toString();
         saveRefreshToken(userId, newToken);
         return newToken;
+    }
+
+    /**
+     * Checks if a refresh token was recently rotated (replay attack indicator).
+     * Returns the userId of the owner, so all their sessions can be cleared.
+     *
+     * @param token the already-rotated (stale) refresh token
+     * @return Optional UUID of the user who owned this token, or empty if unknown
+     */
+    public java.util.Optional<UUID> getShadowUserId(String token) {
+        return redisService.get("rotated_refresh:" + token).map(UUID::fromString);
     }
 
     public void deleteRefreshToken(String token) {

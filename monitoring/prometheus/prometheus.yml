@@ -1,0 +1,38 @@
+global:
+  scrape_interval:     15s   # How often to scrape targets
+  evaluation_interval: 15s   # How often to evaluate rules
+
+# ─── Rule files (alerting) ────────────────────────────────────────────────────
+rule_files:
+  # - "alert_rules.yml"   # Uncomment and add rules when needed
+
+# ─── Scrape targets ───────────────────────────────────────────────────────────
+scrape_configs:
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # QuantPOS Spring Boot — /actuator/prometheus
+  # "quantpos-backend" is the Docker container hostname on the shared network
+  - job_name: 'quantpos-backend'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['quantpos-backend:8080']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'quantpos-backend'
+
+  # PostgreSQL exporter (optional — requires postgres-exporter sidecar)
+  # Uncomment when postgres-exporter is added to the monitoring compose
+  # - job_name: 'postgres'
+  #   static_configs:
+  #     - targets: ['postgres-exporter:9187']
+
+  # Redis exporter (optional — requires redis-exporter sidecar)
+  # - job_name: 'redis'
+  #   static_configs:
+  #     - targets: ['redis-exporter:9121']

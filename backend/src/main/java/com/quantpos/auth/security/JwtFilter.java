@@ -1,11 +1,16 @@
 package com.quantpos.auth.security;
 
+import com.quantpos.common.MdcLoggingFilter;
 import com.quantpos.common.RedisService;
 import com.quantpos.multitenancy.TenantContext;
+import com.quantpos.multitenancy.TenantFilterActivator;
+import com.quantpos.user.model.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,23 +22,51 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.UUID;
 
+/**
+ * JWT authentication filter — runs on every request after MdcLoggingFilter.
+ *
+ * <p>Responsibilities:
+ * <ol>
+ *   <li>Extract Bearer token from Authorization header</li>
+ *   <li>Validate signature and expiry via JwtProvider</li>
+ *   <li>Check session-invalidation timestamp ("invalidate_before:{userId}")</li>
+ *   <li>Populate Spring SecurityContext</li>
+ *   <li>Set TenantContext (ThreadLocal) for downstream components</li>
+ *   <li>Enable Hibernate tenant filter via TenantFilterActivator
+ *       (SUPER_ADMIN bypasses the filter)</li>
+ *   <li>Enrich MDC with userId and tenantId for structured logging</li>
+ * </ol>
+ *
+ * <p><b>Cleanup:</b> TenantContext is cleared in the {@code finally} block.
+ * Hibernate filter is also disabled in {@code finally}.
+ * MDC is cleared by MdcLoggingFilter which wraps this filter's execution.
+ */
 @Component
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final JwtProvider          jwtProvider;
-    private final UserDetailsServiceImpl userDetailsService;
-    private final RedisService         redisService;
+    private final JwtProvider             jwtProvider;
+    private final UserDetailsServiceImpl  userDetailsService;
+    private final RedisService            redisService;
+    private final TenantFilterActivator   tenantFilterActivator;
 
-    public JwtFilter(JwtProvider jwtProvider, UserDetailsServiceImpl userDetailsService,
-                     RedisService redisService) {
-        this.jwtProvider      = jwtProvider;
-        this.userDetailsService = userDetailsService;
-        this.redisService     = redisService;
+    public JwtFilter(JwtProvider jwtProvider,
+                     UserDetailsServiceImpl userDetailsService,
+                     RedisService redisService,
+                     TenantFilterActivator tenantFilterActivator) {
+        this.jwtProvider           = jwtProvider;
+        this.userDetailsService    = userDetailsService;
+        this.redisService          = redisService;
+        this.tenantFilterActivator = tenantFilterActivator;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
+        boolean filterEnabled = false;
+
         try {
             String token = getJwtFromRequest(request);
 
@@ -41,19 +74,20 @@ public class JwtFilter extends OncePerRequestFilter {
                 String email    = jwtProvider.extractEmail(token);
                 UUID   tenantId = jwtProvider.extractTenantId(token);
                 UUID   userId   = jwtProvider.extractUserId(token);
+                String roleStr  = jwtProvider.extractRole(token);
 
-                // ── Session invalidation check ──────────────────────────────────
-                // If password was changed/reset after this token was issued, reject it.
-                long tokenIssuedAt     = jwtProvider.extractIssuedAt(token);
-                long invalidateBefore  = redisService.get("invalidate_before:" + userId)
+                // ── Session invalidation check ──────────────────────────────
+                long tokenIssuedAt    = jwtProvider.extractIssuedAt(token);
+                long invalidateBefore = redisService.get("invalidate_before:" + userId)
                         .map(Long::parseLong).orElse(0L);
 
                 if (tokenIssuedAt < invalidateBefore) {
-                    // Token pre-dates the last password change — treat as expired
+                    log.warn("Rejected pre-invalidation token | userId={} issuedAt={} invalidateBefore={}",
+                        userId, tokenIssuedAt, invalidateBefore);
                     filterChain.doFilter(request, response);
                     return;
                 }
-                // ────────────────────────────────────────────────────────────────
+                // ───────────────────────────────────────────────────────────
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
@@ -64,15 +98,28 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                // Set tenant context for multi-tenancy (cleared in finally block)
+                // ── Tenant isolation ────────────────────────────────────────
                 TenantContext.setTenantId(tenantId);
+
+                // ── Hibernate filter (SUPER_ADMIN bypasses) ─────────────────
+                Role role = parseRole(roleStr);
+                tenantFilterActivator.enableForSession(tenantId, role);
+                filterEnabled = true;
+
+                // ── MDC enrichment ──────────────────────────────────────────
+                MDC.put(MdcLoggingFilter.MDC_USER_ID,   userId.toString());
+                MDC.put(MdcLoggingFilter.MDC_TENANT_ID, tenantId.toString());
             }
 
             filterChain.doFilter(request, response);
 
         } finally {
-            // Always clear to prevent ThreadLocal bleed between requests
+            // Always clean up to prevent ThreadLocal bleed between Tomcat thread recycling
             TenantContext.clear();
+            if (filterEnabled) {
+                tenantFilterActivator.disableForSession();
+            }
+            // MDC is cleared by MdcLoggingFilter which wraps this filter
         }
     }
 
@@ -82,5 +129,13 @@ public class JwtFilter extends OncePerRequestFilter {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    private Role parseRole(String roleStr) {
+        try {
+            return roleStr != null ? Role.valueOf(roleStr) : Role.CASHIER;
+        } catch (IllegalArgumentException e) {
+            return Role.CASHIER;
+        }
     }
 }

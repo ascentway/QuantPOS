@@ -11,10 +11,12 @@ import com.quantpos.tenant.repository.TenantRepository;
 import com.quantpos.user.model.Role;
 import com.quantpos.user.model.User;
 import com.quantpos.user.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -22,6 +24,7 @@ import java.util.UUID;
 
 @Service
 @Transactional
+@Slf4j
 public class AuthService {
 
     private final UserRepository   userRepository;
@@ -237,12 +240,29 @@ public class AuthService {
     // ─────────────────────────────────────────────────────────────────────────
 
     public ApiResponse<AuthResponse> refreshToken(RefreshTokenRequest request) {
-        return tokenService.validateRefreshToken(request.getRefreshToken())
+        String incomingToken = request.getRefreshToken();
+
+        // ── Replay attack detection ────────────────────────────────────
+        // If the token is NOT in Redis (already deleted/rotated) but IS in
+        // the shadow key (rotated_refresh:{token}), this is a stale token replay.
+        if (tokenService.validateRefreshToken(incomingToken).isEmpty()) {
+            tokenService.getShadowUserId(incomingToken).ifPresent(userId -> {
+                log.warn("SECURITY: Refresh token replay detected! " +
+                    "Clearing all sessions for userId={}. " +
+                    "A previously rotated token was presented — possible session hijack.", userId);
+                tokenService.invalidateAllUserSessions(userId);
+            });
+            throw new ApiException(HttpStatus.UNAUTHORIZED,
+                "Refresh token expired or invalid", ErrorCodes.TOKEN_EXPIRED, "Invalid refresh token");
+        }
+        // ───────────────────────────────────────────────────────────────
+
+        return tokenService.validateRefreshToken(incomingToken)
                 .flatMap(userRepository::findById)
                 .filter(User::isActive)
                 .map(user -> {
                     String newRefreshToken = tokenService.rotateRefreshToken(
-                        request.getRefreshToken(), user.getId());
+                        incomingToken, user.getId());
                     String newAccessToken = jwtProvider.generateAccessToken(user);
 
                     AuthResponse.UserInfo userInfo = buildUserInfo(user);
