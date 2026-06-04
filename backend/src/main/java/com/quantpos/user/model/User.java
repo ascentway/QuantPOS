@@ -4,13 +4,26 @@ import com.quantpos.tenant.model.Tenant;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Hibernate filter definition for multi-tenant row-level isolation.
+ * Activated per-request by TenantFilterActivator (wired in JwtFilter).
+ * SUPER_ADMIN users bypass this filter.
+ */
+@FilterDef(
+    name = "tenantFilter",
+    parameters = @ParamDef(name = "tenantId", type = UUID.class)
+)
+@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
 @Entity
 @Table(name = "users")
 @Getter

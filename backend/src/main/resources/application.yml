@@ -59,7 +59,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# ─── Stripe (keys injected via environment variables ONLY — never in YAML) ────
+# STRIPE_API_KEY and STRIPE_WEBHOOK_SECRET must be set as Docker / system env vars
+stripe:
+  api-key: ${STRIPE_API_KEY:}
 
 springdoc:
   swagger-ui:

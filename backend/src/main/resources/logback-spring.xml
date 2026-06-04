@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- ── Console Appender (JSON structured output) ────────────────── -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--
+                JSON-style single-line log format.
+                MDC fields (requestId, tenantId, userId) are automatically
+                injected by MdcLoggingFilter and JwtFilter.
+            -->
+            <pattern>{"ts":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}","level":"%-5p","logger":"%logger{36}","requestId":"%X{requestId:-}","tenantId":"%X{tenantId:-}","userId":"%X{userId:-}","method":"%X{method:-}","path":"%X{path:-}","msg":"%replace(%msg){'\"','\\\"'}","thread":"%thread"}%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ── File Appender (rolling daily, 30-day retention) ───────────── -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/quantpos.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/quantpos.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>{"ts":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}","level":"%-5p","logger":"%logger{36}","requestId":"%X{requestId:-}","tenantId":"%X{tenantId:-}","userId":"%X{userId:-}","method":"%X{method:-}","path":"%X{path:-}","msg":"%replace(%msg){'\"','\\\"'}","thread":"%thread"}%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ── Dev profile: verbose console only ─────────────────────────── -->
+    <springProfile name="dev">
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE" />
+        </root>
+        <!-- Reduce Hibernate SQL noise in dev -->
+        <logger name="org.hibernate.SQL"                level="DEBUG" additivity="false"><appender-ref ref="CONSOLE"/></logger>
+        <logger name="org.hibernate.type.descriptor.sql" level="TRACE" additivity="false"><appender-ref ref="CONSOLE"/></logger>
+        <logger name="org.springframework.security"      level="INFO"  additivity="false"><appender-ref ref="CONSOLE"/></logger>
+        <logger name="org.springframework.web"           level="INFO"  additivity="false"><appender-ref ref="CONSOLE"/></logger>
+        <!-- QuantPOS application logs always at DEBUG in dev -->
+        <logger name="com.quantpos" level="DEBUG" additivity="false"><appender-ref ref="CONSOLE"/></logger>
+    </springProfile>
+
+    <!-- ── Prod profile: INFO to both console and file ───────────────── -->
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE" />
+        </root>
+        <logger name="org.hibernate"            level="WARN"  additivity="false"><appender-ref ref="CONSOLE"/><appender-ref ref="FILE"/></logger>
+        <logger name="org.springframework"      level="WARN"  additivity="false"><appender-ref ref="CONSOLE"/><appender-ref ref="FILE"/></logger>
+        <logger name="com.quantpos"             level="INFO"  additivity="false"><appender-ref ref="CONSOLE"/><appender-ref ref="FILE"/></logger>
+        <!-- Security events always at WARN+ to surface attacks -->
+        <logger name="com.quantpos.auth"        level="WARN"  additivity="false"><appender-ref ref="CONSOLE"/><appender-ref ref="FILE"/></logger>
+    </springProfile>
+
+    <!-- ── Fallback (no profile active) ─────────────────────────────── -->
+    <springProfile name="!dev &amp; !prod">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+        <logger name="com.quantpos" level="DEBUG" additivity="false"><appender-ref ref="CONSOLE"/></logger>
+    </springProfile>
+
+</configuration>

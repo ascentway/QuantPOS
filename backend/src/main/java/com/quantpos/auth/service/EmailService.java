@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -74,6 +75,7 @@ public class EmailService {
             """, content);
     }
 
+    @Async
     public void sendVerificationEmail(String toEmail, String fullName, String otp) {
         String subject = "Your QuantPOS verification code";
         String content = String.format("""
@@ -90,6 +92,7 @@ public class EmailService {
         sendEmail(toEmail, subject, buildHtmlEmail(content));
     }
 
+    @Async
     public void sendPasswordResetEmail(String toEmail, String fullName, String token) {
         String subject = "Reset your QuantPOS account access";
         String url = appProperties.getBaseUrl() + "/reset-password?token=" + token;
@@ -108,6 +111,7 @@ public class EmailService {
         sendEmail(toEmail, subject, buildHtmlEmail(content));
     }
 
+    @Async
     public void sendWelcomeEmail(String toEmail, String fullName, String businessName) {
         String subject = "Welcome to QuantPOS — Your account is ready";
         String url = appProperties.getBaseUrl() + "/login";
@@ -123,6 +127,7 @@ public class EmailService {
         sendEmail(toEmail, subject, buildHtmlEmail(content));
     }
 
+    @Async
     public void send2faEmail(String toEmail, String fullName, String otp) {
         String subject = "Your QuantPOS login code";
         String content = String.format("""
