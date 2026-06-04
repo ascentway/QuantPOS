@@ -4,11 +4,68 @@ spring:
   profiles:
     active: dev
 
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:${DB_URL:jdbc:postgresql://localhost:5432/quantpos}}
+    username: ${SPRING_DATASOURCE_USERNAME:${DB_USERNAME:${DB_USER:postgres}}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${DB_PASSWORD:postgres}}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    clean-on-validation-error: false
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+  mail:
+    host: smtp-relay.brevo.com
+    port: 587
+    username: ${BREVO_EMAIL:}
+    password: ${BREVO_SMTP_KEY:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+app:
+  mail:
+    sender-name: ${BREVO_SENDER_NAME:QuantPOS}
+    sender-email: ${BREVO_SENDER_EMAIL}
+  jwt:
+    secret: ${JWT_SECRET:A_VERY_LONG_AND_SECURE_DEFAULT_SECRET_FOR_DEV_ENVIRONMENTS_ONLY}
+    access-expiry-ms: ${JWT_ACCESS_EXPIRY_MS:900000}
+    refresh-expiry-days: ${JWT_REFRESH_EXPIRY_DAYS:7}
+  base-url: ${APP_BASE_URL:http://localhost:3000}
+
 server:
   port: 8080
 
-# JWT & Security defaults
-security:
-  jwt:
-    secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
-    expiration-ms: 86400000 # 24 hours
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+springdoc:
+  swagger-ui:
+    path: /docs
+    try-it-out-enabled: true
+    operations-sorter: alpha
+    tags-sorter: alpha
+  api-docs:
+    path: /docs/api-docs

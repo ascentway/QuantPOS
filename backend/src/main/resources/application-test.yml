@@ -1,11 +1,13 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/quantpos_test
-    username: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:postgres}
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
     show-sql: false
   flyway:
     enabled: false
@@ -23,3 +25,9 @@ langchain4j:
     chat-model:
       api-key: mock-key
       model-name: gpt-4o-mini
+
+app:
+  jwt:
+    secret: thisisverysupersecretjwtkeyforquantposanditmustbe256bitslong
+    access-expiry-ms: 900000
+    refresh-expiry-days: 7

@@ -45,9 +45,38 @@ services:
       SPRING_DATA_REDIS_PORT: 6379
       STRIPE_API_KEY: ${STRIPE_API_KEY}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
+      BREVO_EMAIL: ${BREVO_EMAIL}
+      BREVO_SMTP_KEY: ${BREVO_SMTP_KEY}
+      BREVO_SENDER_NAME: ${BREVO_SENDER_NAME}
+      BREVO_SENDER_EMAIL: ${BREVO_SENDER_EMAIL}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ACCESS_EXPIRY_MS: ${JWT_ACCESS_EXPIRY_MS}
+      JWT_REFRESH_EXPIRY_DAYS: ${JWT_REFRESH_EXPIRY_DAYS}
+      APP_BASE_URL: ${APP_BASE_URL}
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: quantpos-pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: quantpos-redisinsight
+    ports:
+      - "5540:5540"
+    depends_on:
       redis:
         condition: service_healthy
 
