@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Wordmark, QPMark } from '../components/ui/Wordmark';
 
+
 /* ─────────────────────────────────────────────────────────────────────────────
    ANIMATION CSS  — scoped with "qp-" prefix, no external libraries
 ───────────────────────────────────────────────────────────────────────────── */
@@ -182,11 +183,6 @@ const Landing = () => {
     return () => window.removeEventListener('scroll', h);
   }, []);
 
-  /* Counters */
-  const [c1, r1] = useCounter(500);
-  const [c2, r2] = useCounter(99);
-  const [c3, r3] = useCounter(40);
-  const [c4, r4] = useCounter(14);
 
   const scrollTo = id => { setMenuOpen(false); document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' }); };
 
@@ -284,40 +280,75 @@ const Landing = () => {
 
   /* ── Data ──────────────────────────────────────────────────────────────── */
   const navLinks = [
-    { label:'Features',     id:'features'     },
-    { label:'Pricing',      id:'pricing'      },
-    { label:'How It Works', id:'howitworks'   },
-    { label:'Testimonials', id:'testimonials' },
-    { label:'FAQ',          id:'faq'          },
+    { label:'Features',     href:'/features'     },
+    { label:'Pricing',      href:'/pricing'      },
+    { label:'About',        href:'/about'        },
+    { label:'Contact',      href:'/contact'      },
   ];
 
   const plans = [
     {
       id:'starter', name:'Starter', badge:null,
-      desc:'Perfect for single-location shops',
-      monthly:9,   annual:7,   inr_monthly:750,  inr_annual:590,
-      terminals:1,
-      features:['1 POS Terminal','Unlimited Product Catalog','Real-time Inventory Tracking',
-        'Low Stock Alerts','Basic Sales Dashboard','GST-Ready Receipts',
-        'UPI · Card · Cash Payments','Email Support (48h)'],
+      desc:'Perfect for solo shopkeepers',
+      monthly: 499,  annual: 4990,
+      terminals: 1,  members: 'Solo',
+      features:[
+        '1 POS Terminal',
+        'Up to 500 products',
+        'Real-time inventory tracking',
+        'Low stock alerts via email',
+        'Daily sales reporting',
+        'Owner login with 2FA OTP',
+        'Email support (48 h)',
+      ],
     },
     {
       id:'growth', name:'Growth', badge:'Most Popular',
-      desc:'For expanding stores & multi-location',
-      monthly:19, annual:15, inr_monthly:1500, inr_annual:1200,
-      terminals:3,
-      features:['3 POS Terminals','Everything in Starter','AI Restocking Agent',
-        'Advanced Analytics & Reports','Team Roles (Manager / Cashier)',
-        'Multi-terminal Real-time Sync','CSV Data Export','Priority Support (12h)'],
+      desc:'For growing stores with a small team',
+      monthly: 999,  annual: 9990,
+      terminals: 3,  members: '3 members',
+      features:[
+        'Everything in Starter',
+        'Up to 3 POS Terminals',
+        'Team management (3 members)',
+        'Loose product pricing (kg, litre)',
+        'Cashier performance reports',
+        'Manual AI restocking suggestions',
+        'PDF export',
+        'Chat support (24 h)',
+      ],
+    },
+    {
+      id:'professional', name:'Professional', badge:null,
+      desc:'For established stores with full features',
+      monthly: 1999, annual: 19990,
+      terminals: 5,  members: '5 members',
+      features:[
+        'Everything in Growth',
+        'Up to 5 POS Terminals',
+        'Refunds & exchange with credit notes',
+        'Automatic AI restocking (8 AM & 8 PM)',
+        'Hour-by-hour sales analytics',
+        'Supplier management + purchase orders',
+        'Loyalty points (basic)',
+        'Dedicated support (4–8 h)',
+      ],
     },
     {
       id:'enterprise', name:'Enterprise', badge:null,
-      desc:'For chains, large stores & franchises',
-      monthly:49, annual:39, inr_monthly:4000, inr_annual:3200,
-      terminals:10,
-      features:['10 POS Terminals','Everything in Growth','Multi-location Dashboard',
-        'Dedicated Account Manager','Custom API Integrations',
-        'White-glove Onboarding','99.9% SLA Guarantee','24 / 7 Phone & Chat'],
+      desc:'For chains, franchises & multi-location stores',
+      monthly: 4999, annual: 49990,
+      terminals: 10, members: 'Unlimited',
+      features:[
+        'Everything in Professional',
+        'Up to 5 locations in one dashboard',
+        'Unlimited team members',
+        'Loyalty program (branded, tiers)',
+        'Gift card & customer database',
+        'API access for integrations',
+        'White-label option',
+        'Phone + dedicated account manager',
+      ],
     },
   ];
 
@@ -378,13 +409,6 @@ const Landing = () => {
     { step:'03', title:'Sell, track & grow',         desc:'Process sales on any device. Watch real-time analytics. Let AI optimize restocking automatically.', emoji:'📈' },
   ];
 
-  const testimonials = [
-    { name:'Rajesh Sharma',  title:'Owner · Sharma General Store, Mumbai',    avatar:'RS', text:'QuantPOS cut my daily inventory count from 2 hours to 15 minutes. The AI restocking alone saved me from 3 stockouts last month.',   stars:5 },
-    { name:'Priya Menon',    title:'Manager · Brew & Bite Café, Bangalore',   avatar:'PM', text:'Setting up took under an hour. The real-time sales dashboard is now the first thing I open every morning.', stars:5 },
-    { name:'Amit Patel',     title:'Owner · Fresh Mart (3 locations), Ahmedabad', avatar:'AP', text:'Managing 3 stores from one screen is a game-changer. Role-based access means cashiers only see what they need.', stars:5 },
-    { name:'Sunita Agarwal', title:'Owner · Spice Route Kitchen, Delhi',       avatar:'SA', text:'Switched from a system that cost ₹80,000 upfront. QuantPOS gives me more features at ₹750/month. Wish I found it sooner.', stars:5 },
-  ];
-
   const faqs = [
     { q:'Do I need special hardware to use QuantPOS?', a:'No. QuantPOS is entirely browser-based. It works on any smartphone, tablet, or laptop you already own. Zero hardware investment required.' },
     { q:'Can I switch plans after signing up?',        a:'Absolutely. Upgrade or downgrade your terminal count anytime. Billing is prorated so you only pay for what you use.' },
@@ -395,12 +419,8 @@ const Landing = () => {
     { q:'Is QuantPOS GST-compliant for India?',        a:'Yes. GST is built in—GSTIN validation, tax-correct invoices, and HSN/SAC code support are all included from day one.' },
   ];
 
-  const ticker = [
-    'Retail','Grocery','Café','Restaurant','Bakery',
-    'Pharmacy','Fashion','Electronics','Supermarket','Quick Service',
-    'Retail','Grocery','Café','Restaurant','Bakery',
-    'Pharmacy','Fashion','Electronics','Supermarket','Quick Service',
-  ];
+
+
 
   /* ── Shared inline styles ────────────────────────────────────────────────── */
   const cardStyle  = { background:T.card,  border:`1px solid ${T.border}`,  boxShadow:T.cardShadow };
@@ -432,12 +452,12 @@ const Landing = () => {
             {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-7">
               {navLinks.map(l => (
-                <button key={l.id} onClick={() => scrollTo(l.id)}
+                <Link key={l.label} to={l.href}
                   className="font-inter text-[13.5px] font-medium transition-colors"
                   style={{ color:T.t2 }}
                   onMouseEnter={e => e.currentTarget.style.color = T.t1}
                   onMouseLeave={e => e.currentTarget.style.color = T.t2}
-                >{l.label}</button>
+                >{l.label}</Link>
               ))}
             </nav>
 
@@ -453,13 +473,9 @@ const Landing = () => {
                 {isDark ? <SunIcon /> : <MoonIcon />}
               </button>
               <Link to="/login"
-                className="font-inter text-[13.5px] font-medium transition-colors px-4 py-2 rounded-lg"
-                style={{ color:T.t2 }}
-              >Sign In</Link>
-              <Link to="/register"
                 className="qp-btn font-manrope font-semibold text-[13.5px] text-white px-5 py-2.5 rounded-[9px]"
                 style={{ background:T.brand, boxShadow:`0 2px 12px ${T.brand}44` }}
-              >Start Free Trial</Link>
+              >Sign In</Link>
             </div>
 
             {/* Mobile: theme toggle + hamburger */}
@@ -489,10 +505,10 @@ const Landing = () => {
             </div>
             <nav className="flex flex-col items-center gap-8 my-auto">
               {navLinks.map(l => (
-                <button key={l.id} onClick={() => scrollTo(l.id)}
+                <Link key={l.label} to={l.href} onClick={() => setMenuOpen(false)}
                   className="font-manrope font-semibold text-2xl transition-colors"
                   style={{ color:T.t1 }}
-                >{l.label}</button>
+                >{l.label}</Link>
               ))}
             </nav>
             <div className="flex flex-col gap-3 p-6">
@@ -516,7 +532,7 @@ const Landing = () => {
           <div className="relative z-10 max-w-[820px] mx-auto flex flex-col items-center gap-6">
 
             {/* Headline — solid color accent (no background-clip:text — browser bug) */}
-            <h1 className="qp-hero-h1 font-instrument font-normal tracking-tight text-[50px] md:text-[76px] lg:text-[90px] qp-reveal" style={{ color:T.t1 }}>
+            <h1 className="qp-hero-h1 font-manrope font-extrabold tracking-tighter text-[40px] md:text-[62px] lg:text-[72px] qp-reveal" style={{ color:T.t1 }}>
               One platform.{' '}
               <br className="hidden sm:block" />
               Every tool your{' '}
@@ -628,42 +644,14 @@ const Landing = () => {
           </div>
         </section>
 
-        {/* ══ TICKER ══════════════════════════════════════════════════════ */}
-        <div className="py-4 overflow-hidden" style={{ borderTop:`1px solid ${T.border}`, borderBottom:`1px solid ${T.border}`, background:T.tickerBg }}>
-          <div className="flex whitespace-nowrap qp-ticker">
-            {ticker.map((t,i) => (
-              <span key={i} className="font-manrope text-[12px] font-semibold uppercase tracking-[.18em] mx-8" style={{ color:T.t3 }}>
-                {t} <span style={{ color:`${T.brand}60` }}>·</span>
-              </span>
-            ))}
-          </div>
-        </div>
 
-        {/* ══ STATS BAR ════════════════════════════════════════════════════ */}
-        <section className="py-16 px-6" style={{ background:T.statsBg }}>
-          <div className="max-w-[1080px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0" style={{ borderTop:`1px solid ${T.border}`, paddingTop:'3rem' }}>
-            {[
-              { ref:r1, val:c1, suf:'+',    label:'Businesses Onboarded' },
-              { ref:r2, val:c2, suf:'.9%',  label:'Platform Uptime SLA'  },
-              { ref:r3, val:c3, suf:'%',    label:'Stockout Reduction'   },
-              { ref:r4, val:c4, suf:' days',label:'Free Trial · No Card' },
-            ].map(({ ref, val, suf, label }, i) => (
-              <div key={i} ref={ref} className="flex flex-col items-center text-center md:px-8 qp-reveal">
-                <span className="font-manrope font-bold text-[40px] leading-none" style={{ color:T.t1 }}>
-                  {val}<span style={{ color:T.brand }}>{suf}</span>
-                </span>
-                <span className="font-inter text-[13px] mt-2" style={{ color:T.t3 }}>{label}</span>
-              </div>
-            ))}
-          </div>
-        </section>
 
         {/* ══ HOW IT WORKS ════════════════════════════════════════════════ */}
         <section id="howitworks" className="py-24 px-6" style={{ background:T.page }}>
           <div className="max-w-[1080px] mx-auto">
             <div className="text-center mb-14 qp-reveal">
               <span className="inline-block font-inter text-[12px] font-semibold uppercase tracking-[.16em] mb-3" style={{ color:T.brand }}>How It Works</span>
-              <h2 className="font-instrument text-[38px] md:text-[50px] leading-tight" style={{ color:T.t1 }}>Up and running in 5 minutes</h2>
+              <h2 className="font-manrope font-extrabold text-[38px] md:text-[50px] leading-tight" style={{ color:T.t1 }}>Up and running in 5 minutes</h2>
               <p className="font-inter text-[16px] mt-4 max-w-[480px] mx-auto" style={{ color:T.t2 }}>No IT team, no hardware procurement, no long contracts. Just sign up and go.</p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
@@ -686,7 +674,7 @@ const Landing = () => {
           <div className="max-w-[1080px] mx-auto">
             <div className="text-center mb-14 qp-reveal">
               <span className="inline-block font-inter text-[12px] font-semibold uppercase tracking-[.16em] mb-3" style={{ color:T.brand }}>Everything You Need</span>
-              <h2 className="font-instrument text-[38px] md:text-[50px] leading-tight" style={{ color:T.t1 }}>A-to-Z feature coverage</h2>
+              <h2 className="font-manrope font-extrabold text-[38px] md:text-[50px] leading-tight" style={{ color:T.t1 }}>A-to-Z feature coverage</h2>
               <p className="font-inter text-[16px] mt-4 max-w-[500px] mx-auto" style={{ color:T.t2 }}>Every tool a retail or F&amp;B business needs, under one roof.</p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -712,7 +700,7 @@ const Landing = () => {
               {/* Left copy */}
               <div className="qp-reveal">
                 <span className="inline-block font-inter text-[12px] font-semibold uppercase tracking-[.16em] mb-4" style={{ color:T.brand }}>Why QuantPOS</span>
-                <h2 className="font-instrument text-[36px] md:text-[46px] leading-tight mb-5" style={{ color:T.t1 }}>Built for India's retail reality</h2>
+                <h2 className="font-manrope font-extrabold text-[36px] md:text-[46px] leading-tight mb-5" style={{ color:T.t1 }}>Built for India's retail reality</h2>
                 <p className="font-inter text-[16px] leading-relaxed mb-8" style={{ color:T.t2 }}>
                   Traditional POS systems cost ₹80,000+ upfront with year-long contracts.
                   QuantPOS gives you more—for a fraction of the cost, with the flexibility your business demands.
@@ -746,7 +734,7 @@ const Landing = () => {
                   </div>
                   {[
                     ['Setup cost',       '₹80,000+',    '₹0'],
-                    ['Monthly fee',      '₹2,000+',     '₹750'],
+                    ['Monthly fee',      '₹2,000+',     '₹499'],
                     ['Hardware',         'Required',    'None'],
                     ['AI restocking',    'No',          'Yes'],
                     ['Real-time sync',   'Partial',     'Always'],
@@ -771,7 +759,7 @@ const Landing = () => {
           <div className="max-w-[1080px] mx-auto">
             <div className="text-center mb-12 qp-reveal">
               <span className="inline-block font-inter text-[12px] font-semibold uppercase tracking-[.16em] mb-3" style={{ color:T.brand }}>Pricing</span>
-              <h2 className="font-instrument text-[38px] md:text-[50px] leading-tight" style={{ color:T.t1 }}>Pay as you grow</h2>
+              <h2 className="font-manrope font-extrabold text-[38px] md:text-[50px] leading-tight" style={{ color:T.t1 }}>Pay as you grow</h2>
               <p className="font-inter text-[16px] mt-4 max-w-[440px] mx-auto" style={{ color:T.t2 }}>Start with 1 terminal. Scale to 10+. No hidden fees, ever.</p>
               {/* Billing toggle */}
               <div className="inline-flex items-center gap-1 mt-8 rounded-[11px] p-1" style={{ background:T.card, border:`1px solid ${T.border}` }}>
@@ -795,11 +783,10 @@ const Landing = () => {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
               {plans.map((plan, i) => {
-                const price    = billing==='monthly' ? plan.monthly    : plan.annual;
-                const inrPrice = billing==='monthly' ? plan.inr_monthly: plan.inr_annual;
-                const popular  = plan.id==='growth';
+                const price   = billing==='monthly' ? plan.monthly : Math.round(plan.annual / 12);
+                const popular = plan.id==='growth';
                 return (
                   <div key={plan.id} className="qp-reveal" style={{ transitionDelay:`${i*0.1}s` }}>
                     <div
@@ -825,17 +812,20 @@ const Landing = () => {
                         </div>
                         <div>
                           <div className="flex items-end gap-1.5">
-                            <span className="font-manrope font-bold text-[44px] leading-none" style={{ color:T.t1 }}>${price}</span>
+                            <span className="font-manrope font-bold text-[40px] leading-none" style={{ color:T.t1 }}>₹{price.toLocaleString('en-IN')}</span>
                             <span className="font-inter text-[13px] mb-2" style={{ color:T.t3 }}>/month</span>
                           </div>
-                          <p className="font-inter text-[12px] mt-1" style={{ color:T.t3 }}>≈ ₹{inrPrice.toLocaleString('en-IN')}/month</p>
-                          {billing==='annual' && <p className="font-inter text-[11px] font-medium mt-0.5" style={{ color:T.success }}>Billed annually</p>}
+                          {billing==='annual' && <p className="font-inter text-[11px] font-medium mt-0.5" style={{ color:T.success }}>₹{plan.annual.toLocaleString('en-IN')}/year · Save ~17%</p>}
                         </div>
-                        <div className="inline-flex items-center gap-1.5 rounded-[7px] px-3 py-1.5 w-fit" style={{ background:T.brandBg, border:`1px solid ${T.brandBorder}` }}>
-                          <svg className="w-3.5 h-3.5" style={{ color:T.brand }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <rect x="2" y="3" width="20" height="14" rx="2"/><path strokeLinecap="round" d="M8 21h8M12 17v4"/>
-                          </svg>
-                          <span className="font-inter text-[12px]" style={{ color:T.brand }}>{plan.terminals} POS Terminal{plan.terminals>1?'s':''} included</span>
+                        <div className="flex flex-wrap gap-3">
+                          <div className="inline-flex items-center gap-1.5 rounded-[7px] px-3 py-1.5" style={{ background:T.brandBg, border:`1px solid ${T.brandBorder}` }}>
+                            <svg className="w-3.5 h-3.5" style={{ color:T.brand }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path strokeLinecap="round" d="M8 21h8M12 17v4"/></svg>
+                            <span className="font-inter text-[12px]" style={{ color:T.brand }}>{plan.terminals} Terminal{plan.terminals>1?'s':''}</span>
+                          </div>
+                          <div className="inline-flex items-center gap-1.5 rounded-[7px] px-3 py-1.5" style={{ background:T.brandBg, border:`1px solid ${T.brandBorder}` }}>
+                            <svg className="w-3.5 h-3.5" style={{ color:T.brand }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                            <span className="font-inter text-[12px]" style={{ color:T.brand }}>{plan.members}</span>
+                          </div>
                         </div>
                         <ul className="flex flex-col gap-2.5 mt-1">
                           {plan.features.map((feat,j) => (
@@ -846,7 +836,7 @@ const Landing = () => {
                           ))}
                         </ul>
                         <div className="mt-auto pt-5">
-                          <Link to="/register"
+                          <Link to={plan.id==='enterprise' ? '/contact' : '/register'}
                             className="block w-full text-center rounded-[9px] py-3 font-manrope font-semibold text-[14px] transition-all"
                             style={popular ? {
                               background:T.brand,
@@ -858,7 +848,7 @@ const Landing = () => {
                               background:'transparent',
                             }}
                           >
-                            {popular ? 'Start Free Trial' : 'Get Started'}
+                            {plan.id==='enterprise' ? 'Contact Sales' : popular ? 'Start Free Trial' : 'Get Started'}
                           </Link>
                         </div>
                       </div>
@@ -876,40 +866,6 @@ const Landing = () => {
           </div>
         </section>
 
-        {/* ══ TESTIMONIALS ════════════════════════════════════════════════ */}
-        <section id="testimonials" className="py-24 px-6" style={{ background:T.page }}>
-          <div className="max-w-[1080px] mx-auto">
-            <div className="text-center mb-14 qp-reveal">
-              <span className="inline-block font-inter text-[12px] font-semibold uppercase tracking-[.16em] mb-3" style={{ color:T.brand }}>Customer Stories</span>
-              <h2 className="font-instrument text-[38px] md:text-[50px] leading-tight" style={{ color:T.t1 }}>Loved by 500+ businesses</h2>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {testimonials.map((t, i) => (
-                <div key={i} className="qp-reveal" style={{ transitionDelay:`${(i%4)*0.09}s` }}>
-                  <div className="qp-card flex flex-col p-5 rounded-[12px] h-full" style={cardStyle}>
-                    <div className="flex gap-0.5 mb-3">
-                      {Array(t.stars).fill(0).map((_,j) => (
-                        <svg key={j} className="w-3.5 h-3.5" style={{ color:T.amber }} viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                        </svg>
-                      ))}
-                    </div>
-                    <p className="font-inter text-[13.5px] leading-relaxed flex-1" style={{ color:T.t2 }}>"{t.text}"</p>
-                    <div className="flex items-center gap-3 mt-4 pt-4" style={{ borderTop:`1px solid ${T.border}` }}>
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center font-manrope text-[10px] font-bold flex-shrink-0" style={{ background:T.brandBg, color:T.brand }}>
-                        {t.avatar}
-                      </div>
-                      <div>
-                        <p className="font-manrope font-semibold text-[12px]" style={{ color:T.t1 }}>{t.name}</p>
-                        <p className="font-inter text-[11px]" style={{ color:T.t3 }}>{t.title}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ══ FAQ ══════════════════════════════════════════════════════════
             FIXED: uses CSS max-height transition instead of conditional
@@ -919,7 +875,7 @@ const Landing = () => {
           <div className="max-w-[740px] mx-auto">
             <div className="text-center mb-14 qp-reveal">
               <span className="inline-block font-inter text-[12px] font-semibold uppercase tracking-[.16em] mb-3" style={{ color:T.brand }}>FAQ</span>
-              <h2 className="font-instrument text-[38px] md:text-[50px] leading-tight" style={{ color:T.t1 }}>Frequently asked questions</h2>
+              <h2 className="font-manrope font-extrabold text-[38px] md:text-[50px] leading-tight" style={{ color:T.t1 }}>Frequently asked questions</h2>
             </div>
             <div className="flex flex-col gap-3">
               {faqs.map((faq, i) => {
@@ -979,11 +935,11 @@ const Landing = () => {
                 <span className="w-1.5 h-1.5 rounded-full qp-ping inline-block" style={{ background:T.brand }}/>
                 <span className="font-inter text-[12.5px] font-medium" style={{ color:T.brand }}>14-day free trial · No card required</span>
               </div>
-              <h2 className="font-instrument text-[42px] md:text-[58px] leading-tight mb-5" style={{ color:T.t1 }}>
+              <h2 className="font-manrope font-extrabold text-[42px] md:text-[58px] leading-tight mb-5" style={{ color:T.t1 }}>
                 Ready to modernize your store?
               </h2>
               <p className="font-inter text-[17px] mb-10 max-w-[460px] mx-auto" style={{ color:T.t2 }}>
-                Join 500+ retail and F&amp;B businesses already running smarter with QuantPOS.
+                Join us and run your business smarter with QuantPOS.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/register"
@@ -1018,19 +974,20 @@ const Landing = () => {
                 </div>
               </div>
               {[
-                { title:'Product', links:['Features','Pricing','How It Works','Changelog','Status'] },
-                { title:'Company', links:['About','Blog','Careers','Press Kit','Contact'] },
-                { title:'Legal',   links:['Privacy Policy','Terms of Service','Cookie Policy','GDPR'] },
+                { title:'Product', links:[['Features','/features'],['Pricing','/pricing'],['How It Works','/how-it-works'],['Changelog','/changelog'],['Status','/status']] },
+                { title:'Company', links:[['About','/about'],['Blog','/blog'],['Careers','/careers'],['Press Kit','/press-kit'],['Contact','/contact']] },
+                { title:'Legal',   links:[['Privacy Policy','/privacy-policy'],['Terms of Service','/terms-of-service'],['Cookie Policy','/cookie-policy'],['GDPR','/gdpr']] },
               ].map(col => (
                 <div key={col.title}>
                   <h4 className="font-manrope font-semibold text-[13px] mb-4" style={{ color:T.t1 }}>{col.title}</h4>
                   <ul className="flex flex-col gap-2.5">
-                    {col.links.map(l => (
-                      <li key={l}><a href="#" className="font-inter text-[13px] transition-colors" style={{ color:T.t3 }}>{l}</a></li>
+                    {col.links.map(([label, href]) => (
+                      <li key={label}><Link to={href} className="font-inter text-[13px] transition-colors hover:text-[#7b39fc]" style={{ color:T.t3 }}>{label}</Link></li>
                     ))}
                   </ul>
                 </div>
               ))}
+
             </div>
             <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3" style={{ borderTop:`1px solid ${T.border}` }}>
               <p className="font-inter text-[12px]" style={{ color:T.t3 }}>© 2026 QuantPOS Technologies Inc. · Built for Indian retail.</p>

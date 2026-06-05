@@ -7,9 +7,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        manrope:    ['Manrope', 'sans-serif'],
-        cabin:      ['Cabin', 'sans-serif'],
-        instrument: ['"Instrument Serif"', 'serif'],
+        manrope:    ['Inter', 'sans-serif'],
+        cabin:      ['Inter', 'sans-serif'],
+        instrument: ['Inter', 'sans-serif'],
         inter:      ['Inter', 'sans-serif'],
       },
       colors: {

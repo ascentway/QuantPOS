@@ -22,6 +22,28 @@ CREATE INDEX IF NOT EXISTS idx_sales_tenant_created_status
 -- sale_items: per-tenant lookup (joins back to sales)
 -- ─────────────────────────────────────────────────────────────────
 
+-- Add tenant_id to sale_items for denormalization to allow fast tenant-scoped queries
+ALTER TABLE sale_items ADD COLUMN IF NOT EXISTS tenant_id UUID;
+
+-- Backfill tenant_id from sales
+UPDATE sale_items si
+SET tenant_id = s.tenant_id
+FROM sales s
+WHERE si.sale_id = s.id AND si.tenant_id IS NULL;
+
+-- Make it NOT NULL and add FK constraint
+ALTER TABLE sale_items ALTER COLUMN tenant_id SET NOT NULL;
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM information_schema.table_constraints
+        WHERE constraint_name = 'fk_sale_items_tenant' AND table_name = 'sale_items'
+    ) THEN
+        ALTER TABLE sale_items ADD CONSTRAINT fk_sale_items_tenant FOREIGN KEY (tenant_id) REFERENCES tenants(id) ON DELETE CASCADE;
+    END IF;
+END $$;
+
 -- Enables fast per-tenant item-level queries without touching sales table
 CREATE INDEX IF NOT EXISTS idx_sale_items_tenant
     ON sale_items(tenant_id, sale_id);
