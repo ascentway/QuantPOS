@@ -83,11 +83,17 @@ const AuthFooter = () => (
       <div>
         <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-4 font-manrope">Product</h4>
         <ul className="space-y-2.5">
-          {['Features', 'Pricing', 'How It Works', 'Changelog', 'Status'].map(item => (
-            <li key={item}>
-              <a href="#" className="text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors duration-150">
-                {item}
-              </a>
+          {[
+            { label: 'Features',    href: '/features' },
+            { label: 'Pricing',     href: '/pricing' },
+            { label: 'How It Works',href: '/how-it-works' },
+            { label: 'Changelog',   href: '/changelog' },
+            { label: 'Status',      href: '/status' },
+          ].map(({ label, href }) => (
+            <li key={label}>
+              <Link to={href} className="text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors duration-150">
+                {label}
+              </Link>
             </li>
           ))}
         </ul>
@@ -97,11 +103,17 @@ const AuthFooter = () => (
       <div>
         <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-4 font-manrope">Company</h4>
         <ul className="space-y-2.5">
-          {['About', 'Blog', 'Careers', 'Press Kit', 'Contact'].map(item => (
-            <li key={item}>
-              <a href="#" className="text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors duration-150">
-                {item}
-              </a>
+          {[
+            { label: 'About',    href: '/about' },
+            { label: 'Blog',     href: '/blog' },
+            { label: 'Careers',  href: '/careers' },
+            { label: 'Press Kit',href: '/press-kit' },
+            { label: 'Contact',  href: '/contact' },
+          ].map(({ label, href }) => (
+            <li key={label}>
+              <Link to={href} className="text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors duration-150">
+                {label}
+              </Link>
             </li>
           ))}
         </ul>
@@ -111,11 +123,16 @@ const AuthFooter = () => (
       <div>
         <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-4 font-manrope">Legal</h4>
         <ul className="space-y-2.5">
-          {['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'GDPR'].map(item => (
-            <li key={item}>
-              <a href="#" className="text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors duration-150">
-                {item}
-              </a>
+          {[
+            { label: 'Privacy Policy',   href: '/privacy-policy' },
+            { label: 'Terms of Service', href: '/terms-of-service' },
+            { label: 'Cookie Policy',    href: '/cookie-policy' },
+            { label: 'GDPR',             href: '/gdpr' },
+          ].map(({ label, href }) => (
+            <li key={label}>
+              <Link to={href} className="text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors duration-150">
+                {label}
+              </Link>
             </li>
           ))}
         </ul>

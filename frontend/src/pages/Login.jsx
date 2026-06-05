@@ -229,7 +229,7 @@ const Login = () => {
               <p className="mt-2 text-sm font-inter text-[var(--text-secondary)]">
                 Don't have an account?{' '}
                 <Link to="/register" className="font-medium text-[#7b39fc] hover:text-[#915bff] transition-colors">
-                  Create one free
+                  Create an account
                 </Link>
               </p>
             </div>
@@ -295,9 +295,9 @@ const Login = () => {
 
             <p className="mt-6 text-center text-xs text-[var(--text-muted)] font-inter">
               By signing in you agree to our{' '}
-              <a href="#" className="underline hover:text-[#7b39fc] transition-colors">Terms of Service</a>
+              <Link to="/terms-of-service" className="underline hover:text-[#7b39fc] transition-colors">Terms of Service</Link>
               {' '}and{' '}
-              <a href="#" className="underline hover:text-[#7b39fc] transition-colors">Privacy Policy</a>.
+              <Link to="/privacy-policy" className="underline hover:text-[#7b39fc] transition-colors">Privacy Policy</Link>.
             </p>
           </>
         )}

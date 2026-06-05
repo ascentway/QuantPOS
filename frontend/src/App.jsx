@@ -1,5 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
+
 import Register       from './pages/Register';
 import Login          from './pages/Login';
 import VerifyEmail    from './pages/VerifyEmail';
@@ -12,6 +14,23 @@ import Profile        from './pages/Profile';
 import { Inventory, Reports, Customers, Settings } from './pages/ComingSoon';
 import DashboardLayout from './components/layout/DashboardLayout';
 import ProtectedRoute  from './components/auth/ProtectedRoute';
+
+// ── Public marketing pages ────────────────────────────────────────────────────
+import Features       from './pages/public/Features';
+import Pricing        from './pages/public/Pricing';
+import HowItWorks     from './pages/public/HowItWorks';
+import About          from './pages/public/About';
+import Blog           from './pages/public/Blog';
+import Careers        from './pages/public/Careers';
+import PressKit       from './pages/public/PressKit';
+import Contact        from './pages/public/Contact';
+import Changelog      from './pages/public/Changelog';
+import Status         from './pages/public/Status';
+import PrivacyPolicy  from './pages/public/PrivacyPolicy';
+import TermsOfService from './pages/public/TermsOfService';
+import CookiePolicy   from './pages/public/CookiePolicy';
+import GDPR           from './pages/public/GDPR';
+
 
 /**
  * Wraps a page with DashboardLayout + ProtectedRoute.
@@ -27,7 +46,9 @@ const DashboardPage = ({ children, requiredRoles }) => (
 
 function App() {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       {/* ── Public Routes ─────────────────────────────────────────────────── */}
       <Route path="/"                element={<Landing />} />
       <Route path="/register"        element={<Register />} />
@@ -35,6 +56,22 @@ function App() {
       <Route path="/verify-email"    element={<VerifyEmail />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password"  element={<ResetPassword />} />
+
+      {/* ── Public Marketing Pages ────────────────────────────────────────── */}
+      <Route path="/features"        element={<Features />} />
+      <Route path="/pricing"         element={<Pricing />} />
+      <Route path="/how-it-works"    element={<HowItWorks />} />
+      <Route path="/about"           element={<About />} />
+      <Route path="/blog"            element={<Blog />} />
+      <Route path="/careers"         element={<Careers />} />
+      <Route path="/press-kit"       element={<PressKit />} />
+      <Route path="/contact"         element={<Contact />} />
+      <Route path="/changelog"       element={<Changelog />} />
+      <Route path="/status"          element={<Status />} />
+      <Route path="/privacy-policy"  element={<PrivacyPolicy />} />
+      <Route path="/terms-of-service"element={<TermsOfService />} />
+      <Route path="/cookie-policy"   element={<CookiePolicy />} />
+      <Route path="/gdpr"            element={<GDPR />} />
 
       {/* ── Protected Dashboard Routes ────────────────────────────────────── */}
       {/* Any authenticated user */}
@@ -94,7 +131,8 @@ function App() {
 
       {/* ── Fallback ──────────────────────────────────────────────────────── */}
       <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
+      </Routes>
+    </>
   );
 }
 

@@ -24,9 +24,11 @@ const Register = () => {
   });
 
   const [hasGstin, setHasGstin] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -40,6 +42,10 @@ const Register = () => {
     }
     if (formData.password.length < 8) {
       setError('Password must be at least 8 characters long.');
+      return;
+    }
+    if (!agreedToTerms) {
+      setError('You must agree to the Terms of Service and Privacy Policy to continue.');
       return;
     }
 
@@ -195,15 +201,51 @@ const Register = () => {
             </p>
           </div>
 
-          <Button type="submit" loading={loading} className="w-full mt-2">
+          {/* Terms agreement */}
+          <div className="rounded-[10px] border border-[var(--border)] bg-[var(--bg)] p-4">
+            <label className="flex items-start gap-3 cursor-pointer select-none">
+              <div className="mt-0.5 flex-shrink-0">
+                <input
+                  type="checkbox"
+                  id="register-terms"
+                  checked={agreedToTerms}
+                  onChange={(e) => setAgreedToTerms(e.target.checked)}
+                  className="w-4 h-4 rounded border-[var(--border)] bg-[var(--surface)] text-[#7b39fc]
+                             focus:ring-[#7b39fc]/50 focus:ring-2 cursor-pointer"
+                />
+              </div>
+              <span className="text-sm font-inter text-[var(--text-secondary)] leading-relaxed">
+                I have read and agree to the{' '}
+                <Link to="/terms-of-service" target="_blank"
+                  className="font-medium text-[#7b39fc] hover:text-[#915bff] underline transition-colors">
+                  Terms of Service
+                </Link>
+                {' '}and{' '}
+                <Link to="/privacy-policy" target="_blank"
+                  className="font-medium text-[#7b39fc] hover:text-[#915bff] underline transition-colors">
+                  Privacy Policy
+                </Link>.
+                {' '}<span className="text-red-400">*</span>
+              </span>
+            </label>
+            {!agreedToTerms && error?.includes('Terms') && (
+              <p className="mt-2 text-xs text-red-400 font-inter pl-7">
+                You must agree to proceed.
+              </p>
+            )}
+          </div>
+
+          <Button type="submit" loading={loading} className="w-full mt-2"
+            disabled={loading}
+          >
             Create Account &amp; Continue →
           </Button>
 
-          <p className="text-center text-xs text-[var(--text-muted)] font-inter -mt-4">
-            By registering you agree to our{' '}
-            <a href="#" className="underline hover:text-[#7b39fc] transition-colors">Terms of Service</a>
-            {' '}and{' '}
-            <a href="#" className="underline hover:text-[#7b39fc] transition-colors">Privacy Policy</a>.
+          <p className="text-center text-xs text-[var(--text-muted)] font-inter -mt-2">
+            Already have an account?{' '}
+            <Link to="/login" className="font-medium text-[#7b39fc] hover:text-[#915bff] transition-colors">
+              Sign in instead
+            </Link>
           </p>
         </form>
       </Card>
