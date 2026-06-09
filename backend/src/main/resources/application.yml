@@ -51,6 +51,7 @@ app:
 
 server:
   port: 8080
+  forward-headers-strategy: framework
 
 management:
   endpoint:
@@ -69,6 +70,16 @@ management:
 # STRIPE_API_KEY and STRIPE_WEBHOOK_SECRET must be set as Docker / system env vars
 stripe:
   api-key: ${STRIPE_API_KEY:}
+  webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
+  prices:
+    starter-monthly: ${STRIPE_PRICE_STARTER_MONTHLY:}
+    starter-yearly: ${STRIPE_PRICE_STARTER_YEARLY:}
+    growth-monthly: ${STRIPE_PRICE_GROWTH_MONTHLY:}
+    growth-yearly: ${STRIPE_PRICE_GROWTH_YEARLY:}
+    professional-monthly: ${STRIPE_PRICE_PROFESSIONAL_MONTHLY:}
+    professional-yearly: ${STRIPE_PRICE_PROFESSIONAL_YEARLY:}
+    enterprise-monthly: ${STRIPE_PRICE_ENTERPRISE_MONTHLY:}
+    enterprise-yearly: ${STRIPE_PRICE_ENTERPRISE_YEARLY:}
 
 springdoc:
   swagger-ui:

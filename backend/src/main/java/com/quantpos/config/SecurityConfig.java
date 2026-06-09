@@ -28,13 +28,16 @@ public class SecurityConfig {
     private final JwtFilter       jwtFilter;
     private final RateLimitFilter rateLimitFilter;
     private final MdcLoggingFilter mdcLoggingFilter;
+    private final AppProperties appProperties;
 
     public SecurityConfig(JwtFilter jwtFilter,
                           RateLimitFilter rateLimitFilter,
-                          MdcLoggingFilter mdcLoggingFilter) {
+                          MdcLoggingFilter mdcLoggingFilter,
+                          AppProperties appProperties) {
         this.jwtFilter       = jwtFilter;
         this.rateLimitFilter  = rateLimitFilter;
         this.mdcLoggingFilter = mdcLoggingFilter;
+        this.appProperties    = appProperties;
     }
 
     @Bean
@@ -79,6 +82,13 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exc -> exc
+                    .authenticationEntryPoint((request, response, authException) -> {
+                        response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED);
+                        response.setContentType("application/json");
+                        response.getWriter().write("{\"success\":false,\"message\":\"Unauthorized\",\"error\":{\"code\":\"UNAUTHORIZED\",\"details\":\"" + authException.getMessage() + "\"}}");
+                    })
+                )
                 // Filter order:
                 // 1. MdcLoggingFilter  — assigns requestId, populates MDC
                 // 2. RateLimitFilter   — IP-based rate limiting on auth endpoints
@@ -93,7 +103,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOrigins(List.of(appProperties.getBaseUrl()));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
         // Echo X-Request-ID so frontend can correlate traces

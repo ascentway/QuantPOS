@@ -1,7 +1,6 @@
 # ==========================================
 # Root Monorepo .gitignore
 # ==========================================
-
 # Secrets - NEVER commit these
 .env
 .env.local
@@ -53,4 +52,4 @@ docker-compose.override.yml
 # ==========================================
 target/
 .env.example
-.env.example
+stripe.exe

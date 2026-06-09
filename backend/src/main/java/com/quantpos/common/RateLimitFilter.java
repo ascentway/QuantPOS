@@ -58,7 +58,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
         // Only rate-limit POST requests to configured endpoints
         if ("POST".equalsIgnoreCase(method) && RATE_MATRIX.containsKey(path)) {
 
-            String clientIp = resolveClientIp(request);
+            String clientIp = request.getRemoteAddr();
             String slug     = path.replace("/api/auth/", "").replace("-", "_");
             String key      = "rate_limit:" + clientIp + ":" + slug;
 
@@ -93,21 +93,5 @@ public class RateLimitFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    /**
-     * Resolves the real client IP, respecting common proxy headers.
-     * Order: X-Forwarded-For (first entry) → X-Real-IP → remote address.
-     */
-    private String resolveClientIp(HttpServletRequest request) {
-        String xff = request.getHeader("X-Forwarded-For");
-        if (xff != null && !xff.isBlank()) {
-            return xff.split(",")[0].trim();
-        }
-        String xRealIp = request.getHeader("X-Real-IP");
-        if (xRealIp != null && !xRealIp.isBlank()) {
-            return xRealIp.trim();
-        }
-        return request.getRemoteAddr();
     }
 }
