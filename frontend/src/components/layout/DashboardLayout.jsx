@@ -231,6 +231,7 @@ const PAGE_TITLES = {
 const DashboardLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const { user } = useAuthStore();
 
   const title = PAGE_TITLES[location.pathname] || 'QuantPOS';
 

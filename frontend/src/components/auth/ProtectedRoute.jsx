@@ -15,16 +15,13 @@ const ProtectedRoute = ({ children, requiredRoles }) => {
     user: state.user,
   }));
 
-  // Not authenticated — redirect to login
-  if (!accessToken) {
+  if (!accessToken || !user) {
     return <Navigate to="/login" replace />;
   }
 
-  // Role check — if requiredRoles is provided, user.role must be in the list
   if (requiredRoles && requiredRoles.length > 0) {
-    const userRole = user?.role;
-    if (!userRole || !requiredRoles.includes(userRole)) {
-      return <Navigate to="/unauthorized" replace />;
+    if (!requiredRoles.includes(user.role)) {
+      return <Navigate to="/dashboard" replace />;
     }
   }
 

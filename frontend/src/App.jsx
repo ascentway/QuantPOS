@@ -11,7 +11,8 @@ import Landing        from './pages/Landing';
 import Dashboard      from './pages/Dashboard';
 import PosTerminal    from './pages/PosTerminal';
 import Profile        from './pages/Profile';
-import { Inventory, Reports, Customers, Settings } from './pages/ComingSoon';
+import { Inventory, Reports, Customers } from './pages/ComingSoon';
+import Settings       from './pages/Settings';
 import DashboardLayout from './components/layout/DashboardLayout';
 import ProtectedRoute  from './components/auth/ProtectedRoute';
 

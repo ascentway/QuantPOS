@@ -36,10 +36,3 @@ export const Customers = () => (
   />
 );
 
-export const Settings = () => (
-  <ComingSoon
-    title="Store Settings"
-    icon="⚙️"
-    description="Configure your store profile, team members, subscription, and integrations."
-  />
-);

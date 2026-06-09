@@ -65,6 +65,7 @@ const PLANS = [
     color: '#10b981',
     features: [
       'Everything in Professional',
+      'Up to 10 POS Terminals',
       'Up to 5 locations in one dashboard',
       'Unlimited team members',
       'Loyalty program (branded, tiers)',

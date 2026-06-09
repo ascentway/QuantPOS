@@ -32,7 +32,7 @@ public class PaymentEvent {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tenant_id", nullable = false)
+    @JoinColumn(name = "tenant_id", nullable = true)
     private Tenant tenant;
 
     @Column(name = "stripe_event_id", nullable = false, unique = true, length = 255)

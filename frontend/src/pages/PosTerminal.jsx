@@ -103,35 +103,71 @@ const CartItem = ({ item, onInc, onDec, onRemove }) => (
 );
 
 // ─── Success Modal ─────────────────────────────────────────────────────────────
-const SuccessModal = ({ total, method, onClose }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-    <div className="bg-[#16161f] border border-white/[0.08] rounded-[16px] p-8 flex flex-col items-center gap-4 shadow-2xl max-w-xs w-full mx-4">
-      <div className="w-16 h-16 rounded-full bg-emerald-400/10 flex items-center justify-center">
-        <Icon d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" size={32} strokeWidth={1.8} className="text-emerald-400" />
-      </div>
-      <div className="text-center">
-        <h3 className="font-manrope font-bold text-[20px] text-white">Payment Successful</h3>
-        <p className="font-inter text-[13px] text-white/50 mt-1">Transaction completed</p>
-      </div>
-      <div className="w-full bg-white/[0.04] rounded-[10px] p-4 flex flex-col gap-2">
-        <div className="flex justify-between">
-          <span className="font-inter text-[12px] text-white/40">Amount</span>
-          <span className="font-manrope font-bold text-[14px] text-white">₹{total.toFixed(2)}</span>
+const SuccessModal = ({ total, method, customerName, customerEmail, customerPhone, deliveryMethod, onClose }) => {
+  const getDeliveryStatus = () => {
+    if (deliveryMethod === 'PRINT') return 'Receipt queued for physical printing.';
+    if (deliveryMethod === 'EMAIL') return `Receipt emailed to ${customerEmail}.`;
+    if (deliveryMethod === 'SMS') return `Receipt SMS/WhatsApp sent to ${customerPhone}.`;
+    if (deliveryMethod === 'BOTH') return `Receipt printed & digital copy sent to ${customerEmail || customerPhone}.`;
+    return 'No receipt requested.';
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+      <div className="bg-[#16161f] border border-white/[0.08] rounded-[16px] p-8 flex flex-col items-center gap-4 shadow-2xl max-w-sm w-full mx-4">
+        <div className="w-16 h-16 rounded-full bg-emerald-400/10 flex items-center justify-center">
+          <Icon d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" size={32} strokeWidth={1.8} className="text-emerald-400" />
         </div>
-        <div className="flex justify-between">
-          <span className="font-inter text-[12px] text-white/40">Method</span>
-          <span className="font-manrope font-semibold text-[12px] text-white capitalize">{method}</span>
+        <div className="text-center">
+          <h3 className="font-manrope font-bold text-[20px] text-white">Payment Successful</h3>
+          <p className="font-inter text-[13px] text-white/50 mt-1">Transaction completed</p>
+        </div>
+        <div className="w-full bg-white/[0.04] rounded-[10px] p-4 flex flex-col gap-2">
+          <div className="flex justify-between">
+            <span className="font-inter text-[12px] text-white/40">Amount</span>
+            <span className="font-manrope font-bold text-[14px] text-white">₹{total.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="font-inter text-[12px] text-white/40">Method</span>
+            <span className="font-manrope font-semibold text-[12px] text-white capitalize">{method}</span>
+          </div>
+          {customerName && (
+            <div className="flex justify-between">
+              <span className="font-inter text-[12px] text-white/40">Customer</span>
+              <span className="font-manrope font-semibold text-[12px] text-white truncate max-w-[150px]">{customerName}</span>
+            </div>
+          )}
+          {deliveryMethod !== 'NONE' && (
+            <div className="flex flex-col border-t border-white/[0.05] pt-2 mt-1">
+              <span className="font-inter text-[10px] text-white/30 mb-0.5">Receipt Status</span>
+              <span className="font-inter text-[12px] text-emerald-400 leading-snug">{getDeliveryStatus()}</span>
+            </div>
+          )}
+        </div>
+        <div className="flex gap-2 w-full">
+          {(deliveryMethod === 'PRINT' || deliveryMethod === 'BOTH') && (
+            <button
+              onClick={handlePrint}
+              className="flex-1 bg-white/[0.06] hover:bg-white/10 text-white border border-white/10 font-manrope font-semibold text-[13px] py-3 rounded-[10px] transition-colors flex items-center justify-center gap-1.5"
+            >
+              <span>🖨️</span> Print
+            </button>
+          )}
+          <button
+            onClick={onClose}
+            className="flex-1 bg-[#5757f8] hover:bg-[#6c6cf8] text-white font-manrope font-semibold text-[13px] py-3 rounded-[10px] transition-colors"
+          >
+            New Sale
+          </button>
         </div>
       </div>
-      <button
-        onClick={onClose}
-        className="w-full bg-[#5757f8] hover:bg-[#6c6cf8] text-white font-manrope font-semibold text-[14px] py-3 rounded-[10px] transition-colors"
-      >
-        New Transaction
-      </button>
     </div>
-  </div>
-);
+  );
+};
 
 // ─── POS Terminal ─────────────────────────────────────────────────────────────
 const PosTerminal = () => {
@@ -142,6 +178,14 @@ const PosTerminal = () => {
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const [showSuccess, setShowSuccess] = useState(false);
   const [customDiscount, setCustomDiscount] = useState('');
+
+  // Customer & Receipt Delivery states
+  const [showCustomerSection, setShowCustomerSection] = useState(false);
+  const [customerName, setCustomerName] = useState('');
+  const [customerEmail, setCustomerEmail] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
+  const [deliveryMethod, setDeliveryMethod] = useState('PRINT');
+  const [errors, setErrors] = useState({});
 
   // Filter products
   const filtered = PRODUCTS.filter(p => {
@@ -191,12 +235,34 @@ const PosTerminal = () => {
 
   const handleCheckout = () => {
     if (cart.length === 0) return;
+
+    // Validate delivery contacts
+    const newErrors = {};
+    if ((deliveryMethod === 'EMAIL' || deliveryMethod === 'BOTH') && !customerEmail.trim()) {
+      newErrors.email = 'Required';
+    }
+    if ((deliveryMethod === 'SMS' || deliveryMethod === 'BOTH') && !customerPhone.trim()) {
+      newErrors.phone = 'Required';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setShowCustomerSection(true);
+      return;
+    }
+
     setShowSuccess(true);
   };
 
   const handleSuccessClose = () => {
     setShowSuccess(false);
     clearCart();
+    setCustomerName('');
+    setCustomerEmail('');
+    setCustomerPhone('');
+    setDeliveryMethod('PRINT');
+    setErrors({});
+    setShowCustomerSection(false);
   };
 
   const applyDiscount = (pct) => {
@@ -321,6 +387,101 @@ const PosTerminal = () => {
         {cart.length > 0 && (
           <div className="flex-shrink-0 px-5 py-4 border-t border-white/[0.06] space-y-4">
 
+            {/* Customer Details & Receipt Delivery */}
+            <div className="border-b border-white/[0.05] pb-3.5">
+              <div className="flex items-center justify-between mb-2">
+                <p className="font-manrope font-medium text-[11px] text-white/30 uppercase tracking-wider">Customer & Receipt</p>
+                <button
+                  type="button"
+                  onClick={() => setShowCustomerSection(!showCustomerSection)}
+                  className="text-[11.5px] text-[#5757f8] hover:text-[#6c6cf8] font-semibold flex items-center gap-1 transition-colors"
+                >
+                  {showCustomerSection ? 'Hide Details' : 'Add Details'}
+                </button>
+              </div>
+
+              {showCustomerSection && (
+                <div className="space-y-3 mt-3.5">
+                  {/* Inputs */}
+                  <div className="space-y-2">
+                    <input
+                      type="text"
+                      placeholder="Customer Name"
+                      value={customerName}
+                      onChange={e => setCustomerName(e.target.value)}
+                      className="w-full bg-white/[0.04] border border-white/[0.08] rounded-[8px] px-3 py-2 font-inter text-[12px] text-white placeholder-white/20 focus:outline-none focus:border-[#5757f8]/50 transition-colors"
+                    />
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="relative">
+                        <input
+                          type="email"
+                          placeholder="Email Address"
+                          value={customerEmail}
+                          onChange={e => {
+                            setCustomerEmail(e.target.value);
+                            if (errors.email) setErrors(prev => ({ ...prev, email: null }));
+                          }}
+                          className={`w-full bg-white/[0.04] border ${errors.email ? 'border-red-500/50' : 'border-white/[0.08]'} rounded-[8px] px-3 py-2 font-inter text-[12px] text-white placeholder-white/20 focus:outline-none focus:border-[#5757f8]/50 transition-colors`}
+                        />
+                        {errors.email && (
+                          <span className="text-[9.5px] text-red-400 font-semibold absolute left-1.5 -bottom-4.5 bg-[#0e0e1a] px-1 z-10">
+                            {errors.email}
+                          </span>
+                        )}
+                      </div>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="Phone Number"
+                          value={customerPhone}
+                          onChange={e => {
+                            setCustomerPhone(e.target.value);
+                            if (errors.phone) setErrors(prev => ({ ...prev, phone: null }));
+                          }}
+                          className={`w-full bg-white/[0.04] border ${errors.phone ? 'border-red-500/50' : 'border-white/[0.08]'} rounded-[8px] px-3 py-2 font-inter text-[12px] text-white placeholder-white/20 focus:outline-none focus:border-[#5757f8]/50 transition-colors`}
+                        />
+                        {errors.phone && (
+                          <span className="text-[9.5px] text-red-400 font-semibold absolute left-1.5 -bottom-4.5 bg-[#0e0e1a] px-1 z-10">
+                            {errors.phone}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Delivery Grid */}
+                  <div className="pt-2">
+                    <p className="font-manrope font-semibold text-[9.5px] text-white/30 mb-2 uppercase tracking-wider">Delivery Option</p>
+                    <div className="grid grid-cols-4 gap-1.5">
+                      {[
+                        { id: 'PRINT', label: 'Print Only', icon: '🖨️' },
+                        { id: 'EMAIL', label: 'Email', icon: '📧' },
+                        { id: 'SMS', label: 'SMS', icon: '📱' },
+                        { id: 'BOTH', label: 'Print & Dig.', icon: '🔄' }
+                      ].map(opt => (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => {
+                            setDeliveryMethod(opt.id);
+                            setErrors({});
+                          }}
+                          className={`flex flex-col items-center justify-center py-2 px-1 rounded-[8px] border transition-all ${
+                            deliveryMethod === opt.id
+                              ? 'bg-[#5757f8]/10 border-[#5757f8]/50 text-[#5757f8]'
+                              : 'bg-white/[0.03] border-white/[0.06] text-white/40 hover:border-white/10 hover:text-white'
+                          }`}
+                        >
+                          <span className="text-base mb-1.5">{opt.icon}</span>
+                          <span className="text-[9px] font-manrope font-bold text-center leading-none truncate w-full">{opt.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Discount pills */}
             <div>
               <p className="font-manrope font-medium text-[11px] text-white/30 mb-2 uppercase tracking-wider">Discount</p>
@@ -428,6 +589,10 @@ const PosTerminal = () => {
         <SuccessModal
           total={total}
           method={paymentMethod}
+          customerName={customerName}
+          customerEmail={customerEmail}
+          customerPhone={customerPhone}
+          deliveryMethod={deliveryMethod}
           onClose={handleSuccessClose}
         />
       )}
