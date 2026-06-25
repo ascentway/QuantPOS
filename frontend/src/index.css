@@ -1,49 +1,113 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cabin:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=Cabin:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  /* ── Design tokens ────────────────────────────────────────────────────── */
+
+  /* ── QuantPOS Brand Design Tokens ──────────────────────────────────────── */
   :root {
-    /* Light mode (default) — Pure white & crisp contrast */
-    --bg:              #FFFFFF;
-    --surface:         #FFFFFF;
-    --sidebar:         #F9FAFB;
-    --border:          #E5E7EB;
-    --border-strong:   #D1D5DB;
-    --text-primary:    #111827;
-    --text-secondary:  #374151;
-    --text-muted:      #9CA3AF;
-    --accent:          #4F46E5;
-    --accent-hover:    #4338CA;
-    --accent-subtle:   rgba(79, 70, 229, 0.08);
-    --success:         #059669;
-    --warning:         #D97706;
-    --danger:          #DC2626;
+    /* Light mode */
+    --bg: #F4F6F8;
+    --surface: #FFFFFF;
+    --sidebar: #FFFFFF;
+    --sidebar-border: #E2E8F0;
+    --card2: #EDF2F7;
+    --border: #E2E8F0;
+    --border-strong: #CBD5E0;
+    --text-primary: #0C206D;
+    /* Brand navy  from logo wordmark */
+    --text-secondary: #4A5568;
+    --text-muted: #A0AEC0;
+
+    /* Brand teal palette */
+    --accent: #00A4A4;
+    /* Brand teal  from logo dot */
+    --accent-hover: #008B8B;
+    /* 15% darker teal */
+    --accent-subtle: #E0F7F7;
+    /* Light teal wash */
+    --accent-border: #80D4D4;
+    /* Mid teal border */
+
+    /* Status colors */
+    --success: #38A169;
+    --success-bg: #F0FFF4;
+    --warning: #D69E2E;
+    --warning-bg: #FFFBEB;
+    --danger: #E53E3E;
+    --danger-bg: #FFF5F5;
+    --info: #3182CE;
+    --info-bg: #EBF8FF;
+
+    /* Sidebar text tokens  light mode */
+    --sidebar-text-primary: #0C206D;
+    /* Brand navy */
+    --sidebar-text-muted: #718096;
+    --sidebar-nav-hover: rgba(0, 164, 164, 0.07);
+    --sidebar-active-bg: #E0F7F7;
+    --sidebar-active-text: #00A4A4;
+    /* Brand teal */
+
+    /* Elevations */
+    --elevation-1: 0 1px 0 #E2E8F0, 0 2px 8px rgba(12, 32, 109, 0.04);
+    --elevation-card: 0 1px 3px rgba(12, 32, 109, 0.07), 0 4px 16px rgba(12, 32, 109, 0.04);
+    --elevation-btn: 0 2px 12px rgba(0, 164, 164, 0.30);
   }
 
   .dark {
-    /* Dark mode — Brighter Slate/Indigo */
-    --bg:              #0f172a; /* slate-900 */
-    --surface:         #1e293b; /* slate-800 */
-    --sidebar:         #0f172a;
-    --border:          rgba(255, 255, 255, 0.1);
-    --border-strong:   rgba(255, 255, 255, 0.2);
-    --text-primary:    #f8fafc; /* slate-50 */
-    --text-secondary:  #e2e8f0; /* slate-200 */
-    --text-muted:      #94a3b8; /* slate-400 */
-    --accent:          #818cf8;
-    --accent-hover:    #6366f1;
-    --accent-subtle:   rgba(129, 140, 248, 0.15);
-    --success:         #34d399;
-    --warning:         #fcd34d;
-    --danger:          #f87171;
+    /* Dark mode  Brand deep navy system */
+    --bg: #0B1325;
+    /* Brand dark background */
+    --surface: #152035;
+    --sidebar: #0D1929;
+    --sidebar-border: #1E2E45;
+    --card2: #1A2B42;
+    --border: #243448;
+    --border-strong: #2D4060;
+    --text-primary: #E2E8F0;
+    /* Brand light text from dark logo */
+    --text-secondary: #A0B4CC;
+    --text-muted: #607A96;
+
+    /* Brand teal  same hue, slightly adjusted for dark */
+    --accent: #00A4A4;
+    --accent-hover: #00C5C5;
+    /* Brighter teal on dark */
+    --accent-subtle: #0A2A2A;
+    /* Dark teal wash */
+    --accent-border: #155C5C;
+    /* Mid dark teal */
+
+    /* Status colors  dark variants */
+    --success: #48BB78;
+    --success-bg: #1A3D2B;
+    --warning: #ECC94B;
+    --warning-bg: #3D2E0A;
+    --danger: #FC8181;
+    --danger-bg: #3D0A0A;
+    --info: #63B3ED;
+    --info-bg: #0A2440;
+
+    /* Sidebar text tokens  dark mode */
+    --sidebar-text-primary: #E2E8F0;
+    --sidebar-text-muted: #607A96;
+    --sidebar-nav-hover: rgba(0, 164, 164, 0.08);
+    --sidebar-active-bg: #0A2A2A;
+    --sidebar-active-text: #00F5D4;
+    /* Brand mint  from dark logo dot */
+
+    /* Elevations */
+    --elevation-1: 0 1px 0 rgba(255, 255, 255, 0.04);
+    --elevation-card: 0 4px 32px rgba(0, 0, 0, 0.55);
+    --elevation-btn: 0 4px 20px rgba(0, 164, 164, 0.28);
   }
 
   /* ── Global reset ─────────────────────────────────────────────────────── */
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 
@@ -62,8 +126,6 @@
     line-height: 1.5;
   }
 
-
-  /* ── Focus ring ────────────────────────────────────────────────────────── */
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
@@ -71,26 +133,90 @@
 }
 
 @layer utilities {
+
   /* Theme shortcuts */
-  .bg-app        { background-color: var(--bg); }
-  .bg-surface    { background-color: var(--surface); }
-  .bg-sidebar    { background-color: var(--sidebar); }
-  .border-theme  { border-color: var(--border); }
-  .text-primary  { color: var(--text-primary); }
-  .text-secondary{ color: var(--text-secondary); }
-  .text-muted    { color: var(--text-muted); }
-  .text-accent   { color: var(--accent); }
-  .bg-accent     { background-color: var(--accent); }
-  .bg-accent-subtle { background-color: var(--accent-subtle); }
+  .bg-app {
+    background-color: var(--bg);
+  }
+
+  .bg-surface {
+    background-color: var(--surface);
+  }
+
+  .bg-sidebar {
+    background-color: var(--sidebar);
+  }
+
+  .border-theme {
+    border-color: var(--border);
+  }
+
+  .text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+
+  .text-accent {
+    color: var(--accent);
+  }
+
+  .bg-accent {
+    background-color: var(--accent);
+  }
+
+  .bg-accent-subtle {
+    background-color: var(--accent-subtle);
+  }
+
+  .shadow-card {
+    box-shadow: var(--elevation-card);
+  }
+
+  .shadow-btn {
+    box-shadow: var(--elevation-btn);
+  }
 
   /* Scrollbar utilities */
-  .scrollbar-thin::-webkit-scrollbar        { width: 4px; height: 4px; }
-  .scrollbar-thin::-webkit-scrollbar-track  { background: transparent; }
-  .scrollbar-thin::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.1); border-radius: 999px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
 
-  .scrollbar-none                           { scrollbar-width: none; }
-  .scrollbar-none::-webkit-scrollbar        { display: none; }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(0, 164, 164, 0.25);
+    border-radius: 999px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 164, 164, 0.45);
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(0, 245, 212, 0.12);
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 245, 212, 0.25);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 
   /* Line clamping */
   .line-clamp-2 {
@@ -98,5 +224,370 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ANIMATION CSS & PATTERNS
+───────────────────────────────────────────────────────────────────────────── */
+@keyframes qp-float {
+
+  0%,
+  100% {
+    transform: translateY(0)
+  }
+
+  50% {
+    transform: translateY(-8px)
+  }
+}
+
+@keyframes qp-pulse {
+
+  0%,
+  100% {
+    opacity: .5;
+    transform: scale(1)
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1)
+  }
+}
+
+@keyframes qp-ticker {
+  0% {
+    transform: translateX(0)
+  }
+
+  100% {
+    transform: translateX(-50%)
+  }
+}
+
+@keyframes qp-ping {
+
+  75%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0
+  }
+}
+
+@keyframes qp-glow-i {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px 0 rgba(0, 164, 164, .3)
+  }
+
+  50% {
+    box-shadow: 0 0 40px 6px rgba(0, 164, 164, .55)
+  }
+}
+
+@keyframes qp-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@keyframes qp-badge {
+  0% {
+    transform: translateY(-2px)
+  }
+
+  50% {
+    transform: translateY(1px)
+  }
+
+  100% {
+    transform: translateY(-2px)
+  }
+}
+
+.qp-float {
+  animation: qp-float 3.8s ease-in-out infinite
+}
+
+.qp-pulse {
+  animation: qp-pulse 2.2s ease-in-out infinite
+}
+
+.qp-ticker {
+  animation: qp-ticker 24s linear infinite
+}
+
+.qp-ping {
+  animation: qp-ping 1.4s cubic-bezier(0, 0, .2, 1) infinite
+}
+
+.qp-glow-i {
+  animation: qp-glow-i 2.6s ease-in-out infinite
+}
+
+.qp-badge {
+  animation: qp-badge 3s ease-in-out infinite
+}
+
+/* Scroll reveal  wrapper divs only (NOT on state-reactive elements) */
+.qp-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .55s ease, transform .55s ease
+}
+
+.qp-reveal.visible {
+  opacity: 1;
+  transform: translateY(0)
+}
+
+.qp-reveal-d1 {
+  transition-delay: .07s
+}
+
+.qp-reveal-d2 {
+  transition-delay: .14s
+}
+
+.qp-reveal-d3 {
+  transition-delay: .21s
+}
+
+.qp-reveal-d4 {
+  transition-delay: .28s
+}
+
+.qp-reveal-d5 {
+  transition-delay: .35s
+}
+
+/* Card hover */
+.qp-card {
+  transition: transform .22s ease, box-shadow .22s ease
+}
+
+.qp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, .14)
+}
+
+/* Primary button */
+.qp-btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease
+}
+
+.qp-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .14) 0%, transparent 100%);
+  pointer-events: none
+}
+
+.qp-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px -4px rgba(0, 164, 164, .48)
+}
+
+.qp-btn:active {
+  transform: translateY(0)
+}
+
+/* Public page button styles */
+.qp-btn-primary {
+  transition: transform .18s ease, box-shadow .18s ease
+}
+
+.qp-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px -4px rgba(0, 164, 164, .40)
+}
+
+/* Premium SaaS Background Patterns */
+.qp-bg-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, black 0px, transparent 1000px);
+  -webkit-mask-image: linear-gradient(to bottom, black 0px, transparent 1000px);
+}
+
+.dark .qp-bg-pattern {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+.qp-bg-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 800px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 164, 164, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dark .qp-bg-glow {
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 245, 212, 0.10) 0%, transparent 70%);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   THERMAL BARCODE STICKER PRINT STYLES
+───────────────────────────────────────────────────────────────────────────── */
+@media print {
+  /* Hide all elements on the page except the printable sticker */
+  body * {
+    visibility: hidden;
+  }
+  
+  .printable-sticker-container,
+  .printable-sticker-container * {
+    visibility: visible;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 50mm !important;
+    height: 25mm !important;
+  }
+
+  @page {
+    size: 50mm 25mm;
+    margin: 0;
+  }
+
+  .printable-sticker-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 50mm !important;
+    height: 25mm !important;
+    margin: 0 !important;
+    padding: 1.5mm 2.5mm !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-family: 'Inter', -apple-system, sans-serif !important;
+    page-break-inside: avoid;
+  }
+
+  .print-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 5px;
+    font-weight: bold;
+    border-bottom: 0.2px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .print-product {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5px;
+  }
+
+  .print-name {
+    font-size: 7px;
+    font-weight: 900;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+  }
+
+  .print-sku {
+    font-size: 5px;
+    color: #555555;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .print-pricing {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1px;
+  }
+
+  .print-qty-details {
+    text-align: left;
+    line-height: 1.1;
+  }
+
+  .print-qty {
+    font-size: 6.5px;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .print-rate {
+    font-size: 5px;
+    color: #555555;
+    margin: 0;
+  }
+
+  .print-total {
+    font-size: 9px;
+    font-weight: 900;
+    margin: 0;
+  }
+
+  .print-barcode-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .print-barcode-bars {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    gap: 0.5px;
+    height: 7mm;
+    width: 100%;
+    background: #ffffff;
+  }
+
+  .print-barcode-text {
+    font-family: monospace;
+    font-size: 4px;
+    letter-spacing: -0.2px;
+    margin: 0.5px 0 0 0;
+    color: #333333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    text-align: center;
   }
 }

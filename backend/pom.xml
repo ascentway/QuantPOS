@@ -33,7 +33,7 @@
 			<version>24.3.0</version>
 		</dependency>
 
-		<!-- Micrometer Prometheus registry — exposes /actuator/prometheus for Grafana -->
+		<!-- Micrometer Prometheus registry  exposes /actuator/prometheus for Grafana -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>

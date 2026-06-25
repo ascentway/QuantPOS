@@ -9,7 +9,7 @@ const PLANS = [
     monthly: 499, annual: 4990,
     terminals: 1, members: 'Solo',
     desc: 'Perfect for the solo shopkeeper who wants to modernise without complexity.',
-    color: '#7b39fc',
+    color: '#00A4A4',
     features: [
       '1 POS Terminal',
       'Up to 500 products',
@@ -26,7 +26,7 @@ const PLANS = [
     monthly: 999, annual: 9990,
     terminals: 3, members: '3 members',
     desc: 'For growing stores with a team. The most popular plan among Indian retailers.',
-    color: '#7b39fc',
+    color: '#00A4A4',
     features: [
       'Everything in Starter',
       'Up to 3 POS Terminals',
@@ -44,7 +44,7 @@ const PLANS = [
     monthly: 1999, annual: 19990,
     terminals: 5, members: '5 members',
     desc: 'For established stores that need automation and full-featured analytics.',
-    color: '#0ea5e9',
+    color: '#00A4A4',
     features: [
       'Everything in Growth',
       'Up to 5 POS Terminals',
@@ -79,11 +79,11 @@ const PLANS = [
 ];
 
 const FAQS = [
-  { q: 'Is there a free trial?', a: 'Yes — all plans include a 14-day free trial. No credit card required to get started.' },
+  { q: 'Is there a free trial?', a: 'Yes  all plans include a 14-day free trial. No credit card required to get started.' },
   { q: 'Can I change plans anytime?', a: 'Absolutely. Upgrade or downgrade at any time. Billing is prorated so you only pay for what you use.' },
   { q: 'Do prices include GST?', a: 'Prices shown are exclusive of 18% GST, which will be added at checkout. You receive a GST-compliant invoice.' },
   { q: 'What payment methods are accepted?', a: 'We accept UPI, debit/credit cards, and net banking via Razorpay. Annual plans can also be paid via bank transfer.' },
-  { q: 'What happens when the trial ends?', a: 'After 14 days you can pick any paid plan. Your data is preserved regardless — no sudden deletions.' },
+  { q: 'What happens when the trial ends?', a: 'After 14 days you can pick any paid plan. Your data is preserved regardless  no sudden deletions.' },
   { q: 'Are there setup or onboarding fees?', a: 'Zero. You can self-onboard in under 20 minutes with our step-by-step wizard and bulk import tool.' },
   { q: 'Is my data safe?', a: 'Yes. Row-level multi-tenant isolation, BCrypt encryption, 2FA on every login, and full audit trails.' },
 ];
@@ -99,12 +99,12 @@ export default function Pricing() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-28 pb-16 px-6 qp-grid-bg">
-        <GlowOrb color="#7b39fc" size={700} opacity={0.09} top="0" left="50%" blur={140} />
-        <FloatingDots count={6} color="#7b39fc" />
+        <GlowOrb color="#00A4A4" size={700} opacity={0.09} top="0" left="50%" blur={140} />
+        <FloatingDots count={6} color="#00A4A4" />
 
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <div className="qp-reveal">
-            <GradientBadge color="#7b39fc">Simple, transparent pricing</GradientBadge>
+            <GradientBadge color="#00A4A4">Simple, transparent pricing</GradientBadge>
             <h1 className="font-manrope font-extrabold text-5xl sm:text-7xl text-[var(--text-primary)] tracking-tight leading-none mb-5">
               Pay as you <span className="qp-shimmer-text">grow</span>
             </h1>
@@ -120,7 +120,7 @@ export default function Pricing() {
               <button key={b} onClick={() => setBilling(b)}
                 className="relative px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
                 style={{
-                  background: billing === b ? '#7b39fc' : 'transparent',
+                  background: billing === b ? '#00A4A4' : 'transparent',
                   color: billing === b ? '#fff' : 'var(--text-muted)',
                   boxShadow: billing === b ? '0 4px 16px rgba(123,57,252,.4)' : 'none',
                 }}>
@@ -151,17 +151,17 @@ export default function Pricing() {
                 <div
                   className={`relative flex flex-col rounded-3xl h-full transition-all duration-300
                     ${plan.popular
-                      ? 'border-2 border-[#7b39fc] shadow-2xl shadow-[#7b39fc]/20 mt-4'
-                      : 'border border-[var(--border)] hover:border-[#7b39fc]/40 hover:shadow-xl hover:shadow-[#7b39fc]/10 mt-4'}`}
+                      ? 'border-2 border-accent shadow-2xl shadow-[#00A4A4]/20 mt-4'
+                      : 'border border-[var(--border)] hover:border-accent/40 hover:shadow-xl hover:shadow-[#00A4A4]/10 mt-4'}`}
                   style={{ background: 'var(--surface)' }}>
 
                   {/* Popular badge */}
                   {plan.popular && (
-                    <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-[#7b39fc] to-transparent" />
+                    <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-[#00A4A4] to-transparent" />
                   )}
                   {plan.popular && (
                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                      <span className="bg-[#7b39fc] text-white text-xs font-extrabold px-4 py-1 rounded-full shadow-lg shadow-[#7b39fc]/40 tracking-wide uppercase">
+                      <span className="bg-accent text-white text-xs font-extrabold px-4 py-1 rounded-full shadow-lg shadow-[#00A4A4]/40 tracking-wide uppercase">
                         Most Popular
                       </span>
                     </div>
@@ -217,7 +217,7 @@ export default function Pricing() {
                     <ul className="space-y-2.5 flex-1">
                       {plan.features.map((feat, j) => (
                         <li key={j} className="flex items-start gap-2.5 text-sm text-[var(--text-secondary)]">
-                          <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="#7b39fc" strokeWidth="2.5">
+                          <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="#00A4A4" strokeWidth="2.5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                           {feat}
@@ -229,8 +229,8 @@ export default function Pricing() {
                     <Link to={plan.id === 'enterprise' ? '/contact' : '/register'}
                       className={`mt-auto block w-full text-center py-3.5 rounded-xl font-bold text-sm transition-all duration-200
                         ${plan.popular
-                          ? 'qp-btn-primary bg-[#7b39fc] text-white shadow-lg shadow-[#7b39fc]/30'
-                          : 'border border-[var(--border)] text-[var(--text-primary)] hover:border-[#7b39fc] hover:text-[#7b39fc] hover:bg-[#7b39fc]/5'}`}>
+                          ? 'qp-btn-primary bg-accent text-white shadow-lg shadow-[#00A4A4]/30'
+                          : 'border border-[var(--border)] text-[var(--text-primary)] hover:border-accent hover:text-accent hover:bg-accent/5'}`}>
                       {plan.cta}
                       {plan.popular && ' →'}
                     </Link>
@@ -249,7 +249,7 @@ export default function Pricing() {
       {/* ── Feature comparison table ──────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 pb-24">
         <div className="text-center mb-12 qp-reveal">
-          <GradientBadge color="#7b39fc">Compare plans</GradientBadge>
+          <GradientBadge color="#00A4A4">Compare plans</GradientBadge>
           <h2 className="font-manrope font-extrabold text-4xl text-[var(--text-primary)] tracking-tight">
             Full feature breakdown
           </h2>
@@ -273,12 +273,12 @@ export default function Pricing() {
             ['Products', '500', 'Unlimited', 'Unlimited', 'Unlimited'],
             ['Inventory tracking', '✓', '✓', '✓', '✓'],
             ['Sales analytics', 'Basic', 'Advanced', 'Hour-level', 'All locations'],
-            ['AI restocking', '—', 'Manual', 'Auto 2×/day', 'Auto 2×/day'],
-            ['Refunds & exchanges', '—', '—', '✓', '✓'],
-            ['Supplier management', '—', '—', '✓', '✓'],
-            ['Loyalty program', '—', '—', 'Basic', 'Branded tiers'],
-            ['API access', '—', '—', '—', '✓'],
-            ['Multi-location', '—', '—', '—', 'Up to 5'],
+            ['AI restocking', '', 'Manual', 'Auto 2×/day', 'Auto 2×/day'],
+            ['Refunds & exchanges', '', '', '✓', '✓'],
+            ['Supplier management', '', '', '✓', '✓'],
+            ['Loyalty program', '', '', 'Basic', 'Branded tiers'],
+            ['API access', '', '', '', '✓'],
+            ['Multi-location', '', '', '', 'Up to 5'],
             ['Support', 'Email 48h', 'Chat 24h', 'Dedicated 4-8h', 'Phone + Manager'],
           ].map(([feat, ...vals], idx) => (
             <div key={feat}
@@ -286,9 +286,9 @@ export default function Pricing() {
               <div className="p-4 text-sm text-[var(--text-secondary)] font-medium">{feat}</div>
               {vals.map((v, vi) => (
                 <div key={vi} className="p-4 text-center text-sm text-[var(--text-muted)]">
-                  {v === '✓' ? <span className="text-[#7b39fc] font-bold text-base">✓</span> :
-                   v === '—' ? <span className="text-[var(--border)] font-bold">—</span> :
-                   <span className="font-medium">{v}</span>}
+                  {v === '✓' ? <span className="text-accent font-bold text-base">✓</span> :
+                    v === '' ? <span className="text-[var(--border)] font-bold"></span> :
+                      <span className="font-medium">{v}</span>}
                 </div>
               ))}
             </div>
@@ -299,7 +299,7 @@ export default function Pricing() {
       {/* ── FAQ ─────────────────────────────────────────────────────────────── */}
       <section className="max-w-3xl mx-auto px-6 pb-24">
         <div className="text-center mb-12 qp-reveal">
-          <GradientBadge color="#7b39fc">FAQ</GradientBadge>
+          <GradientBadge color="#00A4A4">FAQ</GradientBadge>
           <h2 className="font-manrope font-extrabold text-4xl text-[var(--text-primary)] tracking-tight">
             Pricing questions answered
           </h2>
@@ -309,14 +309,14 @@ export default function Pricing() {
           {FAQS.map((faq, i) => (
             <div key={i} className="qp-reveal" style={{ transitionDelay: `${i * 0.05}s` }}>
               <div
-                className={`rounded-2xl border overflow-hidden transition-all duration-200 ${openFaq === i ? 'border-[#7b39fc]/50 shadow-lg shadow-[#7b39fc]/10' : 'border-[var(--border)]'}`}
+                className={`rounded-2xl border overflow-hidden transition-all duration-200 ${openFaq === i ? 'border-accent/50 shadow-lg shadow-[#00A4A4]/10' : 'border-[var(--border)]'}`}
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex items-center justify-between p-5 text-left gap-4">
                   <span className="font-manrope font-semibold text-[var(--text-primary)] text-sm sm:text-base">{faq.q}</span>
                   <span className={`w-8 h-8 flex-shrink-0 rounded-full border flex items-center justify-center transition-all duration-300
-                    ${openFaq === i ? 'bg-[#7b39fc] border-[#7b39fc] rotate-45' : 'border-[var(--border)]'}`}>
+                    ${openFaq === i ? 'bg-accent border-accent rotate-45' : 'border-[var(--border)]'}`}>
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 12 12" stroke={openFaq === i ? '#fff' : 'currentColor'} strokeWidth="2">
                       <path strokeLinecap="round" d="M6 2v8M2 6h8" />
                     </svg>

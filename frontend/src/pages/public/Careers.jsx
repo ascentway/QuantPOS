@@ -5,7 +5,7 @@ import { ANIM_CSS, useReveal, GlowOrb, GradientBadge, FloatingDots, CTAStrip } f
 const ROLES = [
   {
     title: 'Senior Full-Stack Engineer', dept: 'Engineering', location: 'Remote (India)', type: 'Full-time',
-    level: 'Senior', color: '#7b39fc',
+    level: 'Senior', color: '#00A4A4',
     desc: 'Own and build mission-critical features across our Spring Boot backend and React frontend. You\'ll work on multi-tenant data isolation, real-time POS sync, and AI integration.',
     skills: ['Java / Spring Boot', 'React / TypeScript', 'PostgreSQL', 'Redis', 'Docker'],
   },
@@ -24,8 +24,8 @@ const ROLES = [
   },
   {
     title: 'Backend Engineer (India Payments)', dept: 'Engineering', location: 'Remote (India)', type: 'Full-time',
-    level: 'Mid', color: '#0ea5e9',
-    desc: 'Build and maintain our payment infrastructure — Stripe, Razorpay, UPI integrations, GST invoice generation, and financial reconciliation.',
+    level: 'Mid', color: '#00A4A4',
+    desc: 'Build and maintain our payment infrastructure  Stripe, Razorpay, UPI integrations, GST invoice generation, and financial reconciliation.',
     skills: ['Java / Spring Boot', 'Payment APIs', 'GST / Accounting', 'PostgreSQL', 'Security'],
   },
   {
@@ -37,9 +37,9 @@ const ROLES = [
 ];
 
 const PERKS = [
-  { icon: '🏠', title: 'Remote-first', desc: 'Work from anywhere in India. We have no office — and that\'s by design.' },
+  { icon: '🏠', title: 'Remote-first', desc: 'Work from anywhere in India. We have no office  and that\'s by design.' },
   { icon: '💰', title: 'Competitive comp', desc: 'Market-rate salaries plus equity. We want you to win when we win.' },
-  { icon: '🎓', title: 'Learning budget', desc: '₹50,000/year for courses, books, conferences — anything that makes you better.' },
+  { icon: '🎓', title: 'Learning budget', desc: '₹50,000/year for courses, books, conferences  anything that makes you better.' },
   { icon: '🏥', title: 'Health coverage', desc: 'Full health insurance for you and your family from day 1.' },
   { icon: '⏰', title: 'Async by default', desc: 'No 9-5. No daily standups. Deep work time is sacred.' },
   { icon: '📈', title: 'Real ownership', desc: 'You won\'t be feature-farming. You\'ll own outcomes and move fast.' },
@@ -57,13 +57,13 @@ export default function Careers() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-28 pb-20 px-6 qp-grid-bg">
-        <GlowOrb color="#7b39fc" size={600} opacity={0.1} top="0" left="50%" blur={120} />
+        <GlowOrb color="#00A4A4" size={600} opacity={0.1} top="0" left="50%" blur={120} />
         <GlowOrb color="#10b981" size={400} opacity={0.07} top="50%" left="20%" blur={100} />
-        <FloatingDots count={7} color="#7b39fc" />
+        <FloatingDots count={7} color="#00A4A4" />
 
         <div className="relative z-10 max-w-4xl mx-auto text-center">
           <div className="qp-reveal">
-            <GradientBadge color="#7b39fc">We're hiring</GradientBadge>
+            <GradientBadge color="#00A4A4">We're hiring</GradientBadge>
             <h1 className="font-manrope font-extrabold text-5xl sm:text-7xl text-[var(--text-primary)] tracking-tight leading-none mb-6">
               Build the future of{' '}
               <span className="qp-shimmer-text">Indian retail</span>
@@ -80,7 +80,7 @@ export default function Careers() {
               { v: 'Series A', label: 'Stage (upcoming)' },
             ].map(s => (
               <div key={s.label} className="text-center">
-                <div className="font-manrope font-extrabold text-3xl text-[#7b39fc]">{s.v}</div>
+                <div className="font-manrope font-extrabold text-3xl text-accent">{s.v}</div>
                 <div className="text-sm text-[var(--text-muted)]">{s.label}</div>
               </div>
             ))}
@@ -92,7 +92,7 @@ export default function Careers() {
       <section className="py-20 px-6 qp-grid-bg">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 qp-reveal">
-            <GradientBadge color="#7b39fc">Why QuantPOS</GradientBadge>
+            <GradientBadge color="#00A4A4">Why QuantPOS</GradientBadge>
             <h2 className="font-manrope font-extrabold text-4xl sm:text-5xl text-[var(--text-primary)] tracking-tight">
               Built for builders
             </h2>
@@ -114,7 +114,7 @@ export default function Careers() {
       {/* ── Open roles ────────────────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 py-24">
         <div className="text-center mb-12 qp-reveal">
-          <GradientBadge color="#7b39fc">Open positions</GradientBadge>
+          <GradientBadge color="#00A4A4">Open positions</GradientBadge>
           <h2 className="font-manrope font-extrabold text-4xl sm:text-5xl text-[var(--text-primary)] tracking-tight mb-8">
             {ROLES.length} open roles
           </h2>
@@ -124,9 +124,9 @@ export default function Careers() {
               <button key={d} onClick={() => setSelectedDept(d)}
                 className="px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200"
                 style={{
-                  background: selectedDept === d ? '#7b39fc' : 'transparent',
+                  background: selectedDept === d ? '#00A4A4' : 'transparent',
                   color: selectedDept === d ? '#fff' : 'var(--text-muted)',
-                  borderColor: selectedDept === d ? '#7b39fc' : 'var(--border)',
+                  borderColor: selectedDept === d ? '#00A4A4' : 'var(--border)',
                   boxShadow: selectedDept === d ? '0 4px 12px rgba(123,57,252,.3)' : 'none',
                 }}>
                 {d}
@@ -191,7 +191,7 @@ export default function Careers() {
         <div className="mt-12 text-center qp-reveal">
           <p className="text-[var(--text-muted)] mb-4">Don't see a role that fits? We hire great people regardless.</p>
           <a href="mailto:quantpos@gmail.com?subject=Open Application"
-            className="inline-flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] font-semibold px-6 py-3 rounded-xl hover:border-[#7b39fc] hover:text-[#7b39fc] transition-all">
+            className="inline-flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] font-semibold px-6 py-3 rounded-xl hover:border-accent hover:text-accent transition-all">
             Send open application →
           </a>
         </div>

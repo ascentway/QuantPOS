@@ -6,15 +6,15 @@ import { ANIM_CSS, useReveal, GlowOrb, GradientBadge, GlassCard, CTAStrip, Float
 /* ─── Data ─────────────────────────────────────────────────────────────────── */
 const FEATURES = [
   {
-    icon: '🖥️', category: 'POS Terminal', accent: '#7b39fc',
+    icon: '🖥️', category: 'POS Terminal', accent: '#00A4A4',
     title: 'Lightning-fast checkout, anywhere',
-    description: 'Scan products, apply discounts and taxes, print thermal receipts, and close sales in seconds — even on basic hardware. Built for the pace of Indian retail.',
+    description: 'Scan products, apply discounts and taxes, print thermal receipts, and close sales in seconds  even on basic hardware. Built for the pace of Indian retail.',
     highlights: ['Barcode & manual search', 'Configurable GST tax rates', 'Thermal receipt printing', 'Offline-ready design'],
     plans: ['Starter', 'Growth', 'Professional', 'Enterprise'],
     mockup: 'pos',
   },
   {
-    icon: '📦', category: 'Inventory', accent: '#0ea5e9',
+    icon: '📦', category: 'Inventory', accent: '#00A4A4',
     title: 'Real-time stock intelligence',
     description: 'Track every unit, from kg of sugar to individual SKUs. Set reorder levels, get low-stock alerts, and manage loose products with decimal precision.',
     highlights: ['Decimal quantity (0.457 kg)', 'Low stock email alerts', 'Inventory adjustment audit trail', 'Supplier management'],
@@ -24,7 +24,7 @@ const FEATURES = [
   {
     icon: '📊', category: 'Analytics', accent: '#10b981',
     title: 'Reports that drive decisions',
-    description: 'From daily revenue summaries to hour-by-hour peak analysis — understand your business at a glance. Export to PDF or Excel in one click.',
+    description: 'From daily revenue summaries to hour-by-hour peak analysis  understand your business at a glance. Export to PDF or Excel in one click.',
     highlights: ['Hour-by-hour traffic analysis', 'Cashier performance reports', 'Product profitability view', 'PDF & Excel export'],
     plans: ['Growth', 'Professional', 'Enterprise'],
     mockup: 'analytics',
@@ -32,7 +32,7 @@ const FEATURES = [
   {
     icon: '👥', category: 'Team Management', accent: '#f59e0b',
     title: 'Manage your team with confidence',
-    description: 'Invite cashiers and managers via OTP. Assign roles, set permissions, and track who did what — with a full audit log including IP addresses.',
+    description: 'Invite cashiers and managers via OTP. Assign roles, set permissions, and track who did what  with a full audit log including IP addresses.',
     highlights: ['Owner / Manager / Cashier roles', 'OTP-based invitations', 'Cashier-only POS access', 'Activity log with timestamps'],
     plans: ['Growth', 'Professional', 'Enterprise'],
     mockup: 'team',
@@ -40,7 +40,7 @@ const FEATURES = [
   {
     icon: '🤖', category: 'AI Restocking', accent: '#ec4899', badge: 'AI-Powered',
     title: 'Never run out of stock again',
-    description: 'QuantPOS\'s AI analyses your 30+ days of sales, detects seasonal patterns, and generates prioritised purchase order suggestions — automatically, twice a day.',
+    description: 'QuantPOS\'s AI analyses your 30+ days of sales, detects seasonal patterns, and generates prioritised purchase order suggestions  automatically, twice a day.',
     highlights: ['8 AM & 8 PM daily recommendations', '7/14/30-day demand forecasting', 'Urgency levels (Red/Yellow/Green)', 'One-click PO to supplier email'],
     plans: ['Professional', 'Enterprise'],
     mockup: 'ai',
@@ -54,7 +54,7 @@ const FEATURES = [
     mockup: 'multiloc',
   },
   {
-    icon: '🔒', category: 'Security', accent: '#6366f1',
+    icon: '🔒', category: 'Security', accent: '#00A4A4',
     title: 'Enterprise-grade security, out of the box',
     description: 'Two-factor authentication on every login, encrypted tokens, IP-level audit logs, and multi-tenant data isolation ensure your business data is always protected.',
     highlights: ['2FA email OTP on every login', 'Row-level data isolation', 'Full audit trail with IP tracking', 'HTTPS & encrypted token storage'],
@@ -120,14 +120,14 @@ const MockupPanel = ({ type, accent }) => {
           </div>
         ))}
         <div className="mt-auto rounded-xl bg-red-500/15 border border-red-500/20 p-2 text-xs text-red-400 font-semibold flex items-center gap-2">
-          <span>⚠</span> 1 item critically low — reorder now
+          <span>⚠</span> 1 item critically low  reorder now
         </div>
       </div>
     ),
     analytics: (
       <div className="h-full flex flex-col gap-3 p-4">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-white/60 uppercase tracking-widest">Revenue — 7 days</span>
+          <span className="text-xs font-bold text-white/60 uppercase tracking-widest">Revenue  7 days</span>
           <span className="text-xs font-bold text-green-400">+18.4%</span>
         </div>
         <div className="flex items-end gap-1.5 h-20">
@@ -149,7 +149,7 @@ const MockupPanel = ({ type, accent }) => {
       <div className="h-full flex flex-col gap-3 p-4">
         <span className="text-xs font-bold text-white/60 uppercase tracking-widest">Team Members</span>
         {[
-          { name: 'Rajesh (Owner)', role: 'Owner', color: '#7b39fc', online: true },
+          { name: 'Rajesh (Owner)', role: 'Owner', color: '#00A4A4', online: true },
           { name: 'Priya Sharma', role: 'Manager', color: '#10b981', online: true },
           { name: 'Amit Kumar', role: 'Cashier', color: '#f59e0b', online: false },
         ].map(m => (
@@ -194,9 +194,9 @@ const MockupPanel = ({ type, accent }) => {
       <div className="h-full flex flex-col gap-3 p-4">
         <span className="text-xs font-bold text-white/60 uppercase tracking-widest">Locations Overview</span>
         {[
-          { name: 'Main Branch — Andheri', rev: '₹84,200', status: 'green' },
-          { name: 'Branch 2 — Bandra', rev: '₹61,500', status: 'green' },
-          { name: 'Branch 3 — Juhu', rev: '₹43,100', status: 'yellow' },
+          { name: 'Main Branch  Andheri', rev: '₹84,200', status: 'green' },
+          { name: 'Branch 2  Bandra', rev: '₹61,500', status: 'green' },
+          { name: 'Branch 3  Juhu', rev: '₹43,100', status: 'yellow' },
         ].map(loc => (
           <div key={loc.name} className="rounded-xl bg-white/5 p-2.5">
             <div className="flex items-center justify-between">
@@ -246,26 +246,26 @@ export default function Features() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-28 pb-20 px-6 qp-grid-bg">
-        <GlowOrb color="#7b39fc" size={600} opacity={0.1} top="0" left="50%" blur={120} />
-        <GlowOrb color="#0ea5e9" size={400} opacity={0.07} top="40%" left="80%" blur={100} />
-        <FloatingDots count={8} color="#7b39fc" />
+        <GlowOrb color="#00A4A4" size={600} opacity={0.1} top="0" left="50%" blur={120} />
+        <GlowOrb color="#00A4A4" size={400} opacity={0.07} top="40%" left="80%" blur={100} />
+        <FloatingDots count={8} color="#00A4A4" />
 
         <div className="relative z-10 max-w-4xl mx-auto text-center">
           <div className="qp-reveal">
-            <GradientBadge color="#7b39fc">Built for Indian Retail</GradientBadge>
+            <GradientBadge color="#00A4A4">Built for Indian Retail</GradientBadge>
             <h1 className="font-manrope font-extrabold text-5xl sm:text-7xl text-[var(--text-primary)] tracking-tight leading-none mb-6">
               Every tool your store{' '}
               <span className="qp-shimmer-text">needs to grow</span>
             </h1>
             <p className="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-10 leading-relaxed">
-              From solo shopkeeper to multi-location chain — QuantPOS scales with you.
+              From solo shopkeeper to multi-location chain  QuantPOS scales with you.
               No feature-gating, no hidden add-ons.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center qp-reveal qp-delay-2">
             <Link to="/register"
-              className="qp-btn-primary inline-flex items-center justify-center gap-2.5 bg-[#7b39fc] text-white font-bold px-8 py-4 rounded-xl text-base shadow-2xl shadow-[#7b39fc]/30">
+              className="qp-btn-primary inline-flex items-center justify-center gap-2.5 bg-accent text-white font-bold px-8 py-4 rounded-xl text-base shadow-2xl shadow-[#00A4A4]/30">
               Start free trial
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5-5 5M6 12h12" />
@@ -283,7 +283,7 @@ export default function Features() {
           {STATS.map(s => (
             <div key={s.value}
               className="qp-card-hover qp-glass rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 p-5 text-center">
-              <div className="font-manrope font-extrabold text-2xl sm:text-3xl text-[#7b39fc] mb-1">{s.value}</div>
+              <div className="font-manrope font-extrabold text-2xl sm:text-3xl text-accent mb-1">{s.value}</div>
               <div className="text-sm font-semibold text-[var(--text-primary)]">{s.label}</div>
               <div className="text-xs text-[var(--text-muted)] mt-0.5">{s.sub}</div>
             </div>
@@ -294,7 +294,7 @@ export default function Features() {
       {/* ── Feature navigator tabs ─────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-6 py-20">
         <div className="text-center mb-12 qp-reveal">
-          <GradientBadge color="#7b39fc">Full Feature Suite</GradientBadge>
+          <GradientBadge color="#00A4A4">Full Feature Suite</GradientBadge>
           <h2 className="font-manrope font-extrabold text-4xl sm:text-5xl text-[var(--text-primary)] tracking-tight mb-4">
             Everything in one place
           </h2>
@@ -393,7 +393,7 @@ export default function Features() {
               <tr className="border-b border-[var(--border)] bg-[var(--surface)]">
                 <th className="text-left p-4 font-semibold text-[var(--text-muted)]">Feature</th>
                 <th className="p-4 font-semibold text-[var(--text-muted)] text-center">Legacy POS</th>
-                <th className="p-4 font-bold text-[#7b39fc] text-center">QuantPOS</th>
+                <th className="p-4 font-bold text-accent text-center">QuantPOS</th>
               </tr>
             </thead>
             <tbody>
@@ -410,7 +410,7 @@ export default function Features() {
                 <tr key={feat} className={`border-b border-[var(--border)] transition-colors hover:bg-[var(--surface)] ${idx % 2 === 0 ? '' : 'bg-[var(--surface)]/40'}`}>
                   <td className="p-4 font-medium text-[var(--text-secondary)]">{feat}</td>
                   <td className="p-4 text-center text-[var(--text-muted)]">{leg}</td>
-                  <td className="p-4 text-center font-bold text-[#7b39fc]">{qp}</td>
+                  <td className="p-4 text-center font-bold text-accent">{qp}</td>
                 </tr>
               ))}
             </tbody>

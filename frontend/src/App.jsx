@@ -7,11 +7,15 @@ import Login          from './pages/Login';
 import VerifyEmail    from './pages/VerifyEmail';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword  from './pages/ResetPassword';
+import AcceptInvite   from './pages/AcceptInvite';
 import Landing        from './pages/Landing';
 import Dashboard      from './pages/Dashboard';
 import PosTerminal    from './pages/PosTerminal';
 import Profile        from './pages/Profile';
-import { Inventory, Reports, Customers } from './pages/ComingSoon';
+import { Reports, Customers } from './pages/ComingSoon';
+import Inventory from './pages/Inventory';
+import LabelPrinter from './pages/LabelPrinter';
+import Staff         from './pages/Staff';
 import Settings       from './pages/Settings';
 import DashboardLayout from './components/layout/DashboardLayout';
 import ProtectedRoute  from './components/auth/ProtectedRoute';
@@ -45,6 +49,12 @@ const DashboardPage = ({ children, requiredRoles }) => (
   </ProtectedRoute>
 );
 
+const StandalonePage = ({ children, requiredRoles }) => (
+  <ProtectedRoute requiredRoles={requiredRoles}>
+    {children}
+  </ProtectedRoute>
+);
+
 function App() {
   return (
     <>
@@ -57,6 +67,7 @@ function App() {
       <Route path="/verify-email"    element={<VerifyEmail />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password"  element={<ResetPassword />} />
+      <Route path="/accept-invite"   element={<AcceptInvite />} />
 
       {/* ── Public Marketing Pages ────────────────────────────────────────── */}
       <Route path="/features"        element={<Features />} />
@@ -86,13 +97,17 @@ function App() {
       />
       <Route
         path="/dashboard/pos"
-        element={<DashboardPage requiredRoles={['OWNER', 'MANAGER', 'CASHIER']}><PosTerminal /></DashboardPage>}
+        element={<StandalonePage requiredRoles={['OWNER', 'MANAGER', 'CASHIER']}><PosTerminal /></StandalonePage>}
       />
 
-      {/* Owner + Manager only */}
+      {/* Owner + Manager + Employee */}
       <Route
         path="/dashboard/inventory"
-        element={<DashboardPage requiredRoles={['OWNER', 'MANAGER']}><Inventory /></DashboardPage>}
+        element={<DashboardPage requiredRoles={['OWNER', 'MANAGER', 'EMPLOYEE']}><Inventory /></DashboardPage>}
+      />
+      <Route
+        path="/dashboard/labels"
+        element={<DashboardPage requiredRoles={['OWNER', 'MANAGER', 'EMPLOYEE']}><LabelPrinter /></DashboardPage>}
       />
       <Route
         path="/dashboard/reports"
@@ -105,6 +120,10 @@ function App() {
 
       {/* Owner only */}
       <Route
+        path="/dashboard/staff"
+        element={<DashboardPage requiredRoles={['OWNER', 'MANAGER']}><Staff /></DashboardPage>}
+      />
+      <Route
         path="/dashboard/settings"
         element={<DashboardPage requiredRoles={['OWNER']}><Settings /></DashboardPage>}
       />
@@ -113,8 +132,8 @@ function App() {
       <Route
         path="/unauthorized"
         element={
-          <div className="flex min-h-screen items-center justify-center bg-[#111118] text-white">
-            <div className="bg-[#16161f] border border-red-500/30 rounded-[12px] p-8 max-w-sm text-center">
+          <div className="flex min-h-screen items-center justify-center bg-bg text-white">
+            <div className="bg-surface border border-red-500/30 rounded-[12px] p-8 max-w-sm text-center">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-500/10 mb-4">
                 <svg className="h-7 w-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
@@ -122,7 +141,7 @@ function App() {
               </div>
               <h2 className="font-manrope font-bold text-[22px] text-red-400 mb-2">Access Denied</h2>
               <p className="font-inter text-[13px] text-white/50 mb-6">You don't have permission to access this page.</p>
-              <a href="/dashboard" className="font-cabin font-medium text-sm bg-[#7b39fc] hover:bg-[#6929e8] text-white px-4 py-2 rounded-[8px] transition-colors">
+              <a href="/dashboard" className="font-cabin font-medium text-sm bg-accent hover:bg-[var(--accent-hover)] text-white px-4 py-2 rounded-[8px] transition-colors">
                 Back to Dashboard
               </a>
             </div>

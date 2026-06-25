@@ -2,7 +2,8 @@ package com.quantpos.terminal.model;
 
 import com.quantpos.tenant.model.Tenant;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,14 +14,10 @@ import java.util.UUID;
 @Table(name = "terminals")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Terminal {
 
     @Id
-    @GeneratedValue
-    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,9 +28,9 @@ public class Terminal {
     private String terminalName;
 
     @Column(name = "terminal_number", nullable = false)
-    private int terminalNumber;
+    private Integer terminalNumber;
 
-    @Column(name = "location", length = 255)
+    @Column(length = 255)
     private String location;
 
     @Column(name = "device_id", length = 255)
@@ -46,17 +43,16 @@ public class Terminal {
     private LocalDateTime lastConnectedAt;
 
     @Column(name = "is_active", nullable = false)
-    @Builder.Default
-    private boolean isActive = true;
+    private Boolean isActive = true;
 
-    @Column(name = "status", length = 50)
-    private String status;
+    @Column(length = 50)
+    private String status; // ONLINE, OFFLINE, ERROR, LOCKED
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }

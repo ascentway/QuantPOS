@@ -75,7 +75,7 @@ public class AuthController {
     }
 
     // ─────────────────────────────────────────────────────────────
-    // LOGIN — 2-step flow
+    // LOGIN 2-step flow
     // ─────────────────────────────────────────────────────────────
 
     /**
@@ -84,7 +84,7 @@ public class AuthController {
      * Frontend then shows OTP entry screen and calls /verify-2fa.
      */
     @PostMapping("/login")
-    @Operation(summary = "Login Step 1 — Validate credentials and trigger 2FA OTP")
+    @Operation(summary = "Login Step 1  Validate credentials and trigger 2FA OTP")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Credentials valid, 2FA OTP sent to email")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Invalid credentials")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Email not verified or account/tenant inactive")
@@ -97,7 +97,7 @@ public class AuthController {
      * On success, issues JWT access token + refresh token.
      */
     @PostMapping("/verify-2fa")
-    @Operation(summary = "Login Step 2 — Verify 2FA OTP and receive JWT tokens")
+    @Operation(summary = "Login Step 2  Verify 2FA OTP and receive JWT tokens")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Login successful, tokens issued")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Invalid or expired 2FA OTP")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "429", description = "2FA OTP locked due to too many attempts")

@@ -22,4 +22,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     List<User> findAllByTenantId(@Param("tenantId") UUID tenantId);
 
     boolean existsByEmail(String email);
+
+    @Query("SELECT u FROM User u WHERE u.tenant.id = :tenantId AND u.role IN :roles")
+    List<User> findByTenantIdAndRoleIn(@Param("tenantId") UUID tenantId, @Param("roles") List<com.quantpos.user.model.Role> roles);
 }

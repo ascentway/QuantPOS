@@ -32,6 +32,10 @@ const Settings = () => {
       setLoading(true);
       const data = await billingApi.getBillingStatus();
       setBillingStatus(data);
+      // Sync authStore so the global banner also disappears instantly
+      if (data && data.subscriptionStatus) {
+        useAuthStore.getState().updateUser({ subscriptionStatus: data.subscriptionStatus });
+      }
     } catch (error) {
       console.error('Error fetching billing status', error);
     } finally {
@@ -72,20 +76,20 @@ const Settings = () => {
     <div className="p-5 lg:p-7 space-y-6 max-w-[1400px] mx-auto relative">
       {/* ─── Header row ──────────────────────────────────────────────────────── */}
       <div className="flex flex-col gap-2">
-        <h2 className="font-manrope font-bold text-[20px] text-white">Store Settings</h2>
-        <p className="font-inter text-[13px] text-white/40">
+        <h2 className="font-manrope font-bold text-[20px] text-text-primary">Store Settings</h2>
+        <p className="font-inter text-[13px] text-text-muted">
           Manage your store profile and subscription details.
         </p>
       </div>
 
       {/* ─── Tabs ─────────────────────────────────────────────────────────────── */}
-      <div className="flex space-x-2 border-b border-white/[0.06] pb-4 mb-6">
+      <div className="flex space-x-2 border-b border-theme pb-4 mb-6">
         <button
           onClick={() => setActiveTab('profile')}
           className={`flex items-center gap-2 font-manrope font-medium text-[13px] px-4 py-2 rounded-[8px] transition-all ${
             activeTab === 'profile'
-              ? 'bg-[#5757f8] text-white'
-              : 'bg-white/5 text-white/40 hover:text-white hover:bg-white/10'
+              ? 'bg-accent text-white'
+              : 'bg-card2 text-text-muted hover:text-text-primary hover:bg-card2'
           }`}
         >
           <Building className="w-4 h-4" />
@@ -95,8 +99,8 @@ const Settings = () => {
           onClick={() => setActiveTab('billing')}
           className={`flex items-center gap-2 font-manrope font-medium text-[13px] px-4 py-2 rounded-[8px] transition-all ${
             activeTab === 'billing'
-              ? 'bg-[#5757f8] text-white'
-              : 'bg-white/5 text-white/40 hover:text-white hover:bg-white/10'
+              ? 'bg-accent text-white'
+              : 'bg-card2 text-text-muted hover:text-text-primary hover:bg-card2'
           }`}
         >
           <CreditCard className="w-4 h-4" />
@@ -106,13 +110,13 @@ const Settings = () => {
 
       {/* ─── Business Profile Tab ────────────────────────────────────────────── */}
       {activeTab === 'profile' && (
-        <div className="bg-[#16161f] border border-white/[0.06] rounded-[12px] p-6 max-w-2xl">
-          <h3 className="font-manrope font-semibold text-[16px] text-white mb-1">Business Details</h3>
-          <p className="font-inter text-[12px] text-white/40 mb-6">Update your store information.</p>
+        <div className="bg-surface border border-theme rounded-[12px] p-6 max-w-2xl">
+          <h3 className="font-manrope font-semibold text-[16px] text-text-primary mb-1">Business Details</h3>
+          <p className="font-inter text-[12px] text-text-muted mb-6">Update your store information.</p>
           
           <div className="space-y-4">
             <div className="flex justify-end">
-              <button className="bg-[#5757f8] hover:bg-[#6c6cf8] transition-colors text-white font-manrope font-semibold text-[13px] px-4 py-2 rounded-[8px]">
+              <button className="bg-accent hover:bg-accent-hover transition-colors text-white font-manrope font-semibold text-[13px] px-4 py-2 rounded-[8px]">
                 Save Changes
               </button>
             </div>
@@ -124,24 +128,24 @@ const Settings = () => {
       {activeTab === 'billing' && (
         <div className="space-y-6 max-w-4xl">
           {loading ? (
-            <div className="bg-[#16161f] border border-white/[0.06] rounded-[12px] p-10 flex justify-center items-center">
-              <div className="animate-pulse flex items-center gap-2 text-[#5757f8]">
-                <div className="w-4 h-4 rounded-full bg-[#5757f8]"></div>
+            <div className="bg-surface border border-theme rounded-[12px] p-10 flex justify-center items-center">
+              <div className="animate-pulse flex items-center gap-2 text-accent">
+                <div className="w-4 h-4 rounded-full bg-accent"></div>
                 <span className="font-manrope text-[14px]">Loading billing details...</span>
               </div>
             </div>
           ) : billingStatus ? (
             <>
               {/* ─── Subscription Card ────────────────────────────────────────────── */}
-              <div className="relative bg-[#16161f] border border-white/[0.06] rounded-[12px] p-6 overflow-hidden group">
-                <div className="absolute top-0 left-0 w-1 h-full bg-[#5757f8]"></div>
+              <div className="relative bg-surface border border-theme rounded-[12px] p-6 overflow-hidden group">
+                <div className="absolute top-0 left-0 w-1 h-full bg-accent"></div>
                 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                   <div>
-                    <h3 className="font-manrope font-bold text-[24px] text-white mb-2">
+                    <h3 className="font-manrope font-bold text-[24px] text-text-primary mb-2">
                       {billingStatus.planName || 'No Active Plan'}
                     </h3>
-                    <div className="flex items-center gap-3 font-inter text-[13px] text-white/40">
+                    <div className="flex items-center gap-3 font-inter text-[13px] text-text-muted">
                       {billingStatus.subscriptionStatus === 'ACTIVE' ? (
                         <span className="flex items-center gap-1.5 text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-[4px] font-medium">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Active
@@ -155,17 +159,17 @@ const Settings = () => {
                       {billingStatus.cancelAtPeriodEnd ? (
                         <span className="text-red-400">Cancels on <span className="font-bold">{formatDate(billingStatus.currentPeriodEnd)}</span></span>
                       ) : (
-                        <span>Renews on <span className="text-white/80">{formatDate(billingStatus.currentPeriodEnd)}</span></span>
+                        <span>Renews on <span className="text-text-secondary">{formatDate(billingStatus.currentPeriodEnd)}</span></span>
                       )}
                     </div>
                   </div>
                   
                   <div className="flex flex-col items-end">
                     <div className="flex items-baseline gap-1 mb-3">
-                      <span className="font-manrope font-bold text-[32px] text-white">
+                      <span className="font-manrope font-bold text-[32px] text-text-primary">
                         ₹{billingStatus.monthlyPrice || '0.00'}
                       </span>
-                      <span className="font-inter text-[13px] text-white/40 uppercase">
+                      <span className="font-inter text-[13px] text-text-muted uppercase">
                         {billingStatus.currency || 'INR'} / cycle
                       </span>
                     </div>
@@ -180,7 +184,7 @@ const Settings = () => {
                     ) : (
                       <button
                         onClick={() => setShowPricingModal(true)}
-                        className="flex items-center gap-2 bg-[#5757f8] hover:bg-[#6c6cf8] transition-colors text-white font-manrope font-semibold text-[13px] px-5 py-2.5 rounded-[8px]"
+                        className="flex items-center gap-2 bg-accent hover:bg-accent-hover transition-colors text-white font-manrope font-semibold text-[13px] px-5 py-2.5 rounded-[8px]"
                       >
                         <span>Activate Subscription</span>
                         <ExternalLink className="w-4 h-4" />
@@ -190,19 +194,19 @@ const Settings = () => {
                 </div>
 
                 {/* ─── Terminals Limit ────────────────────────────────────────────── */}
-                <div className="mt-8 pt-6 border-t border-white/[0.06]">
+                <div className="mt-8 pt-6 border-t border-theme">
                   <div className="flex justify-between items-end mb-3">
                     <div>
-                      <h4 className="font-manrope font-semibold text-[14px] text-white">Active Terminals</h4>
-                      <p className="font-inter text-[12px] text-white/40">Devices currently registered to your store</p>
+                      <h4 className="font-manrope font-semibold text-[14px] text-text-primary">Active Terminals</h4>
+                      <p className="font-inter text-[12px] text-text-muted">Devices currently registered to your store</p>
                     </div>
-                    <div className="font-manrope font-bold text-[14px] text-white">
-                      {billingStatus.activeTerminals} <span className="text-white/40">/ {billingStatus.terminalLimit || 'Unlimited'}</span>
+                    <div className="font-manrope font-bold text-[14px] text-text-primary">
+                      {billingStatus.activeTerminals} <span className="text-text-muted">/ {billingStatus.terminalLimit || 'Unlimited'}</span>
                     </div>
                   </div>
                   <div className="w-full bg-white/[0.06] rounded-full h-2 overflow-hidden">
                     <div
-                      className="bg-[#5757f8] h-full rounded-full transition-all duration-500"
+                      className="bg-accent h-full rounded-full transition-all duration-500"
                       style={{ width: `${Math.min((billingStatus.activeTerminals / (billingStatus.terminalLimit || 1)) * 100, 100)}%` }}
                     ></div>
                   </div>
@@ -210,9 +214,9 @@ const Settings = () => {
               </div>
 
               {/* ─── Invoices Table ────────────────────────────────────────────── */}
-              <div className="bg-[#16161f] border border-white/[0.06] rounded-[12px] overflow-hidden">
-                <div className="flex items-center justify-between px-6 py-5 border-b border-white/[0.06]">
-                  <h3 className="font-manrope font-semibold text-[16px] text-white">Billing History</h3>
+              <div className="bg-surface border border-theme rounded-[12px] overflow-hidden">
+                <div className="flex items-center justify-between px-6 py-5 border-b border-theme">
+                  <h3 className="font-manrope font-semibold text-[16px] text-text-primary">Billing History</h3>
                 </div>
                 
                 {billingStatus.invoices && billingStatus.invoices.length > 0 ? (
@@ -221,7 +225,7 @@ const Settings = () => {
                       <thead>
                         <tr className="border-b border-white/[0.04]">
                           {['Date', 'Amount', 'Status', 'Invoice'].map(h => (
-                            <th key={h} className={`px-6 py-3 font-manrope font-semibold text-[11px] text-white/30 uppercase tracking-wider ${h === 'Invoice' ? 'text-right' : 'text-left'}`}>
+                            <th key={h} className={`px-6 py-3 font-manrope font-semibold text-[11px] text-text-muted uppercase tracking-wider ${h === 'Invoice' ? 'text-right' : 'text-left'}`}>
                               {h}
                             </th>
                           ))}
@@ -229,9 +233,9 @@ const Settings = () => {
                       </thead>
                       <tbody>
                         {billingStatus.invoices.map((inv, idx) => (
-                          <tr key={inv.id} className={`border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors ${idx % 2 === 0 ? '' : 'bg-white/[0.01]'}`}>
-                            <td className="px-6 py-4 font-inter text-[13px] text-white/80">{formatDate(inv.createdAt || inv.invoiceDate)}</td>
-                            <td className="px-6 py-4 font-manrope font-semibold text-[13px] text-white uppercase">₹{inv.amountPaid} {inv.currency}</td>
+                          <tr key={inv.id} className={`border-b border-white/[0.03] hover:bg-card2 transition-colors ${idx % 2 === 0 ? '' : 'bg-white/[0.01]'}`}>
+                            <td className="px-6 py-4 font-inter text-[13px] text-text-secondary">{formatDate(inv.createdAt || inv.invoiceDate)}</td>
+                            <td className="px-6 py-4 font-manrope font-semibold text-[13px] text-text-primary uppercase">₹{inv.amountPaid} {inv.currency}</td>
                             <td className="px-6 py-4">
                               <span className={`inline-flex items-center font-inter text-[11px] font-medium px-2 py-0.5 rounded-[4px] ${
                                 inv.status === 'PAID' ? 'bg-emerald-400/10 text-emerald-400' : 'bg-red-400/10 text-red-400'
@@ -245,7 +249,7 @@ const Settings = () => {
                                   href={inv.invoicePdfUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1.5 font-inter text-[12px] text-[#5757f8] hover:text-[#7a7af8] transition-colors"
+                                  className="inline-flex items-center gap-1.5 font-inter text-[12px] text-accent hover:text-[#7a7af8] transition-colors"
                                 >
                                   <Download className="w-3.5 h-3.5" />
                                   <span>Download</span>
@@ -259,13 +263,13 @@ const Settings = () => {
                   </div>
                 ) : (
                   <div className="px-6 py-8 text-center">
-                    <p className="font-inter text-[13px] text-white/40">No invoices found for this subscription.</p>
+                    <p className="font-inter text-[13px] text-text-muted">No invoices found for this subscription.</p>
                   </div>
                 )}
               </div>
             </>
           ) : (
-            <div className="bg-[#16161f] border border-red-500/20 rounded-[12px] p-6 text-center">
+            <div className="bg-surface border border-red-500/20 rounded-[12px] p-6 text-center">
               <AlertCircle className="w-8 h-8 text-red-400 mx-auto mb-2" />
               <p className="font-inter text-[14px] text-red-400">Failed to load billing status.</p>
             </div>
@@ -276,15 +280,15 @@ const Settings = () => {
       {/* ─── Pricing Modal ──────────────────────────────────────────────────────── */}
       {showPricingModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#16161f] border border-white/[0.06] rounded-[16px] w-full max-w-4xl overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between p-6 border-b border-white/[0.06]">
+          <div className="bg-surface border border-theme rounded-[16px] w-full max-w-4xl overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between p-6 border-b border-theme">
               <div>
-                <h3 className="font-manrope font-bold text-[20px] text-white">Select a Plan</h3>
-                <p className="font-inter text-[13px] text-white/50 mt-1">Upgrade your POS to unlock full capabilities.</p>
+                <h3 className="font-manrope font-bold text-[20px] text-text-primary">Select a Plan</h3>
+                <p className="font-inter text-[13px] text-text-muted mt-1">Upgrade your POS to unlock full capabilities.</p>
               </div>
               <button 
                 onClick={() => setShowPricingModal(false)}
-                className="text-white/40 hover:text-white transition-colors"
+                className="text-text-muted hover:text-text-primary transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -293,11 +297,11 @@ const Settings = () => {
             <div className="p-6">
               {/* Billing Toggle */}
               <div className="flex justify-center mb-8">
-                <div className="bg-white/5 p-1 rounded-[10px] inline-flex">
+                <div className="bg-card2 p-1 rounded-[10px] inline-flex">
                   <button
                     onClick={() => setBillingCycle('MONTHLY')}
                     className={`px-6 py-2 rounded-[6px] font-manrope font-medium text-[13px] transition-all ${
-                      billingCycle === 'MONTHLY' ? 'bg-[#5757f8] text-white shadow-lg' : 'text-white/50 hover:text-white'
+                      billingCycle === 'MONTHLY' ? 'bg-accent text-white shadow-lg' : 'text-text-muted hover:text-text-primary'
                     }`}
                   >
                     Monthly
@@ -305,7 +309,7 @@ const Settings = () => {
                   <button
                     onClick={() => setBillingCycle('YEARLY')}
                     className={`px-6 py-2 rounded-[6px] font-manrope font-medium text-[13px] transition-all ${
-                      billingCycle === 'YEARLY' ? 'bg-[#5757f8] text-white shadow-lg' : 'text-white/50 hover:text-white'
+                      billingCycle === 'YEARLY' ? 'bg-accent text-white shadow-lg' : 'text-text-muted hover:text-text-primary'
                     }`}
                   >
                     Yearly <span className="ml-1 text-[10px] bg-emerald-400/20 text-emerald-400 px-1.5 py-0.5 rounded-full">Save 16%</span>
@@ -318,26 +322,26 @@ const Settings = () => {
                 {PLANS.map((plan) => {
                   const price = billingCycle === 'MONTHLY' ? plan.monthly : plan.yearly;
                   return (
-                    <div key={plan.id} className="bg-white/[0.02] border border-white/[0.06] rounded-[12px] p-5 flex flex-col group hover:border-[#5757f8]/50 hover:bg-white/[0.04] transition-all">
-                      <h4 className="font-manrope font-semibold text-[15px] text-white mb-1">{plan.name}</h4>
-                      <p className="font-inter text-[12px] text-white/40 h-8 mb-4">{plan.desc}</p>
+                    <div key={plan.id} className="bg-card2 border border-theme rounded-[12px] p-5 flex flex-col group hover:border-accent/50 hover:bg-card2 transition-all">
+                      <h4 className="font-manrope font-semibold text-[15px] text-text-primary mb-1">{plan.name}</h4>
+                      <p className="font-inter text-[12px] text-text-muted h-8 mb-4">{plan.desc}</p>
                       
                       <div className="flex items-baseline gap-1 mb-6">
-                        <span className="font-manrope font-bold text-[28px] text-white">₹{price}</span>
-                        <span className="font-inter text-[12px] text-white/40">/ {billingCycle.toLowerCase()}</span>
+                        <span className="font-manrope font-bold text-[28px] text-text-primary">₹{price}</span>
+                        <span className="font-inter text-[12px] text-text-muted">/ {billingCycle.toLowerCase()}</span>
                       </div>
                       
                       <div className="flex-1 space-y-3 mb-6">
-                        <div className="flex items-center gap-2 font-inter text-[12px] text-white/70">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#5757f8]" />
+                        <div className="flex items-center gap-2 font-inter text-[12px] text-text-secondary">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
                           <span>{plan.limit} Terminals</span>
                         </div>
-                        <div className="flex items-center gap-2 font-inter text-[12px] text-white/70">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#5757f8]" />
+                        <div className="flex items-center gap-2 font-inter text-[12px] text-text-secondary">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
                           <span>Core POS Features</span>
                         </div>
-                        <div className="flex items-center gap-2 font-inter text-[12px] text-white/70">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-[#5757f8]" />
+                        <div className="flex items-center gap-2 font-inter text-[12px] text-text-secondary">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
                           <span>Basic Reporting</span>
                         </div>
                       </div>
@@ -347,7 +351,7 @@ const Settings = () => {
                         disabled={processingCheckout}
                         className={`w-full py-2.5 rounded-[8px] font-manrope font-semibold text-[13px] transition-colors ${
                           processingCheckout 
-                            ? 'bg-white/10 text-white/50 cursor-not-allowed'
+                            ? 'bg-card2 text-text-muted cursor-not-allowed'
                             : 'bg-white text-black hover:bg-gray-200'
                         }`}
                       >

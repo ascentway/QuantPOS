@@ -1,4 +1,4 @@
-# QuantPOS — Multi-Tenant POS & Inventory Management SaaS
+# QuantPOS  Multi-Tenant POS & Inventory Management SaaS
 
 [![Status](https://img.shields.io/badge/Status-Active%20Development-blue.svg)](#)
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](#)

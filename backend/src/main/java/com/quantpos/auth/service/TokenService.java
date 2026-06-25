@@ -15,31 +15,31 @@ import java.util.UUID;
  * Centralized service for all token and OTP operations.
  *
  * Redis key schema:
- *   refresh_token:{token}              → userId          (TTL: refreshExpiryDays)
- *   email_otp:{email}                  → otp             (TTL: 10 min)
- *   email_otp:attempts:{email}         → attempt-count   (TTL: 10 min)
- *   email_otp:locked:{email}           → "1"             (TTL: 15 min)
- *   email_otp:resend_cooldown:{email}  → "1"             (TTL: 60 sec)
- *   login_2fa:{email}                  → otp             (TTL: 10 min)
- *   login_2fa:attempts:{email}         → attempt-count   (TTL: 10 min)
- *   login_2fa:locked:{email}           → "1"             (TTL: 15 min)
- *   login_2fa:resend_cooldown:{email}  → "1"             (TTL: 60 sec)
- *   password_reset:{token}             → userId          (TTL: 1 hr)
- *   user_sessions:{userId}:{token}     → "1"             (TTL: refreshExpiryDays)
+ * refresh_token:{token} → userId (TTL: refreshExpiryDays)
+ * email_otp:{email} → otp (TTL: 10 min)
+ * email_otp:attempts:{email} → attempt-count (TTL: 10 min)
+ * email_otp:locked:{email} → "1" (TTL: 15 min)
+ * email_otp:resend_cooldown:{email} → "1" (TTL: 60 sec)
+ * login_2fa:{email} → otp (TTL: 10 min)
+ * login_2fa:attempts:{email} → attempt-count (TTL: 10 min)
+ * login_2fa:locked:{email} → "1" (TTL: 15 min)
+ * login_2fa:resend_cooldown:{email} → "1" (TTL: 60 sec)
+ * password_reset:{token} → userId (TTL: 1 hr)
+ * user_sessions:{userId}:{token} → "1" (TTL: refreshExpiryDays)
  */
 @Service
 public class TokenService {
 
-    private static final int  OTP_TTL_SECONDS        = 600;   // 10 minutes
-    private static final int  OTP_LOCKOUT_SECONDS    = 900;   // 15 minutes
-    private static final int  OTP_MAX_ATTEMPTS       = 5;
-    private static final int  OTP_RESEND_COOLDOWN    = 60;    // 1 minute
+    private static final int OTP_TTL_SECONDS = 600; // 10 minutes
+    private static final int OTP_LOCKOUT_SECONDS = 900; // 15 minutes
+    private static final int OTP_MAX_ATTEMPTS = 5;
+    private static final int OTP_RESEND_COOLDOWN = 60; // 1 minute
 
-    private final RedisService   redisService;
-    private final AppProperties  appProperties;
+    private final RedisService redisService;
+    private final AppProperties appProperties;
 
     public TokenService(RedisService redisService, AppProperties appProperties) {
-        this.redisService  = redisService;
+        this.redisService = redisService;
         this.appProperties = appProperties;
     }
 
@@ -49,7 +49,7 @@ public class TokenService {
 
     public void saveRefreshToken(UUID userId, String token) {
         long ttlSeconds = appProperties.getJwt().getRefreshExpiryDays() * 86400L;
-        String tokenKey   = "refresh_token:" + token;
+        String tokenKey = "refresh_token:" + token;
         String sessionKey = "user_sessions:" + userId + ":" + token;
         redisService.save(tokenKey, userId.toString(), ttlSeconds);
         // Track the token under the user's session namespace (for bulk invalidation)
@@ -97,18 +97,18 @@ public class TokenService {
     /**
      * Invalidates ALL refresh tokens for a given user.
      * Called after password change/reset to force re-login on all devices.
-     * Uses a scan via naming convention – since we track session keys, we iterate them.
+     * Uses a scan via naming convention – since we track session keys, we iterate
+     * them.
      * For simplicity we store a special flag that JwtFilter checks:
      * "invalidate_all:{userId}" → epoch ms of invalidation.
      * Any token issued before that timestamp is considered invalid.
      */
     public void invalidateAllUserSessions(UUID userId) {
-        // Store an "invalidate before" timestamp — JwtFilter will check this
+        // Store an "invalidate before" timestamp JwtFilter will check this
         redisService.save(
-            "invalidate_before:" + userId,
-            String.valueOf(System.currentTimeMillis()),
-            appProperties.getJwt().getRefreshExpiryDays() * 86400L
-        );
+                "invalidate_before:" + userId,
+                String.valueOf(System.currentTimeMillis()),
+                appProperties.getJwt().getRefreshExpiryDays() * 86400L);
     }
 
     /**
@@ -116,7 +116,7 @@ public class TokenService {
      */
     public long getInvalidateBefore(UUID userId) {
         return redisService.get("invalidate_before:" + userId)
-            .map(Long::parseLong).orElse(0L);
+                .map(Long::parseLong).orElse(0L);
     }
 
     // ─────────────────────────────────────────────────────────
@@ -126,6 +126,7 @@ public class TokenService {
     /**
      * Generates and stores an email verification OTP.
      * Enforces 1-minute resend cooldown.
+     * 
      * @throws ApiException if cooldown is active.
      */
     public String saveEmailVerificationOtp(String email) {
@@ -173,12 +174,12 @@ public class TokenService {
                 redisService.save("email_otp:locked:" + email, "1", OTP_LOCKOUT_SECONDS);
                 redisService.delete(key);
                 throw new ApiException(HttpStatus.TOO_MANY_REQUESTS,
-                    "Too many failed attempts. Try again in 15 minutes.",
-                    ErrorCodes.OTP_LOCKED, "OTP brute-force lockout");
+                        "Too many failed attempts. Try again in 15 minutes.",
+                        ErrorCodes.OTP_LOCKED, "OTP brute-force lockout");
             }
             return false;
         }
-        // Success — clean up
+        // Success clean up
         redisService.delete(key);
         redisService.delete("email_otp:attempts:" + email);
         return true;
@@ -222,12 +223,12 @@ public class TokenService {
                 redisService.save("login_2fa:locked:" + email, "1", OTP_LOCKOUT_SECONDS);
                 redisService.delete(key);
                 throw new ApiException(HttpStatus.TOO_MANY_REQUESTS,
-                    "Too many failed attempts. Try again in 15 minutes.",
-                    ErrorCodes.OTP_LOCKED, "2FA brute-force lockout");
+                        "Too many failed attempts. Try again in 15 minutes.",
+                        ErrorCodes.OTP_LOCKED, "2FA brute-force lockout");
             }
             return false;
         }
-        // Success — clean up
+        // Success clean up
         redisService.delete(key);
         redisService.delete("login_2fa:attempts:" + email);
         return true;
@@ -265,8 +266,8 @@ public class TokenService {
         if (redisService.exists(lockKey)) {
             long remaining = redisService.getExpire(lockKey);
             throw new ApiException(HttpStatus.TOO_MANY_REQUESTS,
-                "Account temporarily locked. Try again in " + Math.max(remaining, 1) + " seconds.",
-                ErrorCodes.OTP_LOCKED, "OTP lockout active");
+                    "Account temporarily locked. Try again in " + Math.max(remaining, 1) + " seconds.",
+                    ErrorCodes.OTP_LOCKED, "OTP lockout active");
         }
     }
 
@@ -274,8 +275,8 @@ public class TokenService {
         if (redisService.exists(cooldownKey)) {
             long remaining = redisService.getExpire(cooldownKey);
             throw new ApiException(HttpStatus.TOO_MANY_REQUESTS,
-                "Please wait " + Math.max(remaining, 1) + " seconds before requesting a new code.",
-                ErrorCodes.RATE_LIMITED, "Resend cooldown active");
+                    "Please wait " + Math.max(remaining, 1) + " seconds before requesting a new code.",
+                    ErrorCodes.RATE_LIMITED, "Resend cooldown active");
         }
     }
 }

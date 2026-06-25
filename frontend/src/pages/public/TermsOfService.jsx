@@ -16,7 +16,7 @@ const TOC = [
 
 export default function TermsOfService() {
   return (
-    <LegalPage title="Terms of Service" badge="Legal" updated="June 4, 2026" accentColor="#6366f1" toc={TOC}>
+    <LegalPage title="Terms of Service" badge="Legal" updated="June 4, 2026" accentColor="#00A4A4" toc={TOC}>
       <h2 id="acceptance">1. Acceptance of terms</h2>
       <p>By accessing or using the QuantPOS service ("Service"), you agree to these Terms of Service ("Terms"). If you are using the Service on behalf of a business, you represent that you have authority to bind that business.</p>
       <p>These Terms are governed by the laws of India. Any dispute shall be subject to the jurisdiction of courts in India.</p>
@@ -25,7 +25,7 @@ export default function TermsOfService() {
       <p>QuantPOS provides a cloud-based point-of-sale and inventory management platform designed for Indian retail and F&B businesses. We reserve the right to modify, suspend, or discontinue the Service at any time with reasonable notice.</p>
 
       <h2 id="accounts">3. Accounts</h2>
-      <p>You are responsible for maintaining the confidentiality of your account credentials. You must notify us immediately of any unauthorised access. QuantPOS enforces mandatory 2FA on all accounts — do not share your OTP codes.</p>
+      <p>You are responsible for maintaining the confidentiality of your account credentials. You must notify us immediately of any unauthorised access. QuantPOS enforces mandatory 2FA on all accounts  do not share your OTP codes.</p>
       <p>One person or legal entity may not maintain more than one free account. We reserve the right to terminate duplicate accounts.</p>
 
       <h2 id="billing">4. Billing and payments</h2>

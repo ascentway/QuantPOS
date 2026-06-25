@@ -3,7 +3,7 @@ import LegalPage from './LegalPage';
 
 export default function CookiePolicy() {
   return (
-    <LegalPage title="Cookie Policy" badge="Cookies" updated="June 4, 2026" accentColor="#0ea5e9"
+    <LegalPage title="Cookie Policy" badge="Cookies" updated="June 4, 2026" accentColor="#00A4A4"
       toc={[
         { id: 'what', label: '1. What are cookies' },
         { id: 'we-use', label: '2. Cookies we use' },
@@ -33,7 +33,7 @@ export default function CookiePolicy() {
             ['qp_session_id', 'Anonymous session identifier for security logging', 'Session'],
           ].map(([name, purpose, expiry]) => (
             <tr key={name} style={{ borderBottom: '1px solid var(--border)' }}>
-              <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontSize: '0.8rem', color: '#7b39fc' }}>{name}</td>
+              <td style={{ padding: '10px 12px', fontFamily: 'monospace', fontSize: '0.8rem', color: '#00A4A4' }}>{name}</td>
               <td style={{ padding: '10px 12px', color: 'var(--text-muted)' }}>{purpose}</td>
               <td style={{ padding: '10px 12px', color: 'var(--text-muted)' }}>{expiry}</td>
             </tr>

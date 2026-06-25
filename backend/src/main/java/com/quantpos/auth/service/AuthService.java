@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.UUID;
@@ -27,22 +26,22 @@ import java.util.UUID;
 @Slf4j
 public class AuthService {
 
-    private final UserRepository   userRepository;
+    private final UserRepository userRepository;
     private final TenantRepository tenantRepository;
-    private final JwtProvider      jwtProvider;
-    private final TokenService     tokenService;
-    private final EmailService     emailService;
-    private final PasswordEncoder  passwordEncoder;
+    private final JwtProvider jwtProvider;
+    private final TokenService tokenService;
+    private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthService(UserRepository userRepository, TenantRepository tenantRepository,
-                       JwtProvider jwtProvider, TokenService tokenService,
-                       EmailService emailService, PasswordEncoder passwordEncoder) {
-        this.userRepository   = userRepository;
+            JwtProvider jwtProvider, TokenService tokenService,
+            EmailService emailService, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.tenantRepository = tenantRepository;
-        this.jwtProvider      = jwtProvider;
-        this.tokenService     = tokenService;
-        this.emailService     = emailService;
-        this.passwordEncoder  = passwordEncoder;
+        this.jwtProvider = jwtProvider;
+        this.tokenService = tokenService;
+        this.emailService = emailService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -52,7 +51,7 @@ public class AuthService {
     public ApiResponse<Void> register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new ApiException(HttpStatus.BAD_REQUEST,
-                "Email already exists", ErrorCodes.EMAIL_ALREADY_EXISTS, "Email is already registered");
+                    "Email already exists", ErrorCodes.EMAIL_ALREADY_EXISTS, "Email is already registered");
         }
 
         BusinessType businessType;
@@ -60,7 +59,7 @@ public class AuthService {
             businessType = BusinessType.valueOf(request.getBusinessType());
         } catch (IllegalArgumentException e) {
             throw new ApiException(HttpStatus.BAD_REQUEST,
-                "Invalid business type", ErrorCodes.VALIDATION_FAILED, "Business type must be RETAIL or FNB");
+                    "Invalid business type", ErrorCodes.VALIDATION_FAILED, "Business type must be RETAIL or FNB");
         }
 
         Tenant tenant = Tenant.builder()
@@ -103,36 +102,36 @@ public class AuthService {
     public ApiResponse<Void> verifyEmailOtp(String email, String otp) {
         if (!tokenService.validateEmailVerificationOtp(email, otp)) {
             throw new ApiException(HttpStatus.BAD_REQUEST,
-                "Invalid or expired OTP. Please request a new one.",
-                ErrorCodes.OTP_INVALID, "OTP mismatch or expired");
+                    "Invalid or expired OTP. Please request a new one.",
+                    ErrorCodes.OTP_INVALID, "OTP mismatch or expired");
         }
         return userRepository.findByEmail(email)
                 .map(user -> {
                     user.setEmailVerified(true);
                     userRepository.save(user);
                     emailService.sendWelcomeEmail(user.getEmail(), user.getFullName(),
-                        user.getTenant().getBusinessName());
+                            user.getTenant().getBusinessName());
                     return ApiResponse.<Void>success(null, "Email verified successfully. You can now log in.");
                 })
                 .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST,
-                    "User not found for this email.", ErrorCodes.USER_NOT_FOUND, "User not found"));
+                        "User not found for this email.", ErrorCodes.USER_NOT_FOUND, "User not found"));
     }
 
     public ApiResponse<Void> resendOtp(String email) {
         userRepository.findByEmail(email).ifPresent(user -> {
             if (!user.isEmailVerified()) {
-                // Will throw if cooldown active — exception propagates to controller
+                // Will throw if cooldown active exception propagates to controller
                 String otp = tokenService.saveEmailVerificationOtp(email);
                 emailService.sendVerificationEmail(email, user.getFullName(), otp);
             }
         });
         // Always return success to prevent email enumeration
         return ApiResponse.success(null,
-            "If this email is registered and unverified, a new OTP has been sent.");
+                "If this email is registered and unverified, a new OTP has been sent.");
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // LOGIN — Step 1: Validate credentials, send 2FA OTP
+    // LOGIN Step 1: Validate credentials, send 2FA OTP
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
@@ -141,14 +140,14 @@ public class AuthService {
      */
     public ApiResponse<Void> login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-            .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED,
-                "Invalid credentials", ErrorCodes.INVALID_CREDENTIALS, "User not found"));
+                .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED,
+                        "Invalid credentials", ErrorCodes.INVALID_CREDENTIALS, "User not found"));
 
         if (user.isLocked()) {
             if (user.getLockedUntil() != null && user.getLockedUntil().isAfter(java.time.LocalDateTime.now())) {
                 throw new ApiException(HttpStatus.UNAUTHORIZED,
-                    "Account is temporarily locked due to too many failed attempts. Try again later.",
-                    ErrorCodes.INVALID_CREDENTIALS, "Account locked");
+                        "Account is temporarily locked due to too many failed attempts. Try again later.",
+                        ErrorCodes.INVALID_CREDENTIALS, "Account locked");
             } else {
                 // Lock expired, reset
                 user.setLocked(false);
@@ -166,9 +165,9 @@ public class AuthService {
             }
             userRepository.save(user);
             throw new ApiException(HttpStatus.UNAUTHORIZED,
-                "Invalid credentials", ErrorCodes.INVALID_CREDENTIALS, "Incorrect password");
+                    "Invalid credentials", ErrorCodes.INVALID_CREDENTIALS, "Incorrect password");
         }
-        
+
         if (user.getLoginAttemptCount() > 0) {
             user.setLoginAttemptCount(0);
             userRepository.save(user);
@@ -179,21 +178,21 @@ public class AuthService {
             String otp = tokenService.saveEmailVerificationOtpSkipCooldown(user.getEmail());
             emailService.sendVerificationEmail(user.getEmail(), user.getFullName(), otp);
             throw new ApiException(HttpStatus.FORBIDDEN,
-                "Please verify your email before logging in. A new verification code has been sent.",
-                ErrorCodes.EMAIL_NOT_VERIFIED, "Email not verified");
+                    "Please verify your email before logging in. A new verification code has been sent.",
+                    ErrorCodes.EMAIL_NOT_VERIFIED, "Email not verified");
         }
         if (!user.isActive()) {
             throw new ApiException(HttpStatus.FORBIDDEN,
-                "Your account has been deactivated. Contact support.",
-                ErrorCodes.ACCOUNT_INACTIVE, "User inactive");
+                    "Your account has been deactivated. Contact support.",
+                    ErrorCodes.ACCOUNT_INACTIVE, "User inactive");
         }
         if (!user.getTenant().isActive()) {
             throw new ApiException(HttpStatus.FORBIDDEN,
-                "Your business account is suspended.",
-                ErrorCodes.ACCOUNT_INACTIVE, "Tenant inactive");
+                    "Your business account is suspended.",
+                    ErrorCodes.ACCOUNT_INACTIVE, "Tenant inactive");
         }
 
-        // Credentials valid — send 2FA OTP
+        // Credentials valid send 2FA OTP
         String otp2fa = tokenService.saveLogin2faOtp(user.getEmail());
         emailService.send2faEmail(user.getEmail(), user.getFullName(), otp2fa);
 
@@ -201,7 +200,7 @@ public class AuthService {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // LOGIN — Step 2: Verify 2FA OTP, issue tokens
+    // LOGIN Step 2: Verify 2FA OTP, issue tokens
     // ─────────────────────────────────────────────────────────────────────────
 
     /**
@@ -209,19 +208,19 @@ public class AuthService {
      */
     public ApiResponse<AuthResponse> verify2fa(String email, String otp) {
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED,
-                "Invalid session", ErrorCodes.INVALID_CREDENTIALS, "User not found"));
+                .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED,
+                        "Invalid session", ErrorCodes.INVALID_CREDENTIALS, "User not found"));
 
         if (!tokenService.validateLogin2faOtp(email, otp)) {
             throw new ApiException(HttpStatus.UNAUTHORIZED,
-                "Invalid or expired code. Please try again.",
-                ErrorCodes.OTP_INVALID, "2FA OTP mismatch");
+                    "Invalid or expired code. Please try again.",
+                    ErrorCodes.OTP_INVALID, "2FA OTP mismatch");
         }
 
         user.setLastLoginAt(LocalDateTime.now());
         userRepository.save(user);
 
-        String accessToken  = jwtProvider.generateAccessToken(user);
+        String accessToken = jwtProvider.generateAccessToken(user);
         String refreshToken = UUID.randomUUID().toString();
         tokenService.saveRefreshToken(user.getId(), refreshToken);
 
@@ -248,12 +247,12 @@ public class AuthService {
         if (tokenService.validateRefreshToken(incomingToken).isEmpty()) {
             tokenService.getShadowUserId(incomingToken).ifPresent(userId -> {
                 log.warn("SECURITY: Refresh token replay detected! " +
-                    "Clearing all sessions for userId={}. " +
-                    "A previously rotated token was presented — possible session hijack.", userId);
+                        "Clearing all sessions for userId={}. " +
+                        "A previously rotated token was presented  possible session hijack.", userId);
                 tokenService.invalidateAllUserSessions(userId);
             });
             throw new ApiException(HttpStatus.UNAUTHORIZED,
-                "Refresh token expired or invalid", ErrorCodes.TOKEN_EXPIRED, "Invalid refresh token");
+                    "Refresh token expired or invalid", ErrorCodes.TOKEN_EXPIRED, "Invalid refresh token");
         }
         // ───────────────────────────────────────────────────────────────
 
@@ -262,7 +261,7 @@ public class AuthService {
                 .filter(User::isActive)
                 .map(user -> {
                     String newRefreshToken = tokenService.rotateRefreshToken(
-                        incomingToken, user.getId());
+                            incomingToken, user.getId());
                     String newAccessToken = jwtProvider.generateAccessToken(user);
 
                     AuthResponse.UserInfo userInfo = buildUserInfo(user);
@@ -274,7 +273,7 @@ public class AuthService {
                     return ApiResponse.success(response, "Token refreshed successfully");
                 })
                 .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED,
-                    "Refresh token expired or invalid", ErrorCodes.TOKEN_EXPIRED, "Invalid refresh token"));
+                        "Refresh token expired or invalid", ErrorCodes.TOKEN_EXPIRED, "Invalid refresh token"));
     }
 
     public ApiResponse<Void> logout(String refreshToken) {
@@ -305,7 +304,7 @@ public class AuthService {
                     return ApiResponse.<Void>success(null, "Password reset successful. Please log in.");
                 })
                 .orElseThrow(() -> new ApiException(HttpStatus.BAD_REQUEST,
-                    "Reset link is invalid or has expired", ErrorCodes.TOKEN_INVALID, "Invalid token"));
+                        "Reset link is invalid or has expired", ErrorCodes.TOKEN_INVALID, "Invalid token"));
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -317,7 +316,7 @@ public class AuthService {
                 .filter(user -> user.getTenant().getId().equals(tenantId))
                 .map(user -> ApiResponse.success(buildUserInfo(user), "User info retrieved"))
                 .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED,
-                    "User not found", ErrorCodes.USER_NOT_FOUND, "User not found"));
+                        "User not found", ErrorCodes.USER_NOT_FOUND, "User not found"));
     }
 
     public ApiResponse<Void> changePassword(UUID userId, ChangePasswordRequest request) {
@@ -325,17 +324,18 @@ public class AuthService {
                 .map(user -> {
                     if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
                         throw new ApiException(HttpStatus.UNAUTHORIZED,
-                            "Invalid current password", ErrorCodes.INVALID_CREDENTIALS, "Incorrect current password");
+                                "Invalid current password", ErrorCodes.INVALID_CREDENTIALS,
+                                "Incorrect current password");
                     }
                     user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
                     userRepository.save(user);
                     // Invalidate ALL active sessions across all devices
                     tokenService.invalidateAllUserSessions(user.getId());
                     return ApiResponse.<Void>success(null,
-                        "Password changed successfully. Please log in again on all devices.");
+                            "Password changed successfully. Please log in again on all devices.");
                 })
                 .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED,
-                    "User not found", ErrorCodes.USER_NOT_FOUND, "User not found"));
+                        "User not found", ErrorCodes.USER_NOT_FOUND, "User not found"));
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -352,6 +352,7 @@ public class AuthService {
                 .businessName(user.getTenant().getBusinessName())
                 .businessType(user.getTenant().getBusinessType().name())
                 .subscriptionStatus(user.getTenant().getSubscriptionStatus().name())
+                .gstin(user.getTenant().getGstin())
                 .build();
     }
 }

@@ -23,7 +23,7 @@ const Input = React.forwardRef(({
   const labelClasses = "mb-1 block text-sm font-manrope font-medium text-theme-secondary";
   const inputClasses = `w-full rounded-[10px] border px-4 py-3 text-[15px] font-inter transition-all duration-150 outline-none
     bg-surface border-theme text-theme-primary placeholder-slate-400 dark:placeholder-slate-500
-    focus:border-[#7b39fc] focus:ring-2 focus:ring-[#7b39fc]/20
+    focus:border-accent focus:ring-2 focus:ring-accent/20
     ${error ? 'border-red-500/50 focus:border-red-500 focus:ring-red-500/10' : ''}
     ${className}`;
 
@@ -31,7 +31,7 @@ const Input = React.forwardRef(({
     <div className="w-full text-left">
       {label && (
         <label htmlFor={name} className={labelClasses}>
-          {label} {required && <span className="text-[#7b39fc]">*</span>}
+          {label} {required && <span className="text-accent">*</span>}
         </label>
       )}
       <input

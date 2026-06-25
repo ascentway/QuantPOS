@@ -1,4 +1,4 @@
-# QuantPOS — Complete Backend Database Schema
+# QuantPOS  Complete Backend Database Schema
 
 **Version:** 1.0  
 **Database:** PostgreSQL 15  
@@ -126,7 +126,7 @@ CREATE TYPE subscription_status AS ENUM ('ACTIVE', 'INACTIVE', 'PAST_DUE', 'CANC
 CREATE TYPE user_role AS ENUM ('SUPER_ADMIN', 'OWNER', 'MANAGER', 'CASHIER');
 
 -- Product types (including loose products)
-CREATE TYPE product_type AS ENUM ('PACKAGED', 'LOOSE', 'HYBRID');
+CREATE TYPE product_type AS ENUM ('STANDARD', 'LOOSE');
 
 -- Sale statuses
 CREATE TYPE sale_status AS ENUM ('COMPLETED', 'REFUNDED', 'CANCELLED', 'PENDING');
@@ -572,27 +572,25 @@ CREATE TABLE IF NOT EXISTS products (
   description VARCHAR(500),
   
   -- Product Type (determines pricing logic)
-  product_type product_type NOT NULL DEFAULT 'PACKAGED',
-  -- PACKAGED: Fixed quantity (e.g., 5kg sugar box)
-  -- LOOSE: By weight/volume (e.g., sugar from container)
-  -- HYBRID: Both options available
+  product_type product_type NOT NULL DEFAULT 'STANDARD',
+  -- STANDARD: Fixed quantity (e.g., 1 bottle, 1 packet)
+  -- LOOSE: Sold by weight/volume (e.g., sugar per kg, oil per litre)
   
-  -- Standard Pricing (always present)
-  unit_price DECIMAL(10,2) NOT NULL,  -- Price per unit (kg, liter, piece)
-  cost_price DECIMAL(10,2) NULLABLE,  -- Cost to business
+  -- Pricing (Stored in Paise/cents to avoid floating point errors)
+  price_paise BIGINT NOT NULL DEFAULT 0,
+  cost_paise BIGINT NULLABLE,
+  price_per_unit_paise BIGINT NULLABLE, -- Base price for loose calculations
   currency VARCHAR(3) DEFAULT 'INR',
   
-  -- For PACKAGED products
-  package_quantity DECIMAL(10,3) NULLABLE,  -- 5 (kg)
-  package_unit VARCHAR(20) NULLABLE,  -- kg, liter, piece
+  -- Tax and HSN
+  hsn_code VARCHAR(10) NULLABLE,
+  gst_rate DECIMAL(5,2) DEFAULT 0.00,
+  gst_inclusive BOOLEAN DEFAULT true,
   
-  -- For LOOSE products (dynamic pricing)
-  base_unit DECIMAL(10,3) NULLABLE,  -- 1 (kg)
-  base_unit_name VARCHAR(20) NULLABLE,  -- kg, liter, meter
-  allows_loose_selling BOOLEAN DEFAULT false,
-  
-  -- For HYBRID products
-  allows_packaged_selling BOOLEAN DEFAULT false,
+  -- Measurement & Inventory 
+  unit_type VARCHAR(20) DEFAULT 'PIECE', -- 'KG', 'GRAM', 'LITRE', 'ML', 'PIECE'
+  stock_quantity DECIMAL(15,3) DEFAULT 0, -- Stored in base units (e.g. grams internally, but displayed as kg)
+  minimum_loose_quantity DECIMAL(15,3) NULLABLE, -- Minimum weight to sell
   
   -- Stock Management
   is_trackable BOOLEAN DEFAULT true,  -- If false, no inventory tracking
@@ -612,9 +610,8 @@ CREATE TABLE IF NOT EXISTS products (
   updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
   
   -- Constraints
-  CONSTRAINT valid_price CHECK (unit_price > 0),
-  CONSTRAINT valid_cost CHECK (cost_price IS NULL OR cost_price > 0),
-  CONSTRAINT valid_quantity CHECK (package_quantity IS NULL OR package_quantity > 0),
+  CONSTRAINT valid_price CHECK (price_paise >= 0),
+  CONSTRAINT valid_cost CHECK (cost_paise IS NULL OR cost_paise >= 0),
   UNIQUE(tenant_id, sku)  -- SKU unique per tenant
 );
 
@@ -627,57 +624,58 @@ CREATE INDEX idx_products_is_active ON products(tenant_id, is_active);
 CREATE INDEX idx_products_type ON products(tenant_id, product_type);
 
 -- Comments
-COMMENT ON COLUMN products.product_type IS 'PACKAGED: Fixed qty (5kg). LOOSE: By weight. HYBRID: Both.';
-COMMENT ON COLUMN products.unit_price IS 'Price per base unit (kg/liter/piece). Used in dynamic pricing calculations.';
-COMMENT ON COLUMN products.base_unit IS 'For loose products: 1 (kg). For packaged: 5 (kg).';
+COMMENT ON COLUMN products.product_type IS 'STANDARD: Fixed qty (bottle). LOOSE: By weight.';
+COMMENT ON COLUMN products.price_paise IS 'Price in paise (amount * 100). Prevents floating point errors.';
+COMMENT ON COLUMN products.stock_quantity IS 'Stored in base units. Decimals for loose items.';
 
 -- Sample data
 INSERT INTO products (
-  tenant_id, category_id, name, sku, product_type, unit_price, 
-  base_unit, base_unit_name, allows_loose_selling, package_quantity, package_unit, allows_packaged_selling
+  tenant_id, category_id, name, sku, product_type, price_paise, price_per_unit_paise,
+  unit_type, stock_quantity, minimum_loose_quantity, hsn_code, gst_rate
 ) VALUES
 (
   (SELECT id FROM tenants WHERE business_name = 'Sharma General Store'),
   (SELECT id FROM categories WHERE name = 'Groceries' AND tenant_id = (SELECT id FROM tenants WHERE business_name = 'Sharma General Store')),
-  'Sugar Loose (per kg)',
+  'Sugar Loose',
   'SUGAR-LOOSE-KG',
   'LOOSE',
-  112.00,  -- ₹112 per kg
-  1.000,  -- 1 kg base unit
-  'kg',
-  true,  -- Can sell loose
-  NULL,  -- Not packaged
-  NULL,
-  false
+  11200,  -- ₹112.00
+  11200,
+  'KG',
+  150.000, -- 150 kg in stock
+  0.100,   -- minimum 100g
+  '1701',
+  5.00
 ),
 (
   (SELECT id FROM tenants WHERE business_name = 'Sharma General Store'),
   (SELECT id FROM categories WHERE name = 'Groceries' AND tenant_id = (SELECT id FROM tenants WHERE business_name = 'Sharma General Store')),
   'Sugar 5kg Bag',
   'SUGAR-5KG-BAG',
-  'PACKAGED',
-  450.00,  -- ₹450 for 5kg
-  5.000,  -- 5 kg
-  'kg',
-  false,  -- Not loose
-  5,  -- 5
-  'kg',  -- kg
-  true  -- Can sell packaged
-),
-(
-  (SELECT id FROM tenants WHERE business_name = 'Sharma General Store'),
+  'STANDARD',
+  45000,  -- ₹450.00
   NULL,
-  'Oil 500ml',
-  'OIL-500ML',
-  'PACKAGED',
-  120.00,
-  0.500,  -- 500ml = 0.5 liter
-  'liter',
-  false,
-  0.500,
-  'liter',
-  true
+  'PIECE',
+  25,
+  NULL,
+  '1701',
+  5.00
 );
+
+### HSN_GST_RATES Table (Tax Reference)
+
+```sql
+CREATE TABLE IF NOT EXISTS hsn_gst_rates (
+  hsn_code VARCHAR(10) PRIMARY KEY,
+  description VARCHAR(500) NOT NULL,
+  gst_rate DECIMAL(5,2) NOT NULL
+);
+
+-- Seed with common FMCG/Retail rates
+INSERT INTO hsn_gst_rates (hsn_code, description, gst_rate) VALUES
+('1701', 'Cane or beet sugar', 5.00),
+('0401', 'Milk and cream', 0.00),
+('1905', 'Bread, pastry, cakes, biscuits', 18.00);
 ```
 
 ### INVENTORY Table (Current Stock State)

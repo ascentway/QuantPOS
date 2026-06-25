@@ -21,7 +21,7 @@ export const authApi = {
   },
 
   /**
-   * Login Step 1 — validate credentials, triggers 2FA OTP email.
+   * Login Step 1  validate credentials, triggers 2FA OTP email.
    * Returns { success: true, data: null } on success.
    */
   login: async (data) => {
@@ -30,7 +30,7 @@ export const authApi = {
   },
 
   /**
-   * Login Step 2 — verify 2FA OTP, returns tokens.
+   * Login Step 2  verify 2FA OTP, returns tokens.
    * Returns { success: true, data: { accessToken, refreshToken, user } }
    */
   verify2fa: async (email, otp) => {
@@ -67,6 +67,31 @@ export const authApi = {
 
   changePassword: async (data) => {
     const response = await axiosInstance.put('/api/auth/change-password', data);
+    return response.data;
+  },
+
+  inviteStaff: async (data) => {
+    const response = await axiosInstance.post('/api/auth/invite', data);
+    return response.data;
+  },
+
+  acceptInvite: async (data) => {
+    const response = await axiosInstance.post('/api/auth/accept-invite', data);
+    return response.data;
+  },
+
+  getInvitations: async () => {
+    const response = await axiosInstance.get('/api/auth/invitations');
+    return response.data;
+  },
+
+  resendInvitation: async (id) => {
+    const response = await axiosInstance.post(`/api/auth/invitations/${id}/resend`);
+    return response.data;
+  },
+
+  revokeInvitation: async (id) => {
+    const response = await axiosInstance.delete(`/api/auth/invitations/${id}`);
     return response.data;
   },
 };

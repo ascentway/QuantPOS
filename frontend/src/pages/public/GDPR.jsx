@@ -37,7 +37,7 @@ export default function GDPR() {
       <p>To exercise any right, email <a href="mailto:quantpos@gmail.com">quantpos@gmail.com</a>. We will respond within 30 days.</p>
 
       <h2 id="transfers">3. International data transfers</h2>
-      <p>QuantPOS stores all data in India (AWS Mumbai — ap-south-1). If data is transferred outside India (e.g., for email delivery), it is done under Standard Contractual Clauses (SCCs) or equivalent safeguards.</p>
+      <p>QuantPOS stores all data in India (AWS Mumbai  ap-south-1). If data is transferred outside India (e.g., for email delivery), it is done under Standard Contractual Clauses (SCCs) or equivalent safeguards.</p>
 
       <h2 id="retention">4. Data retention</h2>
       <ul>

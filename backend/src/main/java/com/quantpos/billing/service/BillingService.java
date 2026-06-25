@@ -67,7 +67,7 @@ public class BillingService {
                 tenantRepository.save(tenant);
             }
 
-            SessionCreateParams params = SessionCreateParams.builder()
+            SessionCreateParams.Builder paramsBuilder = SessionCreateParams.builder()
                     .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
                     .setCustomer(customerId)
                     .addLineItem(
@@ -85,15 +85,35 @@ public class BillingService {
                     .putMetadata("plan_type", planType.toUpperCase())
                     .putMetadata("billing_cycle", billingCycle.toUpperCase())
                     .setSuccessUrl(appBaseUrl + "/dashboard/settings?checkout=success")
-                    .setCancelUrl(appBaseUrl + "/dashboard/settings?checkout=cancelled")
-                    .build();
+                    .setCancelUrl(appBaseUrl + "/dashboard/settings?checkout=cancelled");
 
-            Session session = Session.create(params);
+            Session session;
+            try {
+                session = Session.create(paramsBuilder.build());
+            } catch (com.stripe.exception.InvalidRequestException e) {
+                if ("resource_missing".equals(e.getCode()) && e.getMessage() != null && e.getMessage().contains("No such customer")) {
+                    log.warn("Stripe customer {} not found. Creating a new one.", customerId);
+                    CustomerCreateParams customerParams = CustomerCreateParams.builder()
+                            .setName(tenant.getBusinessName())
+                            .setEmail(tenant.getPhoneNumber() + "@quantpos.temp")
+                            .putMetadata("tenant_id", tenant.getId().toString())
+                            .build();
+                    Customer customer = Customer.create(customerParams);
+                    customerId = customer.getId();
+                    tenant.setStripeCustomerId(customerId);
+                    tenantRepository.save(tenant);
+                    
+                    paramsBuilder.setCustomer(customerId);
+                    session = Session.create(paramsBuilder.build());
+                } else {
+                    throw e;
+                }
+            }
 
             return Map.of("url", session.getUrl());
         } catch (StripeException e) {
             log.error("Stripe error creating checkout session", e);
-            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Error communicating with payment gateway", "STRIPE_ERROR", e.getMessage());
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Error communicating with payment gateway", "STRIPE_ERROR", null);
         }
     }
 
@@ -115,9 +135,15 @@ public class BillingService {
             com.stripe.model.billingportal.Session portalSession = com.stripe.model.billingportal.Session.create(params);
 
             return Map.of("url", portalSession.getUrl());
+        } catch (com.stripe.exception.InvalidRequestException e) {
+            if ("resource_missing".equals(e.getCode()) && e.getMessage() != null && e.getMessage().contains("No such customer")) {
+                throw new ApiException(HttpStatus.BAD_REQUEST, "Your billing profile was not found on Stripe. Please subscribe to a plan to create a new profile.", "NO_BILLING_PROFILE", null);
+            }
+            log.error("Stripe API error", e);
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Error communicating with payment gateway", "STRIPE_ERROR", null);
         } catch (StripeException e) {
             log.error("Stripe error creating portal session", e);
-            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Error communicating with payment gateway", "STRIPE_ERROR", e.getMessage());
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Error communicating with payment gateway", "STRIPE_ERROR", null);
         }
     }
 

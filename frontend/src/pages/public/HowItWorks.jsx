@@ -9,9 +9,9 @@ const STEPS = [
     icon: '✍️',
     title: 'Create your account',
     subtitle: '5 minutes',
-    desc: 'Register with your business name, email, and type. Verify your email with an OTP. No credit card needed — your 14-day trial starts instantly.',
+    desc: 'Register with your business name, email, and type. Verify your email with an OTP. No credit card needed  your 14-day trial starts instantly.',
     details: ['Business details form', 'Email OTP verification', '2FA activated from day 1', 'Full platform access immediately'],
-    color: '#7b39fc',
+    color: '#00A4A4',
   },
   {
     number: '02',
@@ -20,7 +20,7 @@ const STEPS = [
     subtitle: '10–15 minutes',
     desc: 'Import your product catalogue from Excel in one click or add products manually. Assign POS terminals to cashiers. Set GST rates once and forget.',
     details: ['Bulk Excel / CSV import', 'Manual product entry', 'GST rate configuration', 'Terminal assignment to staff'],
-    color: '#0ea5e9',
+    color: '#00A4A4',
   },
   {
     number: '03',
@@ -52,12 +52,12 @@ export default function HowItWorks() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-28 pb-20 px-6 qp-grid-bg">
-        <GlowOrb color="#7b39fc" size={600} opacity={0.1} top="0" left="50%" blur={120} />
-        <FloatingDots count={6} color="#7b39fc" />
+        <GlowOrb color="#00A4A4" size={600} opacity={0.1} top="0" left="50%" blur={120} />
+        <FloatingDots count={6} color="#00A4A4" />
 
         <div className="relative z-10 max-w-4xl mx-auto text-center">
           <div className="qp-reveal">
-            <GradientBadge color="#7b39fc">Setup in minutes</GradientBadge>
+            <GradientBadge color="#00A4A4">Setup in minutes</GradientBadge>
             <h1 className="font-manrope font-extrabold text-5xl sm:text-7xl text-[var(--text-primary)] tracking-tight leading-none mb-6">
               From signup to{' '}
               <span className="qp-shimmer-text">first sale</span>
@@ -69,9 +69,9 @@ export default function HowItWorks() {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center qp-reveal qp-delay-2">
             <Link to="/register"
-              className="qp-btn-primary inline-flex items-center justify-center gap-2 bg-[#7b39fc] text-white font-bold px-8 py-4 rounded-xl text-base shadow-2xl shadow-[#7b39fc]/30">
+              className="qp-btn-primary inline-flex items-center justify-center gap-2 bg-accent text-white font-bold px-8 py-4 rounded-xl text-base shadow-2xl shadow-[#00A4A4]/30">
               Start for free
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5-5 5M6 12h12"/></svg>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5-5 5M6 12h12" /></svg>
             </Link>
             <Link to="/features"
               className="inline-flex items-center justify-center gap-2 border border-[var(--border)] text-[var(--text-primary)] font-semibold px-8 py-4 rounded-xl text-base hover:bg-[var(--surface)] transition-all">
@@ -84,12 +84,12 @@ export default function HowItWorks() {
       {/* ── Steps timeline ────────────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-6 py-24">
         <div className="text-center mb-16 qp-reveal">
-          <GradientBadge color="#7b39fc">The journey</GradientBadge>
+          <GradientBadge color="#00A4A4">The journey</GradientBadge>
           <h2 className="font-manrope font-extrabold text-4xl sm:text-5xl text-[var(--text-primary)] tracking-tight mb-4">
             Four simple steps
           </h2>
           <p className="text-lg text-[var(--text-muted)] max-w-xl mx-auto">
-            Everything is browser-based — use your existing phone, tablet, or laptop.
+            Everything is browser-based  use your existing phone, tablet, or laptop.
           </p>
         </div>
 
@@ -121,7 +121,7 @@ export default function HowItWorks() {
                   <div className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 mb-3"
                     style={{ background: `${step.color}12`, border: `1px solid ${step.color}25` }}>
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke={step.color} strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/><path strokeLinecap="round" d="M12 6v6l4 2"/>
+                      <circle cx="12" cy="12" r="10" /><path strokeLinecap="round" d="M12 6v6l4 2" />
                     </svg>
                     <span className="text-xs font-bold" style={{ color: step.color }}>{step.subtitle}</span>
                   </div>
@@ -156,7 +156,7 @@ export default function HowItWorks() {
       <CTAStrip
         heading="Ready to get started?"
         sub="Join the modern retailers revolutionising their stores with QuantPOS. Free 14-day trial."
-        primaryLabel="Start free — no card needed"
+        primaryLabel="Start free  no card needed"
         secondaryLabel="View all features"
         secondaryTo="/features"
       />

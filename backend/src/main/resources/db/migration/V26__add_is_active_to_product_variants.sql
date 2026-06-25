@@ -1,0 +1,1 @@
+ALTER TABLE product_variants ADD COLUMN is_active BOOLEAN DEFAULT TRUE;

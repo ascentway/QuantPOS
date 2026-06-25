@@ -28,7 +28,7 @@ const INCIDENTS = [
   },
   {
     date: '2026-03-02', status: 'resolved', severity: 'none',
-    title: 'Scheduled maintenance — database migration',
+    title: 'Scheduled maintenance  database migration',
     desc: 'Planned 15-minute maintenance window for database schema upgrades. Service was down for 11 minutes, 4 minutes ahead of schedule.',
     duration: '11 minutes',
   },
@@ -113,7 +113,7 @@ export default function Status() {
       {/* ── Services ─────────────────────────────────────────────────────────── */}
       <section className="max-w-4xl mx-auto px-6 pb-16">
         <div className="mb-8 qp-reveal">
-          <GradientBadge color="#7b39fc">Service health</GradientBadge>
+          <GradientBadge color="#00A4A4">Service health</GradientBadge>
           <h2 className="font-manrope font-extrabold text-3xl text-[var(--text-primary)]">All services</h2>
         </div>
         <div className="space-y-3">
@@ -142,7 +142,7 @@ export default function Status() {
       {/* ── Incident history ──────────────────────────────────────────────────── */}
       <section className="max-w-4xl mx-auto px-6 pb-24">
         <div className="mb-8 qp-reveal">
-          <GradientBadge color="#7b39fc">Incident history</GradientBadge>
+          <GradientBadge color="#00A4A4">Incident history</GradientBadge>
           <h2 className="font-manrope font-extrabold text-3xl text-[var(--text-primary)]">Past incidents</h2>
         </div>
         <div className="space-y-4">
@@ -171,7 +171,7 @@ export default function Status() {
         <div className="mt-8 text-center qp-reveal">
           <p className="text-sm text-[var(--text-muted)]">
             Subscribe to status updates via{' '}
-            <a href="mailto:quantpos@gmail.com" className="text-[#7b39fc] font-semibold hover:underline">email</a>
+            <a href="mailto:quantpos@gmail.com" className="text-accent font-semibold hover:underline">email</a>
           </p>
         </div>
       </section>

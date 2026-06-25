@@ -21,13 +21,13 @@ const Button = ({
   'aria-expanded': ariaExpanded,
   'aria-controls': ariaControls
 }) => {
-  const baseClasses = "inline-flex items-center justify-center font-cabin font-medium text-[16px] rounded-[10px] py-3.5 px-6 transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-[#7b39fc]/50 select-none";
+  const baseClasses = "inline-flex items-center justify-center font-cabin font-medium text-[16px] rounded-[10px] py-3.5 px-6 transition-all duration-150 ease-out focus:outline-none focus:ring-2 focus:ring-accent/50 select-none";
   
   const variants = {
-    primary: "bg-[#7b39fc] text-white hover:bg-[#8d52ff] disabled:opacity-50 disabled:pointer-events-none hover:scale-[1.02]",
-    secondary: "bg-[#2b2344] text-[#f6f7f9] hover:bg-[#3b325c] border border-slate-700/30 disabled:opacity-50 disabled:pointer-events-none hover:scale-[1.02]",
-    outline: "bg-transparent border border-[#d4d4d4] dark:border-[#2b2344] text-[#171717] dark:text-[#fafafa] hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:pointer-events-none hover:scale-[1.02]",
-    danger: "bg-red-600 text-white hover:bg-red-500 disabled:opacity-50 disabled:pointer-events-none hover:scale-[1.02]"
+    primary: "bg-accent text-white hover:bg-[var(--accent-hover)] disabled:opacity-50 disabled:pointer-events-none hover:scale-[1.02] shadow-btn",
+    secondary: "bg-[var(--card2)] text-[var(--text-primary)] hover:bg-[var(--border)] border border-[var(--border)] disabled:opacity-50 disabled:pointer-events-none hover:scale-[1.02]",
+    outline: "bg-transparent border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--accent-subtle)] hover:border-[var(--accent-border)] disabled:opacity-50 disabled:pointer-events-none hover:scale-[1.02]",
+    danger: "bg-danger text-white hover:opacity-90 disabled:opacity-50 disabled:pointer-events-none hover:scale-[1.02]"
   };
 
   return (

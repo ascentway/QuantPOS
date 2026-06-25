@@ -5,10 +5,10 @@ import { ANIM_CSS, useReveal, GlowOrb, GradientBadge, FloatingDots } from './ui'
 
 const POSTS = [
   {
-    slug: '#', tag: 'Product', tagColor: '#7b39fc', date: 'June 4, 2026', readTime: '5 min',
+    slug: '#', tag: 'Product', tagColor: '#00A4A4', date: 'June 4, 2026', readTime: '5 min',
     title: 'Introducing AI Restocking: Never run out of stock again',
     excerpt: 'Our new AI agent analyses your 30-day sales history, detects seasonal patterns, and sends you prioritised purchase order suggestions every day at 8 AM and 8 PM.',
-    author: 'Dhruv Ranjan', authorInitials: 'DR', authorColor: '#7b39fc',
+    author: 'Dhruv Ranjan', authorInitials: 'DR', authorColor: '#00A4A4',
     featured: true,
   },
   {
@@ -24,16 +24,16 @@ const POSTS = [
     author: 'Growth Team', authorInitials: 'GT', authorColor: '#f59e0b',
   },
   {
-    slug: '#', tag: 'Engineering', tagColor: '#0ea5e9', date: 'April 28, 2026', readTime: '10 min',
+    slug: '#', tag: 'Engineering', tagColor: '#00A4A4', date: 'April 28, 2026', readTime: '10 min',
     title: 'How we built a multi-tenant POS on a shared PostgreSQL schema',
-    excerpt: 'Deep dive into our row-level security architecture, Hibernate filters, and ThreadLocal tenant context — and why we chose it over separate databases.',
-    author: 'Engineering', authorInitials: 'EN', authorColor: '#0ea5e9',
+    excerpt: 'Deep dive into our row-level security architecture, Hibernate filters, and ThreadLocal tenant context  and why we chose it over separate databases.',
+    author: 'Engineering', authorInitials: 'EN', authorColor: '#00A4A4',
   },
   {
-    slug: '#', tag: 'Product', tagColor: '#7b39fc', date: 'April 15, 2026', readTime: '4 min',
+    slug: '#', tag: 'Product', tagColor: '#00A4A4', date: 'April 15, 2026', readTime: '4 min',
     title: 'Team management just got a lot better',
     excerpt: 'We shipped OTP-based team invitations, cashier-level POS restrictions, and a full activity audit log in our latest release.',
-    author: 'Dhruv Ranjan', authorInitials: 'DR', authorColor: '#7b39fc',
+    author: 'Dhruv Ranjan', authorInitials: 'DR', authorColor: '#00A4A4',
   },
   {
     slug: '#', tag: 'Guide', tagColor: '#10b981', date: 'March 30, 2026', readTime: '7 min',
@@ -53,12 +53,12 @@ export default function Blog() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-28 pb-16 px-6 qp-grid-bg">
-        <GlowOrb color="#7b39fc" size={500} opacity={0.1} top="0" left="50%" blur={100} />
-        <FloatingDots count={5} color="#7b39fc" />
+        <GlowOrb color="#00A4A4" size={500} opacity={0.1} top="0" left="50%" blur={100} />
+        <FloatingDots count={5} color="#00A4A4" />
 
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <div className="qp-reveal">
-            <GradientBadge color="#7b39fc">The QuantPOS blog</GradientBadge>
+            <GradientBadge color="#00A4A4">The QuantPOS blog</GradientBadge>
             <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl text-[var(--text-primary)] tracking-tight leading-none mb-5">
               Stories, guides &{' '}
               <span className="qp-shimmer-text">updates</span>
@@ -77,7 +77,7 @@ export default function Blog() {
           <div className="grid lg:grid-cols-2">
             {/* Image placeholder */}
             <div className="h-60 lg:h-auto relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #7b39fc22, #0ea5e922, #10b98122)' }}>
+              style={{ background: 'linear-gradient(135deg, #00A4A422, #00A4A422, #10b98122)' }}>
               <div className="absolute inset-0 flex items-center justify-center text-7xl opacity-30">📦</div>
               <div className="absolute top-0 left-0 right-0 bottom-0 qp-grid-bg opacity-40" />
               <div className="absolute top-5 left-5">
@@ -93,7 +93,7 @@ export default function Blog() {
                   <span>📅 {featured.date}</span>
                   <span>⏱️ {featured.readTime} read</span>
                 </div>
-                <h2 className="font-manrope font-extrabold text-2xl sm:text-3xl text-[var(--text-primary)] mb-4 leading-tight group-hover:text-[#7b39fc] transition-colors">
+                <h2 className="font-manrope font-extrabold text-2xl sm:text-3xl text-[var(--text-primary)] mb-4 leading-tight group-hover:text-accent transition-colors">
                   {featured.title}
                 </h2>
                 <p className="text-[var(--text-muted)] leading-relaxed text-sm sm:text-base mb-6">{featured.excerpt}</p>
@@ -106,7 +106,7 @@ export default function Blog() {
                   </div>
                   <span className="text-sm font-semibold text-[var(--text-primary)]">{featured.author}</span>
                 </div>
-                <span className="text-[#7b39fc] font-semibold text-sm group-hover:gap-2 flex items-center gap-1 transition-all">
+                <span className="text-accent font-semibold text-sm group-hover:gap-2 flex items-center gap-1 transition-all">
                   Read more
                   <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5-5 5M6 12h12" />
@@ -144,7 +144,7 @@ export default function Blog() {
                   <span>·</span>
                   <span>{post.readTime} read</span>
                 </div>
-                <h3 className="font-manrope font-extrabold text-lg text-[var(--text-primary)] mb-3 leading-tight group-hover:text-[#7b39fc] transition-colors flex-1">
+                <h3 className="font-manrope font-extrabold text-lg text-[var(--text-primary)] mb-3 leading-tight group-hover:text-accent transition-colors flex-1">
                   {post.title}
                 </h3>
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-5 line-clamp-2">{post.excerpt}</p>

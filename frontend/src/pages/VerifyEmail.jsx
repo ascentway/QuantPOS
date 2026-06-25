@@ -110,7 +110,7 @@ const VerifyEmail = () => {
     }
   };
 
-  const inputClasses = "w-12 h-12 text-center text-xl font-bold rounded-[10px] border bg-[var(--surface)] border-[var(--border)] text-[var(--text-primary)] focus:border-[#7b39fc] focus:ring-2 focus:ring-[#7b39fc]/20 outline-none transition-all duration-150";
+  const inputClasses = "w-12 h-12 text-center text-xl font-bold rounded-[10px] border bg-[var(--surface)] border-[var(--border)] text-[var(--text-primary)] focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all duration-150";
 
   return (
     <AuthLayout>
@@ -132,8 +132,8 @@ const VerifyEmail = () => {
           </div>
         ) : (
           <div>
-            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[#7b39fc]/10">
-              <svg className="h-7 w-7 text-[#7b39fc]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
+              <svg className="h-7 w-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
@@ -144,13 +144,13 @@ const VerifyEmail = () => {
             </h2>
             <p className="text-sm font-inter text-[var(--text-secondary)] mb-6 leading-relaxed">
               We sent a 6-digit code to{' '}
-              <span className="text-[#7b39fc] font-semibold">{email || 'your email'}</span>.
+              <span className="text-accent font-semibold">{email || 'your email'}</span>.
               <br />Enter it below to activate your account.
             </p>
 
             {message && (
               <div className={`mb-6 rounded-[10px] p-4 border text-sm flex items-start gap-2.5 text-left
-                ${status === 'error' ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-[#7b39fc]/10 border-[#7b39fc]/30 text-violet-500'}`}>
+                ${status === 'error' ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-accent/10 border-accent/30 text-violet-500'}`}>
                 <svg className="h-5 w-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   {status === 'error' ? (
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -187,7 +187,7 @@ const VerifyEmail = () => {
                   <span className="text-[var(--text-muted)]">Resend in {timer}s</span>
                 ) : (
                   <button onClick={handleResend} disabled={resendStatus === 'sending'}
-                    className="font-medium text-[#7b39fc] hover:text-[#915bff] transition-colors bg-transparent border-none p-0 cursor-pointer">
+                    className="font-medium text-accent hover:text-[var(--accent-hover)] transition-colors bg-transparent border-none p-0 cursor-pointer">
                     {resendStatus === 'sending' ? 'Sending…' : 'Resend Code'}
                   </button>
                 )}

@@ -73,7 +73,7 @@ const Register = () => {
     }
   };
 
-  const selectClasses = "w-full rounded-[10px] border px-4 py-3 text-[15px] font-inter bg-[var(--surface)] border-[var(--border)] text-[var(--text-primary)] focus:border-[#7b39fc] focus:ring-2 focus:ring-[#7b39fc]/20 outline-none transition-all duration-150";
+  const selectClasses = "w-full rounded-[10px] border px-4 py-3 text-[15px] font-inter bg-[var(--surface)] border-[var(--border)] text-[var(--text-primary)] focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all duration-150";
 
   if (success) {
     return (
@@ -107,7 +107,7 @@ const Register = () => {
           </h2>
           <p className="mt-2 text-sm font-inter text-[var(--text-secondary)]">
             Already have an account?{' '}
-            <Link to="/login" className="font-medium text-[#7b39fc] hover:text-[#915bff] transition-colors">
+            <Link to="/login" className="font-medium text-accent hover:text-[var(--accent-hover)] transition-colors">
               Log in instead
             </Link>
           </p>
@@ -150,7 +150,7 @@ const Register = () => {
               <div className="flex flex-col justify-end pb-1 text-left">
                 <label className="flex items-center gap-2.5 cursor-pointer font-manrope font-medium text-sm text-[var(--text-secondary)] h-full pt-6 select-none">
                   <input type="checkbox" checked={hasGstin} onChange={(e) => setHasGstin(e.target.checked)}
-                    className="rounded border-[var(--border)] bg-[var(--surface)] text-[#7b39fc] focus:ring-[#7b39fc]/50 w-4 h-4" />
+                    className="rounded border-[var(--border)] bg-[var(--surface)] text-accent focus:ring-accent/50 w-4 h-4" />
                   Our business has a GSTIN
                 </label>
               </div>
@@ -210,19 +210,19 @@ const Register = () => {
                   id="register-terms"
                   checked={agreedToTerms}
                   onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="w-4 h-4 rounded border-[var(--border)] bg-[var(--surface)] text-[#7b39fc]
-                             focus:ring-[#7b39fc]/50 focus:ring-2 cursor-pointer"
+                  className="w-4 h-4 rounded border-[var(--border)] bg-[var(--surface)] text-accent
+                             focus:ring-accent/50 focus:ring-2 cursor-pointer"
                 />
               </div>
               <span className="text-sm font-inter text-[var(--text-secondary)] leading-relaxed">
                 I have read and agree to the{' '}
                 <Link to="/terms-of-service" target="_blank"
-                  className="font-medium text-[#7b39fc] hover:text-[#915bff] underline transition-colors">
+                  className="font-medium text-accent hover:text-[var(--accent-hover)] underline transition-colors">
                   Terms of Service
                 </Link>
                 {' '}and{' '}
                 <Link to="/privacy-policy" target="_blank"
-                  className="font-medium text-[#7b39fc] hover:text-[#915bff] underline transition-colors">
+                  className="font-medium text-accent hover:text-[var(--accent-hover)] underline transition-colors">
                   Privacy Policy
                 </Link>.
                 {' '}<span className="text-red-400">*</span>
@@ -243,7 +243,7 @@ const Register = () => {
 
           <p className="text-center text-xs text-[var(--text-muted)] font-inter -mt-2">
             Already have an account?{' '}
-            <Link to="/login" className="font-medium text-[#7b39fc] hover:text-[#915bff] transition-colors">
+            <Link to="/login" className="font-medium text-accent hover:text-[var(--accent-hover)] transition-colors">
               Sign in instead
             </Link>
           </p>

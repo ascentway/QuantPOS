@@ -56,6 +56,13 @@ public class User {
     @Column(name = "role", nullable = false, columnDefinition = "user_role")
     private Role role;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_permissions", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "permission")
+    @Builder.Default
+    private java.util.Set<Permission> permissions = new java.util.HashSet<>();
+
     @Column(name = "is_email_verified", nullable = false)
     @Builder.Default
     private boolean isEmailVerified = false;

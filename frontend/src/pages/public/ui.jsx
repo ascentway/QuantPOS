@@ -1,5 +1,5 @@
 /**
- * ui.jsx — Shared SaaS primitives for QuantPOS public pages.
+ * ui.jsx  Shared SaaS primitives for QuantPOS public pages.
  * Inject once, reuse everywhere. Zero external dependencies.
  */
 import React, { useEffect, useRef, useState } from 'react';
@@ -65,7 +65,7 @@ export const ANIM_CSS = `
   .qp-btn-primary:active { transform:translateY(0) }
 
   .qp-shimmer-text {
-    background: linear-gradient(90deg, var(--from,#7b39fc) 0%, #c084fc 50%, var(--from,#7b39fc) 100%);
+    background: linear-gradient(90deg, var(--from,#00A4A4) 0%, #00D4D4 50%, var(--from,#00A4A4) 100%);
     background-size: 200% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -132,7 +132,7 @@ export function useCounter(target, suffix = '', dur = 2000) {
 }
 
 /* ─── Ambient glow orb ──────────────────────────────────────────────────────── */
-export const GlowOrb = ({ color = '#7b39fc', size = 400, opacity = 0.12, top, left, right, bottom, blur = 80 }) => (
+export const GlowOrb = ({ color = '#00A4A4', size = 400, opacity = 0.12, top, left, right, bottom, blur = 80 }) => (
   <div
     aria-hidden="true"
     className="pointer-events-none absolute rounded-full qp-glow-pulse"
@@ -148,7 +148,7 @@ export const GlowOrb = ({ color = '#7b39fc', size = 400, opacity = 0.12, top, le
 );
 
 /* ─── Gradient badge ─────────────────────────────────────────────────────────── */
-export const GradientBadge = ({ children, color = '#7b39fc' }) => (
+export const GradientBadge = ({ children, color = '#00A4A4' }) => (
   <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6"
     style={{
       background: `${color}12`,
@@ -162,7 +162,7 @@ export const GradientBadge = ({ children, color = '#7b39fc' }) => (
 );
 
 /* ─── Section heading ────────────────────────────────────────────────────────── */
-export const SectionHeading = ({ eyebrow, title, subtitle, center = true, accent = '#7b39fc', className = '' }) => (
+export const SectionHeading = ({ eyebrow, title, subtitle, center = true, accent = '#00A4A4', className = '' }) => (
   <div className={`${center ? 'text-center' : ''} mb-16 qp-reveal ${className}`}>
     {eyebrow && <GradientBadge color={accent}>{eyebrow}</GradientBadge>}
     <h2 className="font-manrope font-extrabold text-3xl sm:text-5xl text-[var(--text-primary)] tracking-tight leading-tight mb-4">
@@ -196,7 +196,7 @@ export const CTAStrip = ({ heading, sub, primaryLabel = 'Start Free Trial', prim
   <section className="max-w-7xl mx-auto px-6 pb-28">
     <div className="relative overflow-hidden rounded-3xl p-12 sm:p-16 text-center"
       style={{
-        background: 'linear-gradient(135deg, #7b39fc 0%, #4f46e5 50%, #0ea5e9 100%)',
+        background: 'linear-gradient(135deg, #00A4A4 0%, #00A4A4 50%, #00A4A4 100%)',
         backgroundSize: '200% 200%',
         animation: 'qp-gradient-shift 6s ease infinite',
       }}>
@@ -207,7 +207,7 @@ export const CTAStrip = ({ heading, sub, primaryLabel = 'Start Free Trial', prim
       <div className="absolute top-0 right-0 w-80 h-80 rounded-full opacity-20"
         style={{ background: '#fff', filter: 'blur(80px)', transform: 'translate(30%, -30%)' }} />
       <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full opacity-15"
-        style={{ background: '#0ea5e9', filter: 'blur(60px)', transform: 'translate(-30%, 30%)' }} />
+        style={{ background: '#00A4A4', filter: 'blur(60px)', transform: 'translate(-30%, 30%)' }} />
 
       <div className="relative z-10 qp-reveal">
         <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur rounded-full px-4 py-1.5 mb-6">
@@ -220,7 +220,7 @@ export const CTAStrip = ({ heading, sub, primaryLabel = 'Start Free Trial', prim
         {sub && <p className="text-white/75 text-lg mb-10 max-w-xl mx-auto leading-relaxed">{sub}</p>}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to={primaryTo}
-            className="inline-flex items-center justify-center gap-2 bg-white text-[#7b39fc] font-bold px-8 py-4 rounded-xl text-base hover:bg-white/90 transition-all shadow-lg">
+            className="inline-flex items-center justify-center gap-2 bg-white text-accent font-bold px-8 py-4 rounded-xl text-base hover:bg-white/90 transition-all shadow-lg">
             {primaryLabel}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5-5 5M6 12h12" />
@@ -251,7 +251,7 @@ export const HeroSection = ({ children, className = '' }) => (
 );
 
 /* ─── Floating particle dots ─────────────────────────────────────────────────── */
-export const FloatingDots = ({ count = 6, color = '#7b39fc' }) => (
+export const FloatingDots = ({ count = 6, color = '#00A4A4' }) => (
   <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
     {Array.from({ length: count }).map((_, i) => (
       <div key={i}
@@ -269,7 +269,7 @@ export const FloatingDots = ({ count = 6, color = '#7b39fc' }) => (
 );
 
 /* ─── Stat card with animated counter ──────────────────────────────────────── */
-export const StatCard = ({ value, suffix = '', label, sub, color = '#7b39fc', raw, delay = 0 }) => {
+export const StatCard = ({ value, suffix = '', label, sub, color = '#00A4A4', raw, delay = 0 }) => {
   const [v, ref] = useCounter(raw ?? parseFloat(value), suffix);
   return (
     <div ref={ref}

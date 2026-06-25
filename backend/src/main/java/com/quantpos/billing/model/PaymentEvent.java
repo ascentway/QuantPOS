@@ -13,8 +13,9 @@ import java.util.UUID;
 /**
  * Persists every Stripe webhook event for idempotency and audit.
  *
- * <p>Maps to the {@code payment_events} table created in V4 migration.
- * The {@code stripeEventId} column has a DB-level UNIQUE constraint —
+ * <p>
+ * Maps to the {@code payment_events} table created in V4 migration.
+ * The {@code stripeEventId} column has a DB-level UNIQUE constraint
  * this is the first guard against duplicate processing.
  */
 @Entity
