@@ -22,7 +22,7 @@ const OtpInput = ({ otp, onChange, onKeyDown, onPaste, inputRefs }) => (
         onKeyDown={(e) => onKeyDown(e, idx)}
         className="w-12 h-12 text-center text-xl font-bold rounded-[10px] border
                    bg-[var(--surface)] border-[var(--border)] text-[var(--text-primary)]
-                   focus:border-[#7b39fc] focus:ring-2 focus:ring-[#7b39fc]/20 outline-none
+                   focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none
                    transition-all duration-150"
         autoComplete="off"
       />
@@ -38,7 +38,7 @@ const Alert = ({ type = 'error', message }) => {
     <div className={`mb-5 rounded-[10px] p-4 border text-sm flex items-start gap-2.5
       ${isError
         ? 'bg-red-500/10 border-red-500/30 text-red-400 dark:text-red-400'
-        : 'bg-[#7b39fc]/10 border-[#7b39fc]/30 text-violet-500 dark:text-violet-400'
+        : 'bg-accent/10 border-accent/30 text-violet-500 dark:text-violet-400'
       }`}>
       <svg className="h-5 w-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         {isError ? (
@@ -57,9 +57,9 @@ const Alert = ({ type = 'error', message }) => {
 // ── Friendly error resolver ───────────────────────────────────────────────────
 function resolveLoginError(err) {
   const status = err?.response?.status;
-  const code   = err?.response?.data?.error?.code;
+  const code = err?.response?.data?.error?.code;
   const detail = err?.response?.data?.error?.details;
-  const msg    = err?.response?.data?.message;
+  const msg = err?.response?.data?.message;
 
   // Specific error codes from the backend
   if (code === 'EMAIL_NOT_VERIFIED') return { redirect: true };
@@ -83,22 +83,22 @@ function resolveLoginError(err) {
 // ── Main Component ────────────────────────────────────────────────────────────
 const Login = () => {
   const navigate = useNavigate();
-  const setAuth  = useAuthStore((state) => state.setAuth);
+  const setAuth = useAuthStore((state) => state.setAuth);
 
-  // Step 1 — credentials
-  const [email, setEmail]         = useState('');
-  const [password, setPassword]   = useState('');
+  // Step 1  credentials
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPw] = useState(false);
 
-  // Step 2 — 2FA OTP
-  const [step, setStep]   = useState(1);
-  const [otp, setOtp]     = useState(['', '', '', '', '', '']);
+  // Step 2  2FA OTP
+  const [step, setStep] = useState(1);
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(60);
-  const inputRefs         = useRef([]);
+  const inputRefs = useRef([]);
 
   // Shared
-  const [error, setError]     = useState(null);
-  const [info, setInfo]       = useState(null);
+  const [error, setError] = useState(null);
+  const [info, setInfo] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // Countdown timer for 2FA resend
@@ -156,7 +156,7 @@ const Login = () => {
       }
     } catch (err) {
       const status = err?.response?.status;
-      const code   = err?.response?.data?.error?.code;
+      const code = err?.response?.data?.error?.code;
       if (code === 'OTP_LOCKED' || status === 429)
         setError('Too many incorrect codes. Please wait 15 minutes and try again.');
       else if (status === 401)
@@ -228,7 +228,7 @@ const Login = () => {
               </h2>
               <p className="mt-2 text-sm font-inter text-[var(--text-secondary)]">
                 Don't have an account?{' '}
-                <Link to="/register" className="font-medium text-[#7b39fc] hover:text-[#915bff] transition-colors">
+                <Link to="/register" className="font-medium text-accent hover:text-[var(--accent-hover)] transition-colors">
                   Create an account
                 </Link>
               </p>
@@ -254,7 +254,7 @@ const Login = () => {
                   <label htmlFor="login-password" className="block text-sm font-manrope font-medium text-[var(--text-secondary)]">
                     Password
                   </label>
-                  <Link to="/forgot-password" className="text-xs font-manrope font-semibold text-[#7b39fc] hover:text-[#915bff] transition-colors">
+                  <Link to="/forgot-password" className="text-xs font-manrope font-semibold text-accent hover:text-[var(--accent-hover)] transition-colors">
                     Forgot password?
                   </Link>
                 </div>
@@ -268,8 +268,8 @@ const Login = () => {
                     autoComplete="current-password"
                     className="w-full rounded-[10px] border px-4 py-3 pr-11 text-[15px] font-inter
                                bg-[var(--surface)] border-[var(--border)] text-[var(--text-primary)]
-                               placeholder-[var(--text-muted)] focus:border-[#7b39fc] focus:ring-2
-                               focus:ring-[#7b39fc]/20 outline-none transition-all duration-150"
+                               placeholder-[var(--text-muted)] focus:border-accent focus:ring-2
+                               focus:ring-accent/20 outline-none transition-all duration-150"
                     placeholder="••••••••"
                   />
                   <button
@@ -295,9 +295,9 @@ const Login = () => {
 
             <p className="mt-6 text-center text-xs text-[var(--text-muted)] font-inter">
               By signing in you agree to our{' '}
-              <Link to="/terms-of-service" className="underline hover:text-[#7b39fc] transition-colors">Terms of Service</Link>
+              <Link to="/terms-of-service" className="underline hover:text-accent transition-colors">Terms of Service</Link>
               {' '}and{' '}
-              <Link to="/privacy-policy" className="underline hover:text-[#7b39fc] transition-colors">Privacy Policy</Link>.
+              <Link to="/privacy-policy" className="underline hover:text-accent transition-colors">Privacy Policy</Link>.
             </p>
           </>
         )}
@@ -306,8 +306,8 @@ const Login = () => {
         {step === 2 && (
           <>
             <div className="mb-8 text-center">
-              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[#7b39fc]/10">
-                <svg className="h-7 w-7 text-[#7b39fc]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
+                <svg className="h-7 w-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -315,12 +315,12 @@ const Login = () => {
               <h2 className="font-instrument text-3xl text-[var(--text-primary)] font-normal">Check your email</h2>
               <p className="mt-2 text-sm font-inter text-[var(--text-secondary)]">
                 We sent a 6-digit code to{' '}
-                <span className="font-semibold text-[#7b39fc]">{email}</span>
+                <span className="font-semibold text-accent">{email}</span>
               </p>
             </div>
 
             <Alert type="error" message={error} />
-            <Alert type="info"  message={info}  />
+            <Alert type="info" message={info} />
 
             <form onSubmit={handleOtpSubmit} className="space-y-6">
               <OtpInput otp={otp} onChange={handleOtpChange} onKeyDown={handleOtpKeyDown}
@@ -342,7 +342,7 @@ const Login = () => {
                 <span className="text-[var(--text-muted)]">Resend in {timer}s</span>
               ) : (
                 <button onClick={handleResend2fa} disabled={loading}
-                  className="font-medium text-[#7b39fc] hover:text-[#915bff] transition-colors bg-transparent border-none p-0 cursor-pointer">
+                  className="font-medium text-accent hover:text-[var(--accent-hover)] transition-colors bg-transparent border-none p-0 cursor-pointer">
                   Resend Code
                 </button>
               )}

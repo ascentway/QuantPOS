@@ -7,9 +7,9 @@ const RELEASES = [
     version: 'Milestone 4', date: 'In Progress', type: 'feature',
     title: 'Multi-location Dashboard & Enterprise Features',
     items: [
-      { tag: 'new', text: 'Multi-location branch support — manage inventory and staff across multiple shops' },
-      { tag: 'new', text: 'Stock transfer system — transfer products between branches with full auditing' },
-      { tag: 'new', text: 'API integration — connect third-party billing and accounting software' },
+      { tag: 'new', text: 'Multi-location branch support  manage inventory and staff across multiple shops' },
+      { tag: 'new', text: 'Stock transfer system  transfer products between branches with full auditing' },
+      { tag: 'new', text: 'API integration  connect third-party billing and accounting software' },
       { tag: 'improved', text: 'Branded customer loyalty program and digital gift cards' },
     ],
   },
@@ -17,45 +17,45 @@ const RELEASES = [
     version: 'Milestone 3', date: 'Beta Testing', type: 'feature',
     title: 'AI Restocking Agent & Advanced Inventory',
     items: [
-      { tag: 'new', text: 'Demand forecasting — time-series prediction based on seasonal sales velocity' },
-      { tag: 'new', text: 'Automated PO generation — automatic supplier purchase orders generated at 8 AM and 8 PM' },
-      { tag: 'new', text: 'Supplier management — central database of suppliers, purchase logs, and payments' },
-      { tag: 'improved', text: 'Urgency levels — critical alert status for items nearing stockout thresholds' },
+      { tag: 'new', text: 'Demand forecasting  time-series prediction based on seasonal sales velocity' },
+      { tag: 'new', text: 'Automated PO generation  automatic supplier purchase orders generated at 8 AM and 8 PM' },
+      { tag: 'new', text: 'Supplier management  central database of suppliers, purchase logs, and payments' },
+      { tag: 'improved', text: 'Urgency levels  critical alert status for items nearing stockout thresholds' },
     ],
   },
   {
     version: 'Milestone 2', date: 'Completed', type: 'launch',
     title: 'POS Terminal & India-Specific Billing',
     items: [
-      { tag: 'new', text: 'Web POS Terminal — browser-based fast checkout cart with barcode scanner search' },
-      { tag: 'new', text: 'GST invoices — print thermal receipts with clean tax rates, HSN codes, and store GSTIN' },
-      { tag: 'new', text: 'UPI & Multi-mode payments — accept cash, card, and QR-code UPI transactions natively' },
-      { tag: 'improved', text: 'Decimal product units — support loose products priced by kg, litre, or custom units' },
+      { tag: 'new', text: 'Web POS Terminal  browser-based fast checkout cart with barcode scanner search' },
+      { tag: 'new', text: 'GST invoices  print thermal receipts with clean tax rates, HSN codes, and store GSTIN' },
+      { tag: 'new', text: 'UPI & Multi-mode payments  accept cash, card, and QR-code UPI transactions natively' },
+      { tag: 'improved', text: 'Decimal product units  support loose products priced by kg, litre, or custom units' },
     ],
   },
   {
     version: 'Milestone 1', date: 'Completed', type: 'launch',
     title: 'Platform Infrastructure & Tenant Security',
     items: [
-      { tag: 'new', text: 'Multi-tenant isolation — secure row-level data isolation for every business' },
-      { tag: 'new', text: 'Secure 2FA OTP logins — passwordless auth via secure email verification tokens' },
-      { tag: 'new', text: 'Role-Based Access Control — separate permissions for Owner, Manager, and Cashier' },
-      { tag: 'new', text: 'Security Auditing — full tracking of system logins, edits, and cashier actions' },
+      { tag: 'new', text: 'Multi-tenant isolation  secure row-level data isolation for every business' },
+      { tag: 'new', text: 'Secure 2FA OTP logins  passwordless auth via secure email verification tokens' },
+      { tag: 'new', text: 'Role-Based Access Control  separate permissions for Owner, Manager, and Cashier' },
+      { tag: 'new', text: 'Security Auditing  full tracking of system logins, edits, and cashier actions' },
     ],
   },
 ];
 
 const tagConfig = {
-  new: { color: '#7b39fc', bg: 'rgba(123,57,252,.12)', label: 'New' },
+  new: { color: '#00A4A4', bg: 'rgba(123,57,252,.12)', label: 'New' },
   improved: { color: '#10b981', bg: 'rgba(16,185,129,.12)', label: 'Improved' },
   fixed: { color: '#f59e0b', bg: 'rgba(245,158,11,.12)', label: 'Fixed' },
   removed: { color: '#ef4444', bg: 'rgba(239,68,68,.12)', label: 'Removed' },
 };
 
 const typeConfig = {
-  feature: { color: '#7b39fc', emoji: '⚙️', label: 'Future Release' },
+  feature: { color: '#00A4A4', emoji: '⚙️', label: 'Future Release' },
   launch: { color: '#10b981', emoji: '✅', label: 'Completed' },
-  patch: { color: '#6366f1', emoji: '🛠️', label: 'Patch' },
+  patch: { color: '#00A4A4', emoji: '🛠️', label: 'Patch' },
 };
 
 export default function Changelog() {
@@ -67,11 +67,11 @@ export default function Changelog() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-28 pb-16 px-6 qp-grid-bg">
-        <GlowOrb color="#7b39fc" size={500} opacity={0.09} top="0" left="50%" blur={100} />
+        <GlowOrb color="#00A4A4" size={500} opacity={0.09} top="0" left="50%" blur={100} />
 
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <div className="qp-reveal">
-            <GradientBadge color="#7b39fc">Project Progress</GradientBadge>
+            <GradientBadge color="#00A4A4">Project Progress</GradientBadge>
             <h1 className="font-manrope font-extrabold text-5xl sm:text-6xl text-[var(--text-primary)] tracking-tight leading-none mb-5">
               Changelog
             </h1>
@@ -88,7 +88,7 @@ export default function Changelog() {
         <div className="relative">
           {/* Vertical timeline line */}
           <div className="absolute left-[17px] top-4 bottom-4 w-px hidden sm:block"
-            style={{ background: 'linear-gradient(180deg, #7b39fc40 0%, transparent 100%)' }} />
+            style={{ background: 'linear-gradient(180deg, #00A4A440 0%, transparent 100%)' }} />
 
           <div className="space-y-10">
             {RELEASES.map((rel, i) => {
@@ -154,7 +154,7 @@ export default function Changelog() {
             Subscribe to changelog updates via email
           </p>
           <a href="mailto:quantpos@gmail.com?subject=Subscribe to changelog"
-            className="inline-flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] font-semibold px-6 py-3 rounded-xl hover:border-[#7b39fc] hover:text-[#7b39fc] transition-all text-sm">
+            className="inline-flex items-center gap-2 border border-[var(--border)] text-[var(--text-primary)] font-semibold px-6 py-3 rounded-xl hover:border-accent hover:text-accent transition-all text-sm">
             Subscribe to updates →
           </a>
         </div>

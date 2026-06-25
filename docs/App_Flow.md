@@ -1,4 +1,4 @@
-# QuantPOS — Complete App Flow Document
+# QuantPOS  Complete App Flow Document
 
 **Version:** 1.0  
 **Date:** January 2024  
@@ -156,7 +156,7 @@ This code will expire in 10 minutes.
 
 If you didn't request this code, please ignore this email.
 
-—
+
 QuantPOS Team
 support@quantpos.com
 ```
@@ -837,8 +837,12 @@ Screen 3: Set New Password
   │
   └─ Redirects to success page
 
-[Success Page]
-  ├─ Shows: "Subscription Active!"
+[Success Page / Dashboard Return]
+  ├─ Stripe redirects back to `?checkout=success`
+  ├─ DashboardLayout automatically mounts
+  ├─ Background: calls `GET /api/auth/me` to sync latest profile
+  ├─ Store updates, inactive banner disappears silently
+  ├─ Shows Toast: "Subscription Active!"
   ├─ "You can now use 3 POS terminals"
   ├─ Next steps:
   │  ├─ [Add Products]
@@ -874,6 +878,8 @@ Frontend            Backend            Stripe           Redis/DB
    │                   │                   │              │
    │                   │ ← Payment webhook ─│              │
    │                   │ (checkout.session.completed)     │
+   │                   │                   │              │
+   │                   │─ Trap 'resource_missing' (auto-heal Customer ID if needed)
    │                   │                   │              │
    │                   │─ Update tenant ───────────────────→ DB
    │                   │ (subscription_status = ACTIVE)    │
@@ -1148,7 +1154,7 @@ START
 │                                                                   │
 └──────────────────────────────────────────────────────────────────┘
 
-When cashier clicks "Sugar 5kg":
+When cashier clicks a STANDARD item (e.g., "Sugar 5kg"):
 ┌─────────────────────────────────┐
 │ Add to Cart                     │
 ├─────────────────────────────────┤
@@ -1157,6 +1163,20 @@ When cashier clicks "Sugar 5kg":
 │ Quantity: [_2_] [+ -]          │
 │                                 │
 │ Total for this item: ₹900       │
+│                                 │
+│ [Add to Cart]  [Cancel]         │
+│                                 │
+└─────────────────────────────────┘
+
+When cashier clicks a LOOSE item (e.g., "Sugar Loose"):
+┌─────────────────────────────────┐
+│ Weigh Item                      │
+├─────────────────────────────────┤
+│ Sugar Loose (₹112.00 / KG)      │
+│                                 │
+│ Enter Weight: [_1.450_] KG      │
+│                                 │
+│ Calculated Price: ₹162.40       │
 │                                 │
 │ [Add to Cart]  [Cancel]         │
 │                                 │

@@ -166,9 +166,21 @@ public class AuthControllerIntegrationTest {
         request.setEmail("john@example.com");
         request.setPassword("password123");
 
+        // Step 1: Login credentials verification
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.message", containsString("Credentials verified")));
+
+        // Mock 2FA OTP retrieval from Redis
+        lenient().when(redisService.get("login_2fa:john@example.com")).thenReturn(Optional.of("123456"));
+
+        // Step 2: Verify 2FA OTP
+        mockMvc.perform(post("/api/auth/verify-2fa")
+                        .param("email", "john@example.com")
+                        .param("otp", "123456"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", is(true)))
                 .andExpect(jsonPath("$.data.accessToken", notNullValue()))
@@ -287,7 +299,7 @@ public class AuthControllerIntegrationTest {
     @Test
     void getMe_unauthorized() throws Exception {
         mockMvc.perform(get("/api/auth/me"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

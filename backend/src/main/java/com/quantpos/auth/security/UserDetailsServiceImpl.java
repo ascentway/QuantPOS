@@ -21,10 +21,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
+        java.util.List<org.springframework.security.core.GrantedAuthority> authorities = new java.util.ArrayList<>();
+        authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
+        
+        if (user.getPermissions() != null) {
+            for (com.quantpos.user.model.Permission permission : user.getPermissions()) {
+                authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority(permission.name()));
+            }
+        }
+
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getId().toString())
                 .password(user.getPasswordHash())
-                .authorities("ROLE_" + user.getRole().name())
+                .authorities(authorities)
                 .build();
     }
 }

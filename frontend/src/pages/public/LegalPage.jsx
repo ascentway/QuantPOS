@@ -3,12 +3,12 @@ import PublicLayout from '../../components/layout/PublicLayout';
 import { ANIM_CSS, useReveal, GlowOrb, GradientBadge } from './ui';
 
 /**
- * LegalPage — premium wrapper for all legal documents.
- * Usage: <LegalPage title="Privacy Policy" badge="Privacy" updated="June 4, 2026" toc={[...]} accentColor="#7b39fc">
+ * LegalPage  premium wrapper for all legal documents.
+ * Usage: <LegalPage title="Privacy Policy" badge="Privacy" updated="June 4, 2026" toc={[...]} accentColor="#00A4A4">
  *   <section>...</section>
  * </LegalPage>
  */
-export default function LegalPage({ title, badge, updated, accentColor = '#7b39fc', toc = [], children }) {
+export default function LegalPage({ title, badge, updated, accentColor = '#00A4A4', toc = [], children }) {
   useReveal();
 
   return (
@@ -42,7 +42,7 @@ export default function LegalPage({ title, badge, updated, accentColor = '#7b39f
                 {toc.map(({ id, label }) => (
                   <li key={id}>
                     <a href={`#${id}`}
-                      className="block text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors py-1 leading-snug">
+                      className="block text-sm text-[var(--text-muted)] hover:text-accent transition-colors py-1 leading-snug">
                       {label}
                     </a>
                   </li>
@@ -60,7 +60,7 @@ export default function LegalPage({ title, badge, updated, accentColor = '#7b39f
             prose-h3:text-lg prose-h3:mt-8 prose-h3:mb-3
             prose-p:text-[var(--text-secondary)] prose-p:leading-relaxed prose-p:text-sm prose-p:mb-4
             prose-li:text-[var(--text-secondary)] prose-li:text-sm prose-li:mb-1
-            prose-a:text-[#7b39fc] prose-a:no-underline hover:prose-a:underline
+            prose-a:text-accent prose-a:no-underline hover:prose-a:underline
             prose-strong:text-[var(--text-primary)] prose-strong:font-semibold">
             {children}
           </div>

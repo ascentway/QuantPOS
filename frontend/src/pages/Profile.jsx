@@ -11,13 +11,13 @@ import Input from '../components/ui/Input';
 
 const RoleBadge = ({ role }) => {
   const colors = {
-    OWNER:       'bg-[#7b39fc]/15 text-[#a87eff] border border-[#7b39fc]/30',
-    MANAGER:     'bg-blue-500/10 text-blue-400 border border-blue-500/20',
-    CASHIER:     'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
+    OWNER: 'bg-accent-subtle text-accent border border-accent/30',
+    MANAGER: 'bg-blue-500/10 text-blue-400 border border-blue-500/20',
+    CASHIER: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
     SUPER_ADMIN: 'bg-red-500/10 text-red-400 border border-red-500/20',
   };
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-cabin font-medium ${colors[role] || 'bg-white/5 text-white/50'}`}>
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-cabin font-medium ${colors[role] || 'bg-card2 text-text-muted'}`}>
       {role?.replace('_', ' ')}
     </span>
   );
@@ -25,22 +25,22 @@ const RoleBadge = ({ role }) => {
 
 const SubscriptionBadge = ({ status }) => {
   const colors = {
-    ACTIVE:    'text-emerald-400',
-    INACTIVE:  'text-amber-400',
-    PAST_DUE:  'text-red-400',
+    ACTIVE: 'text-emerald-400',
+    INACTIVE: 'text-amber-400',
+    PAST_DUE: 'text-red-400',
     CANCELLED: 'text-slate-400',
   };
   return (
-    <span className={`font-medium ${colors[status] || 'text-white/50'}`}>
-      {status || '—'}
+    <span className={`font-medium ${colors[status] || 'text-text-muted'}`}>
+      {status || ''}
     </span>
   );
 };
 
 const InfoRow = ({ label, value }) => (
-  <div className="flex items-center justify-between py-3 border-b border-white/5 last:border-0">
-    <span className="text-sm font-manrope text-white/40">{label}</span>
-    <span className="text-sm font-inter text-white/80">{value || '—'}</span>
+  <div className="flex items-center justify-between py-3 border-b border-theme last:border-0">
+    <span className="text-sm font-manrope text-text-muted">{label}</span>
+    <span className="text-sm font-inter text-text-secondary">{value || ''}</span>
   </div>
 );
 
@@ -52,18 +52,18 @@ const Profile = () => {
   const storeUser = useAuthStore((state) => state.user);
   const clearAuth = useAuthStore((state) => state.clearAuth);
 
-  const [profile, setProfile]   = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [profileError, setProfileError] = useState(null);
 
   // Change password form
-  const [showPwForm, setShowPwForm]     = useState(false);
-  const [currentPw, setCurrentPw]       = useState('');
-  const [newPw, setNewPw]               = useState('');
-  const [confirmPw, setConfirmPw]       = useState('');
-  const [pwLoading, setPwLoading]       = useState(false);
-  const [pwError, setPwError]           = useState(null);
-  const [pwSuccess, setPwSuccess]       = useState(null);
+  const [showPwForm, setShowPwForm] = useState(false);
+  const [currentPw, setCurrentPw] = useState('');
+  const [newPw, setNewPw] = useState('');
+  const [confirmPw, setConfirmPw] = useState('');
+  const [pwLoading, setPwLoading] = useState(false);
+  const [pwError, setPwError] = useState(null);
+  const [pwSuccess, setPwSuccess] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -106,7 +106,7 @@ const Profile = () => {
         setCurrentPw('');
         setNewPw('');
         setConfirmPw('');
-        // Backend invalidates all sessions — log user out after 2s
+        // Backend invalidates all sessions  log user out after 2s
         setTimeout(() => {
           clearAuth();
           window.location.href = '/login';
@@ -128,15 +128,15 @@ const Profile = () => {
 
       {/* ── Page Header ───────────────────────────────────── */}
       <div>
-        <h1 className="font-instrument text-3xl text-white font-normal">My Profile</h1>
-        <p className="mt-1 font-inter text-sm text-white/40">View your account information and manage your password.</p>
+        <h1 className="font-instrument text-3xl text-text-primary font-normal">My Profile</h1>
+        <p className="mt-1 font-inter text-sm text-text-muted">View your account information and manage your password.</p>
       </div>
 
       {/* ── Profile Info Card ─────────────────────────────── */}
       <Card className="bg-surface border-theme">
         {loadingProfile ? (
           <div className="flex items-center justify-center py-10">
-            <div className="h-6 w-6 border-2 border-[#7b39fc] border-t-transparent rounded-full animate-spin" />
+            <div className="h-6 w-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
           </div>
         ) : profileError ? (
           <p className="text-sm text-red-400 font-inter py-4 text-center">{profileError}</p>
@@ -144,29 +144,29 @@ const Profile = () => {
           <>
             {/* Avatar + name */}
             <div className="flex items-center gap-4 mb-6">
-              <div className="h-14 w-14 rounded-full bg-[#7b39fc]/20 flex items-center justify-center shrink-0">
+              <div className="h-14 w-14 rounded-full bg-accent/20 flex items-center justify-center shrink-0">
                 <span className="text-[#a87eff] font-manrope font-bold text-xl">
                   {displayUser?.fullName?.charAt(0)?.toUpperCase() || '?'}
                 </span>
               </div>
               <div>
-                <h2 className="font-manrope font-semibold text-white text-lg leading-tight">
+                <h2 className="font-manrope font-semibold text-text-primary text-lg leading-tight">
                   {displayUser?.fullName}
                 </h2>
                 <div className="flex items-center gap-2 mt-1">
                   <RoleBadge role={displayUser?.role} />
-                  <span className="text-xs font-inter text-white/30">{displayUser?.businessName}</span>
+                  <span className="text-xs font-inter text-text-muted">{displayUser?.businessName}</span>
                 </div>
               </div>
             </div>
 
             {/* Info rows */}
             <div>
-              <InfoRow label="Email"           value={displayUser?.email} />
-              <InfoRow label="Business"        value={displayUser?.businessName} />
-              <InfoRow label="Business Type"   value={displayUser?.businessType} />
-              <InfoRow label="Subscription"    value={<SubscriptionBadge status={displayUser?.subscriptionStatus} />} />
-              <InfoRow label="Role"            value={<RoleBadge role={displayUser?.role} />} />
+              <InfoRow label="Email" value={displayUser?.email} />
+              <InfoRow label="Business" value={displayUser?.businessName} />
+              <InfoRow label="Business Type" value={displayUser?.businessType} />
+              <InfoRow label="Subscription" value={<SubscriptionBadge status={displayUser?.subscriptionStatus} />} />
+              <InfoRow label="Role" value={<RoleBadge role={displayUser?.role} />} />
             </div>
           </>
         )}
@@ -176,15 +176,15 @@ const Profile = () => {
       <Card className="bg-surface border-theme">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="font-manrope font-semibold text-white text-base">Password & Security</h3>
-            <p className="text-xs font-inter text-white/40 mt-0.5">
+            <h3 className="font-manrope font-semibold text-text-primary text-base">Password & Security</h3>
+            <p className="text-xs font-inter text-text-muted mt-0.5">
               Changing your password will log you out of all devices.
             </p>
           </div>
           {!showPwForm && (
             <button
               onClick={() => { setShowPwForm(true); setPwError(null); setPwSuccess(null); }}
-              className="font-cabin font-medium text-sm text-[#7b39fc] hover:text-[#a87eff] transition-colors"
+              className="font-cabin font-medium text-sm text-accent hover:text-[#a87eff] transition-colors"
             >
               Change Password
             </button>
@@ -237,7 +237,7 @@ const Profile = () => {
               <button
                 type="button"
                 onClick={() => { setShowPwForm(false); setPwError(null); setPwSuccess(null); setCurrentPw(''); setNewPw(''); setConfirmPw(''); }}
-                className="flex-1 rounded-[10px] border border-white/10 text-sm font-cabin text-white/50 hover:text-white hover:border-white/20 transition-colors py-3"
+                className="flex-1 rounded-[10px] border border-theme text-sm font-cabin text-text-muted hover:text-text-primary hover:border-theme transition-colors py-3"
               >
                 Cancel
               </button>

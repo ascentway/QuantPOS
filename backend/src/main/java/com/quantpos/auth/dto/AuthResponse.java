@@ -23,5 +23,6 @@ public class AuthResponse {
         private String businessName;
         private String businessType;
         private String subscriptionStatus;  // INACTIVE | ACTIVE | PAST_DUE | CANCELLED
+        private String gstin;
     }
 }

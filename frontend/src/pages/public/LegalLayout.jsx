@@ -20,9 +20,9 @@ export const LegalLayout = ({ title, lastUpdated, effectiveDate, children }) => 
           {effectiveDate && <span>Effective: {effectiveDate}</span>}
           {lastUpdated && <span>Last updated: {lastUpdated}</span>}
         </div>
-        <div className="mt-4 p-4 rounded-xl bg-[#7b39fc]/05 border border-[#7b39fc]/15 text-sm text-[var(--text-secondary)] leading-relaxed">
+        <div className="mt-4 p-4 rounded-xl bg-accent/05 border border-accent/15 text-sm text-[var(--text-secondary)] leading-relaxed">
           This document governs your use of QuantPOS. Please read it carefully. If you have questions, contact{' '}
-          <a href="mailto:quantpos@gmail.com" className="text-[#7b39fc] hover:underline font-medium">quantpos@gmail.com</a>.
+          <a href="mailto:quantpos@gmail.com" className="text-accent hover:underline font-medium">quantpos@gmail.com</a>.
         </div>
       </div>
 
@@ -35,7 +35,7 @@ export const LegalLayout = ({ title, lastUpdated, effectiveDate, children }) => 
 export const Section = ({ id, title, children }) => (
   <section id={id} className="mb-8">
     <h2 className="font-manrope font-bold text-lg text-[var(--text-primary)] mb-3 flex items-center gap-2">
-      <span className="w-1 h-5 rounded-full bg-[#7b39fc] flex-shrink-0" />
+      <span className="w-1 h-5 rounded-full bg-accent flex-shrink-0" />
       {title}
     </h2>
     <div className="text-sm text-[var(--text-secondary)] leading-relaxed space-y-3">{children}</div>
@@ -47,7 +47,7 @@ export const UL = ({ items }) => (
   <ul className="space-y-1.5 pl-4">
     {items.map((item, i) => (
       <li key={i} className="flex items-start gap-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#7b39fc] flex-shrink-0 mt-2" />
+        <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0 mt-2" />
         <span>{item}</span>
       </li>
     ))}

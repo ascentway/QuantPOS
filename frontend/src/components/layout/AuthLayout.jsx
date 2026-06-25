@@ -14,17 +14,17 @@ const ThemeToggle = () => {
       aria-label="Toggle theme"
       className="relative flex items-center justify-center w-9 h-9 rounded-full transition-all duration-200
                  bg-[var(--border)] hover:bg-[var(--border-strong)] text-[var(--text-secondary)]
-                 hover:text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[#7b39fc]/40"
+                 hover:text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-accent/40"
     >
       {isDark ? (
-        // Sun icon — shown in dark mode to switch to light
+        // Sun icon  shown in dark mode to switch to light
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="5" />
           <path strokeLinecap="round" strokeLinejoin="round"
             d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
         </svg>
       ) : (
-        // Moon icon — shown in light mode to switch to dark
+        // Moon icon  shown in light mode to switch to dark
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round"
             d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" />
@@ -37,7 +37,7 @@ const ThemeToggle = () => {
 // ── Auth Footer ───────────────────────────────────────────────────────────────
 const AuthFooter = () => (
   <footer className="w-full border-t border-[var(--border)] bg-[var(--bg)]">
-    {/* Top footer grid — logo + columns */}
+    {/* Top footer grid  logo + columns */}
     <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-10">
       {/* Brand */}
       <div className="space-y-4">
@@ -84,14 +84,14 @@ const AuthFooter = () => (
         <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-4 font-manrope">Product</h4>
         <ul className="space-y-2.5">
           {[
-            { label: 'Features',    href: '/features' },
-            { label: 'Pricing',     href: '/pricing' },
-            { label: 'How It Works',href: '/how-it-works' },
-            { label: 'Changelog',   href: '/changelog' },
-            { label: 'Status',      href: '/status' },
+            { label: 'Features', href: '/features' },
+            { label: 'Pricing', href: '/pricing' },
+            { label: 'How It Works', href: '/how-it-works' },
+            { label: 'Changelog', href: '/changelog' },
+            { label: 'Status', href: '/status' },
           ].map(({ label, href }) => (
             <li key={label}>
-              <Link to={href} className="text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors duration-150">
+              <Link to={href} className="text-sm text-[var(--text-muted)] hover:text-accent transition-colors duration-150">
                 {label}
               </Link>
             </li>
@@ -104,14 +104,14 @@ const AuthFooter = () => (
         <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-4 font-manrope">Company</h4>
         <ul className="space-y-2.5">
           {[
-            { label: 'About',    href: '/about' },
-            { label: 'Blog',     href: '/blog' },
-            { label: 'Careers',  href: '/careers' },
-            { label: 'Press Kit',href: '/press-kit' },
-            { label: 'Contact',  href: '/contact' },
+            { label: 'About', href: '/about' },
+            { label: 'Blog', href: '/blog' },
+            { label: 'Careers', href: '/careers' },
+            { label: 'Press Kit', href: '/press-kit' },
+            { label: 'Contact', href: '/contact' },
           ].map(({ label, href }) => (
             <li key={label}>
-              <Link to={href} className="text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors duration-150">
+              <Link to={href} className="text-sm text-[var(--text-muted)] hover:text-accent transition-colors duration-150">
                 {label}
               </Link>
             </li>
@@ -124,13 +124,13 @@ const AuthFooter = () => (
         <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-4 font-manrope">Legal</h4>
         <ul className="space-y-2.5">
           {[
-            { label: 'Privacy Policy',   href: '/privacy-policy' },
+            { label: 'Privacy Policy', href: '/privacy-policy' },
             { label: 'Terms of Service', href: '/terms-of-service' },
-            { label: 'Cookie Policy',    href: '/cookie-policy' },
-            { label: 'GDPR',             href: '/gdpr' },
+            { label: 'Cookie Policy', href: '/cookie-policy' },
+            { label: 'GDPR', href: '/gdpr' },
           ].map(({ label, href }) => (
             <li key={label}>
-              <Link to={href} className="text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors duration-150">
+              <Link to={href} className="text-sm text-[var(--text-muted)] hover:text-accent transition-colors duration-150">
                 {label}
               </Link>
             </li>
@@ -186,7 +186,7 @@ const AuthLayout = ({ children, maxWidth = 'max-w-md' }) => {
             <Link
               to="/register"
               className="hidden sm:inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-lg
-                         bg-[#7b39fc] hover:bg-[#6929e8] text-white transition-colors duration-150"
+                         bg-accent hover:bg-[var(--accent-hover)] text-white transition-colors duration-150"
             >
               Get started
             </Link>

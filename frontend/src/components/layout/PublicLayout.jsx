@@ -10,8 +10,8 @@ const ThemeToggle = () => {
     <button onClick={toggleTheme} aria-label="Toggle theme"
       className="relative flex items-center justify-center w-9 h-9 rounded-full transition-all duration-200
                  border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)]
-                 hover:text-[var(--text-primary)] hover:border-[#7b39fc]/40
-                 focus:outline-none focus:ring-2 focus:ring-[#7b39fc]/40">
+                 hover:text-[var(--text-primary)] hover:border-accent/40
+                 focus:outline-none focus:ring-2 focus:ring-accent/40">
       {isDark ? (
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="5"/><path strokeLinecap="round" strokeLinejoin="round"
@@ -72,7 +72,7 @@ const PublicNav = () => {
                   }`}>
                   {label}
                   {active && (
-                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-[#7b39fc]" />
+                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-accent" />
                   )}
                 </Link>
               );
@@ -84,7 +84,7 @@ const PublicNav = () => {
         <div className="flex items-center gap-2.5">
           <Link to="/login"
             className="hidden sm:flex items-center text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)]
-                       transition-colors px-4 py-2 rounded-lg border border-[var(--border)] hover:border-[#7b39fc]/40 hover:bg-[var(--surface)]">
+                       transition-colors px-4 py-2 rounded-lg border border-[var(--border)] hover:border-accent/40 hover:bg-[var(--surface)]">
             Sign in
           </Link>
           <ThemeToggle />
@@ -114,7 +114,7 @@ const PublicNav = () => {
             <Link key={href} to={href}
               className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                 location.pathname === href
-                  ? 'bg-[#7b39fc]/10 text-[#7b39fc]'
+                  ? 'bg-accent/10 text-accent'
                   : 'text-[var(--text-muted)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]'
               }`}>
               {label}
@@ -122,7 +122,7 @@ const PublicNav = () => {
           ))}
           <div className="pt-2 border-t border-[var(--border)]">
             <Link to="/login"
-              className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-[var(--border)] text-sm font-semibold text-[var(--text-primary)] hover:border-[#7b39fc] transition-all">
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-[var(--border)] text-sm font-semibold text-[var(--text-primary)] hover:border-accent transition-all">
               Sign in
             </Link>
           </div>
@@ -181,7 +181,7 @@ const PublicFooter = () => (
           ].map(({ label, href, path }) => (
             <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}
               className="w-8 h-8 flex items-center justify-center rounded-lg border border-[var(--border)]
-                         text-[var(--text-muted)] hover:text-[#7b39fc] hover:border-[#7b39fc]/40
+                         text-[var(--text-muted)] hover:text-accent hover:border-accent/40
                          transition-all duration-150">
               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                 <path d={path}/>
@@ -201,7 +201,7 @@ const PublicFooter = () => (
             {links.map(({ label, href }) => (
               <li key={label}>
                 <Link to={href}
-                  className="text-sm text-[var(--text-muted)] hover:text-[#7b39fc] transition-colors duration-150">
+                  className="text-sm text-[var(--text-muted)] hover:text-accent transition-colors duration-150">
                   {label}
                 </Link>
               </li>

@@ -85,7 +85,7 @@ public class AuthServiceTest {
         when(tenantRepository.save(any(Tenant.class))).thenReturn(savedTenant);
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
         when(passwordEncoder.encode(request.getPassword())).thenReturn("encodedPassword");
-        when(tokenService.saveEmailVerificationOtp(savedUser.getEmail())).thenReturn("123456");
+        when(tokenService.saveEmailVerificationOtpSkipCooldown(savedUser.getEmail())).thenReturn("123456");
 
         // Act
         var response = authService.register(request);
@@ -193,10 +193,10 @@ public class AuthServiceTest {
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(request.getPassword(), user.getPasswordHash())).thenReturn(true);
 
-        // Act — Step 1: login() now only validates credentials and sends 2FA OTP
+        // Act Step 1: login() now only validates credentials and sends 2FA OTP
         var response = authService.login(request);
 
-        // Assert — login step 1 returns success with null data (tokens not yet issued)
+        // Assert login step 1 returns success with null data (tokens not yet issued)
         assertNotNull(response);
         assertTrue(response.isSuccess());
         assertNull(response.getData());
@@ -234,7 +234,7 @@ public class AuthServiceTest {
 
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(request.getPassword(), user.getPasswordHash())).thenReturn(true);
-        when(tokenService.saveEmailVerificationOtp(user.getEmail())).thenReturn("123456");
+        when(tokenService.saveEmailVerificationOtpSkipCooldown(user.getEmail())).thenReturn("123456");
 
         // Act & Assert
         ApiException exception = assertThrows(ApiException.class, () -> authService.login(request));
@@ -497,7 +497,7 @@ public class AuthServiceTest {
 
         // Assert
         assertNotNull(response);
-        assertEquals("Password changed successfully", response.getMessage());
+        assertEquals("Password changed successfully. Please log in again on all devices.", response.getMessage());
         verify(userRepository).save(user);
         assertEquals("new-hash", user.getPasswordHash());
     }

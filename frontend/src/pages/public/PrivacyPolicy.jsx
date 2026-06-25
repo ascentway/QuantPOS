@@ -14,7 +14,7 @@ const TOC = [
 
 export default function PrivacyPolicy() {
   return (
-    <LegalPage title="Privacy Policy" badge="Privacy" updated="June 4, 2026" accentColor="#7b39fc" toc={TOC}>
+    <LegalPage title="Privacy Policy" badge="Privacy" updated="June 4, 2026" accentColor="#00A4A4" toc={TOC}>
       <h2 id="overview">1. Overview</h2>
       <p>QuantPOS Technologies ("QuantPOS", "we", "our") is committed to protecting the privacy of merchants and their customers. This policy explains what data we collect, how we use it, and your rights over it.</p>
       <p>By using QuantPOS you agree to this Privacy Policy. If you do not agree, please discontinue use of the service.</p>
@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
       <p>When you register for QuantPOS, we collect: business name, owner name, email address, phone number (optional), business type, and GSTIN (optional).</p>
 
       <h3>2.2 Transaction data</h3>
-      <p>We store all sales transactions, inventory movements, and purchase orders processed through your QuantPOS account. This is your operational data — it belongs to you.</p>
+      <p>We store all sales transactions, inventory movements, and purchase orders processed through your QuantPOS account. This is your operational data  it belongs to you.</p>
 
       <h3>2.3 Team member data</h3>
       <p>When you invite team members, we collect their email addresses, names, and role assignments. Team members can only access data scoped to your organisation.</p>
@@ -57,7 +57,7 @@ export default function PrivacyPolicy() {
         <li>Row-level data isolation between tenants (your data cannot be read by other merchants)</li>
         <li>BCrypt password hashing with cost factor 12</li>
         <li>JWT access tokens (15-minute expiry) with refresh token rotation</li>
-        <li>2FA OTP on every login — mandatory, not optional</li>
+        <li>2FA OTP on every login  mandatory, not optional</li>
       </ul>
 
       <h2 id="rights">6. Your rights</h2>

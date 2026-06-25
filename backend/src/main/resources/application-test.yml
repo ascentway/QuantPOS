@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;INIT=CREATE TYPE IF NOT EXISTS business_type AS ENUM ('RETAIL', 'FNB')\;CREATE TYPE IF NOT EXISTS subscription_status AS ENUM ('ACTIVE', 'INACTIVE', 'PAST_DUE', 'CANCELLED')\;CREATE TYPE IF NOT EXISTS user_role AS ENUM ('SUPER_ADMIN', 'OWNER', 'MANAGER', 'CASHIER', 'EMPLOYEE')\;
     username: sa
     password:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: create-drop
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: com.quantpos.config.CustomH2Dialect
     show-sql: false
   flyway:
     enabled: false

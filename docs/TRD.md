@@ -1,4 +1,4 @@
-# QuantPOS — Technical Requirements Document (TRD)
+# QuantPOS  Technical Requirements Document (TRD)
 
 **Version:** 1.0  
 **Date:** June 2026  
@@ -307,13 +307,13 @@ React Component
 
 #### Spring Boot 3.x
 - **Core modules:**
-  - `spring-boot-starter-web` — REST API, embedded Tomcat
-  - `spring-boot-starter-security` — Authentication, authorization
-  - `spring-boot-starter-data-jpa` — ORM layer with Hibernate
-  - `spring-boot-starter-data-redis` — Redis client
-  - `spring-boot-starter-mail` — SMTP client
-  - `spring-boot-starter-actuator` — Monitoring endpoints
-  - `spring-boot-starter-validation` — Bean validation
+  - `spring-boot-starter-web`  REST API, embedded Tomcat
+  - `spring-boot-starter-security`  Authentication, authorization
+  - `spring-boot-starter-data-jpa`  ORM layer with Hibernate
+  - `spring-boot-starter-data-redis`  Redis client
+  - `spring-boot-starter-mail`  SMTP client
+  - `spring-boot-starter-actuator`  Monitoring endpoints
+  - `spring-boot-starter-validation`  Bean validation
   
 - **Why:** 
   - Industry standard for enterprise Java applications
@@ -324,10 +324,10 @@ React Component
 #### PostgreSQL 15
 - **Version:** 15 (released Oct 2022, stable and mature)
 - **Why:**
-  - ACID compliance — guarantees data integrity
-  - JSON/JSONB support — flexible schema for product metadata
-  - Full-text search — for product search feature
-  - Window functions — for complex analytics queries
+  - ACID compliance  guarantees data integrity
+  - JSON/JSONB support  flexible schema for product metadata
+  - Full-text search  for product search feature
+  - Window functions  for complex analytics queries
   - Excellent Hibernate support
   - Proven at massive scale (Uber, Dropbox)
   - Free and open-source
@@ -3128,6 +3128,8 @@ describe('Full Registration & Login Flow', () => {
 - Webhook listener for 5+ event types
 - Subscription status enforcement
 - Terminal limit enforcement in POS
+- **Resilient Checkout Recovery:** Automatically intercepts Stripe `resource_missing` errors (e.g., when a Stripe Customer ID is manually deleted in Stripe but still referenced in our DB), provisions a new Customer ID, updates the `tenants` table, and seamlessly retries the checkout session creation without throwing an error to the client.
+- **Frontend State Sync:** React/Zustand state synchronization strategy calling `GET /api/auth/me` on `DashboardLayout` mount to immediately resolve the "Inactive" banner when returning from a successful Stripe checkout.
 
 **Database:**
 - subscriptions table
@@ -3159,20 +3161,29 @@ describe('Full Registration & Login Flow', () => {
 
 ---
 
-### Phase 3: Inventory Management (Future)
+### Phase 3: Inventory Management (Active Development)
+
+**Pricing Architecture (Integer/Paise Strategy):**
+To completely eliminate floating-point precision errors (e.g., 0.1 + 0.2 = 0.30000000000000004), all financial values are stored as `BIGINT` in their smallest currency unit (Paise for INR, Cents for USD).
+- Backend DB: `price_paise` = 4500 (represents ₹45.00)
+- The frontend formats this for display by dividing by 100.
+- POS calculations happen on the integer values before final display formatting.
+
+**Product Types Architecture:**
+- **STANDARD:** Items with integer `stock_quantity`.
+- **LOOSE:** Items with decimal `stock_quantity` (e.g., 1.500 kg). Trigger a quantity input modal on the POS frontend. Base price is stored in `price_per_unit_paise`.
 
 **Database tables:**
 - categories
-- products
-- product_variants
+- products (featuring `product_type`, `unit_type`, `price_paise`, `hsn_code`, `gst_rate`)
+- hsn_gst_rates (tax rules dictionary)
 - inventory
 - inventory_transactions
 
 **API endpoints (15+ total):**
-- CRUD for categories, products, variants
+- CRUD for categories, products
 - Inventory adjustment endpoints
 - Low-stock alert queries
-- Stock valuation reports
 
 **AI integration:**
 - Analysis of inventory patterns for Phase 6

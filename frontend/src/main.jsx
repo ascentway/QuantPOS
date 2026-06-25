@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App.jsx'
 import './index.css'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,11 +17,12 @@ const queryClient = new QueryClient({
 })
 
 // Initialize global theme before React renders to prevent flash of wrong theme
+let initialTheme = 'dark';
 try {
   const stored = localStorage.getItem('quantpos-theme');
   const parsed = stored ? JSON.parse(stored) : null;
-  const theme  = parsed?.state?.theme ?? 'dark'; // default = dark
-  if (theme === 'dark') {
+  initialTheme = parsed?.state?.theme ?? 'dark'; // default = dark
+  if (initialTheme === 'dark') {
     document.documentElement.classList.add('dark');
   } else {
     document.documentElement.classList.remove('dark');
@@ -33,6 +36,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <App />
+        <ToastContainer theme={initialTheme} position="bottom-right" />
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>,

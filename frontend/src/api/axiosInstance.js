@@ -2,7 +2,7 @@ import axios from 'axios';
 import useAuthStore from '../store/authStore';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: '',
 });
 
 let isRefreshing = false;
@@ -66,7 +66,7 @@ axiosInstance.interceptors.response.use(
       }
 
       try {
-        const response = await axios.post('http://localhost:8080/api/auth/refresh', { refreshToken });
+        const response = await axios.post('/api/auth/refresh', { refreshToken });
         const newAccessToken = response.data.data.accessToken;
         const newRefreshToken = response.data.data.refreshToken;
         const user = response.data.data.user;

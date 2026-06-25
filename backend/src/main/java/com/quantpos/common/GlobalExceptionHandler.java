@@ -43,7 +43,20 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadableException(org.springframework.http.converter.HttpMessageNotReadableException ex) {
-        ApiResponse<Void> response = ApiResponse.error("Malformed JSON request body", ErrorCodes.VALIDATION_FAILED, ex.getMessage());
+        // Log the actual exception privately
+        ex.printStackTrace();
+        
+        // Extract the root cause for better debugging
+        String details = null;
+        Throwable cause = ex.getCause();
+        if (cause != null) {
+            details = cause.getMessage();
+            if (cause.getCause() != null) {
+                details += " | Root: " + cause.getCause().getMessage();
+            }
+        }
+        
+        ApiResponse<Void> response = ApiResponse.error("Malformed JSON request body or missing required fields", ErrorCodes.VALIDATION_FAILED, details);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
@@ -70,7 +83,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
     public ResponseEntity<ApiResponse<Void>> handleDataIntegrityViolationException(org.springframework.dao.DataIntegrityViolationException ex) {
-        ApiResponse<Void> response = ApiResponse.error("Data integrity violation", "CONFLICT", ex.getMostSpecificCause().getMessage());
+        // Log the actual exception privately
+        ex.printStackTrace();
+        ApiResponse<Void> response = ApiResponse.error("Data integrity violation", "CONFLICT", "A database conflict occurred.");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
@@ -80,9 +95,36 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(response);
     }
 
+    @ExceptionHandler(org.springframework.web.servlet.NoHandlerFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNoHandlerFoundException(org.springframework.web.servlet.NoHandlerFoundException ex) {
+        ApiResponse<Void> response = ApiResponse.error("Endpoint not found", "NOT_FOUND", ex.getRequestURL());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMethodArgumentTypeMismatchException(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException ex) {
+        ApiResponse<Void> response = ApiResponse.error("Invalid parameter type", "BAD_REQUEST", ex.getName() + " should be of type " + ex.getRequiredType().getName());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        ApiResponse<Void> response = ApiResponse.error("Invalid argument provided", "BAD_REQUEST", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception ex) {
-        ApiResponse<Void> response = ApiResponse.error(ex.getMessage(), "INTERNAL_SERVER_ERROR", null);
+        // Log the actual exception privately
+        ex.printStackTrace();
+        
+        // In development, show the actual error message
+        String details = ex.getMessage();
+        if (ex.getCause() != null) {
+            details += " | Cause: " + ex.getCause().getMessage();
+        }
+        
+        ApiResponse<Void> response = ApiResponse.error("An unexpected internal error occurred", "INTERNAL_SERVER_ERROR", details);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 

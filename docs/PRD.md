@@ -1,4 +1,4 @@
-# QuantPOS — Product Requirements Document (PRD)
+# QuantPOS  Product Requirements Document (PRD)
 
 **Version:** 1.0  
 **Date:** January 2024  
@@ -31,23 +31,23 @@
 
 Small to medium-sized independent retail stores and food & beverage establishments face significant operational challenges:
 
-- **No unified system** — Inventory, sales, and accounting scattered across multiple disconnected tools
-- **High upfront cost** — Traditional POS systems require expensive hardware and on-premise infrastructure
-- **Manual inventory management** — Labor-intensive stock tracking and restocking decisions based on gut feeling
-- **No data-driven insights** — Lack of analytics makes it hard to understand business trends and customer behavior
-- **Limited scalability** — Growing businesses quickly outgrow their systems, requiring expensive migrations
-- **Cash flow inefficiency** — No real-time visibility into sales, inventory value, and revenue trends
+- **No unified system**  Inventory, sales, and accounting scattered across multiple disconnected tools
+- **High upfront cost**  Traditional POS systems require expensive hardware and on-premise infrastructure
+- **Manual inventory management**  Labor-intensive stock tracking and restocking decisions based on gut feeling
+- **No data-driven insights**  Lack of analytics makes it hard to understand business trends and customer behavior
+- **Limited scalability**  Growing businesses quickly outgrow their systems, requiring expensive migrations
+- **Cash flow inefficiency**  No real-time visibility into sales, inventory value, and revenue trends
 
 ### Solution
 
 **QuantPOS** is a cloud-based, multi-tenant SaaS platform that provides:
 
-- **Unified business management** — Single dashboard for sales, inventory, and analytics
-- **Zero hardware investment** — Works on any browser, smartphone, or tablet
-- **AI-powered inventory optimization** — Predictive restocking based on sales patterns
-- **Real-time analytics** — Instant insights into revenue, product performance, and inventory health
-- **Flexible scaling** — Pay per POS terminal, scale up or down anytime
-- **Enterprise-grade security** — Complete data isolation between businesses, encryption at rest and in transit
+- **Unified business management**  Single dashboard for sales, inventory, and analytics
+- **Zero hardware investment**  Works on any browser, smartphone, or tablet
+- **AI-powered inventory optimization**  Predictive restocking based on sales patterns
+- **Real-time analytics**  Instant insights into revenue, product performance, and inventory health
+- **Flexible scaling**  Pay per POS terminal, scale up or down anytime
+- **Enterprise-grade security**  Complete data isolation between businesses, encryption at rest and in transit
 
 ### Target Market
 
@@ -137,7 +137,7 @@ Small to medium-sized independent retail stores and food & beverage establishmen
 
 ### User Personas
 
-#### Persona 1: "Sharma Ji" — Store Owner (Primary)
+#### Persona 1: "Sharma Ji"  Store Owner (Primary)
 
 **Demographics:**
 - Age: 35-55 years
@@ -174,7 +174,7 @@ Small to medium-sized independent retail stores and food & beverage establishmen
 
 ---
 
-#### Persona 2: "Ravi" — Store Manager
+#### Persona 2: "Ravi"  Store Manager
 
 **Demographics:**
 - Age: 25-35 years
@@ -208,7 +208,7 @@ Small to medium-sized independent retail stores and food & beverage establishmen
 
 ---
 
-#### Persona 3: "Priya" — Cashier/POS Operator
+#### Persona 3: "Priya"  Cashier/POS Operator
 
 **Demographics:**
 - Age: 18-30 years
@@ -434,7 +434,7 @@ So that I can confirm account ownership and complete setup.
 **Requirements:**
 
 1. **Verification Email**
-   - Subject: "Verify your email — QuantPOS"
+   - Subject: "Verify your email  QuantPOS"
    - Body: Plain text with verification link
    - Link format: `https://QuantPOS.com/verify-email?token={UUID}`
    - Expires: 24 hours after generation
@@ -865,7 +865,7 @@ So that I can keep my account secure.
    - Routes protected via RoleGuard component
    - Insufficient role redirects to 403 page
    - Menu items hidden based on role
-   - Frontend guarding is UX only — backend is real security
+   - Frontend guarding is UX only  backend is real security
 
 **Acceptance Criteria:**
 - [ ] Each role can only access assigned features
@@ -1079,6 +1079,11 @@ So that I can start using POS terminals and unlock features.
      - Stripe customer still created (for future reactivation)
      - User can return to plans page
 
+**Resilient Checkout Mechanism:**
+- If Stripe `resource_missing` occurs (e.g., a customer record was manually deleted in the Stripe Dashboard, but the ID remains in our database), the backend automatically traps the error.
+- It provisions a new Stripe Customer ID on-the-fly, updates the `tenants` table, and immediately retries session creation without failing the user request.
+- When Stripe redirects the user back (`?checkout=success`), the frontend dashboard instantly and silently re-syncs the `user` object to hide the inactive banner, providing a seamless user experience.
+
 **Acceptance Criteria:**
 - [ ] Checkout URL generated correctly
 - [ ] User redirected to Stripe-hosted checkout
@@ -1260,18 +1265,26 @@ So that I have control over my account without contacting support.
 
 ---
 
-### Phase 3: Inventory Management (Future)
+### Phase 3: Inventory Management (Active Development)
 
 **Duration:** 3 weeks  
-**Status:** Design phase
+**Status:** In Progress (Database schemas defined)
+
+**Core Feature: Product Types**
+- **STANDARD:** Items sold in fixed quantities (e.g., 1 bottle of soda, 1 packet of chips). Stored with integer stock count.
+- **LOOSE:** Items sold by weight or volume (e.g., Sugar per kg, Oil per litre). Stored with decimal stock count and fractional prices. Requires POS terminal to prompt cashier for measured quantity.
+
+**Core Feature: Barcode Strategies**
+To accommodate different retail setups, the system supports three barcode scenarios:
+- **Scenario A (Standard):** Product has a manufacturer barcode. Scanned directly at POS.
+- **Scenario B (Pre-weighed Loose):** Loose products are pre-weighed and labeled with a QuantPOS-generated barcode containing weight and price info.
+- **Scenario C (In-store Un-barcoded):** Standard products without manufacturer barcodes get assigned a unique, in-store generated barcode printed on shelf labels.
 
 **Features:**
-- Product catalog with variants
-- Stock tracking and adjustments
-- Low-stock alerts
-- Inventory transaction audit trail
-- Category management
-- Barcode/SKU management
+- Product catalog with Standard vs Loose pricing structures
+- Real-time stock tracking with decimal precision for loose goods
+- Intelligent financial storage using `paise/cents` to eliminate rounding errors
+- Dynamic quantity input prompts at POS for un-barcoded loose items
 
 ---
 

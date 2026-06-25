@@ -80,8 +80,8 @@ const ResetPassword = () => {
     <AuthLayout>
       <Card className="bg-[var(--surface)] border-[var(--border)]">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-[#7b39fc]/10">
-            <svg className="h-7 w-7 text-[#7b39fc]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent/10">
+            <svg className="h-7 w-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
@@ -114,7 +114,7 @@ const ResetPassword = () => {
               <p className="text-sm text-amber-400 font-inter font-medium">Invalid reset link</p>
               <p className="text-xs text-amber-400/80 font-inter mt-1">
                 This link is invalid or has expired.{' '}
-                <Link to="/forgot-password" className="underline hover:text-[#7b39fc] transition-colors">
+                <Link to="/forgot-password" className="underline hover:text-accent transition-colors">
                   Request a new one
                 </Link>.
               </p>
@@ -137,8 +137,8 @@ const ResetPassword = () => {
               placeholder="••••••••"
               className="w-full rounded-[10px] border px-4 py-3 pr-11 text-[15px] font-inter
                          bg-[var(--surface)] border-[var(--border)] text-[var(--text-primary)]
-                         placeholder-[var(--text-muted)] focus:border-[#7b39fc] focus:ring-2
-                         focus:ring-[#7b39fc]/20 outline-none transition-all duration-150"
+                         placeholder-[var(--text-muted)] focus:border-accent focus:ring-2
+                         focus:ring-accent/20 outline-none transition-all duration-150"
             />
             <button type="button" onClick={() => setShowPw((v) => !v)}
               className="absolute right-3 top-[38px] text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
